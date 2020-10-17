@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "image": "/assets/img/banner/banner-1.jpg",
+    "title": "Watches",
+    "subtitle": "Starting at",
+    "price": "¢50",
+    "link": "/shop-grid-standard"
+  },
+  {
+    "id": 2,
+    "image": "/assets/img/banner/banner-2.jpg",
+    "title": "Bags",
+    "subtitle": "Starting at",
+    "price": "¢79",
+    "link": "/shop-grid-standard"
+  },
+  {
+    "id": 3,
+    "image": "/assets/img/banner/banner-3.jpg",
+    "title": "Sunglasses",
+    "subtitle": "Starting at",
+    "price": "¢100",
+    "link": "/shop-grid-standard"
+  },
+  {
+    "id": 4,
+    "image": "/assets/img/banner/banner-7.png",
+    "title": "Hats",
+    "subtitle": "Starting at",
+    "price": "¢10",
+    "link": "/shop-grid-standard"
+  }
+]

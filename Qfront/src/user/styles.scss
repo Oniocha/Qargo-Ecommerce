@@ -1,0 +1,47 @@
+div .logo {
+  width: 120px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 30px auto;
+}
+.box {
+  background-color: #fff;
+  width: 350px;
+  padding: 30px 10px;
+  border: 1px solid #c7c7c7;
+}
+
+.signup-page {
+  .btn-action {
+    margin-bottom: 20px;
+    margin-top: 10px;
+  }
+  #basic-addon1 {
+    height: 30px;
+  }
+  .form-control {
+    height: 30px;
+    border-color: rgb(94, 94, 94);
+  }
+  h3 {
+    font-weight: 600;
+  }
+  #keepSignedIn {
+    margin-right: 10px;
+  }
+  .password-text {
+    position: relative;
+    bottom: 10px;
+    color: var(--red);
+    font-size: 0.8rem;
+    margin-bottom: 0;
+  }
+  .custom-control-input:checked ~ .custom-control-label::before {
+    border-color: var(--main);
+    background-color: var(--main);
+  }
+  .notice {
+    display: inline-blockß;
+  }
+}

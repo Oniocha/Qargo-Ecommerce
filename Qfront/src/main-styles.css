@@ -1,0 +1,140 @@
+body {
+  font-family: var(--font-family-sans-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #ffffff !important;
+  color: #212529;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden !important;
+}
+
+:root {
+  overflow-x: hidden !important;
+  font-size: 14px;
+  --button: transparent linear-gradient(180deg, #f0c14b 0%, #e4b43a 100%) 0% 0%
+    no-repeat padding-box;
+  --buttonborder: #a88734 #9c7e31 #846a29;
+  --buttonhover: transparent linear-gradient(180deg, #e4b43a 0%, #f0c14b 100%)
+    0% 0% no-repeat padding-box;
+  --buttonactive: transparent linear-gradient(180deg, #faa606 0%, #e4b43a 100%)
+    0% 0% no-repeat padding-box;
+  --natural: #e7e9ec;
+  --main: #0b79bf;
+  /* #4DCCC5 */
+  --passive: transparent linear-gradient(180deg, #0b79bf 0%, #3678a2 100%) 0% 0%
+    no-repeat padding-box;
+  --passivehover: transparent linear-gradient(180deg, #3678a2 0%, #0b79bf 100%)
+    0% 0% no-repeat padding-box;
+  --border: 1px solid #9d9d9d56;
+  --shadow: 0 0.46875rem 2.1875rem rgba(4, 9, 20, 0.03),
+    0 0.9375rem 1.40625rem rgba(4, 9, 20, 0.03),
+    0 0.25rem 0.53125rem rgba(4, 9, 20, 0.05),
+    0 0.125rem 0.1875rem rgba(4, 9, 20, 0.03);
+  padding: 0;
+  margin: 0;
+}
+
+.btn.btn-action {
+  background: var(--button);
+  width: 100%;
+  height: 36px;
+  color: #222;
+  font-weight: 600;
+  border-color: var(--buttonborder);
+}
+.btn.btn-action:hover {
+  background: var(--buttonhover);
+}
+.btn.btn-action:active {
+  background: var(--button);
+}
+
+img {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.product-img {
+  height: 200px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.vertical-line {
+  border-left: 1px solid rgb(224, 224, 224);
+  height: 100%;
+  position: relative;
+  left: 50%;
+}
+
+/*--- qargo preloader ---*/
+
+.qargo-preloader-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f7f7f7;
+  z-index: 999999;
+}
+
+.qargo-preloader {
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  padding: 0;
+  text-align: left;
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -25px;
+  margin-top: -25px;
+}
+
+.qargo-preloader span {
+  position: absolute;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  background: var(--main);
+  -webkit-animation: preloader 1.3s linear infinite;
+  animation: preloader 1.3s linear infinite;
+}
+
+.qargo-preloader span:last-child {
+  animation-delay: -0.8s;
+  -webkit-animation-delay: -0.8s;
+}
+
+@keyframes preloader {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1, 1);
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes preloader {
+  0% {
+    -webkit-transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    -webkit-transform: scale(1, 1);
+    opacity: 0;
+  }
+}
+
+/*--- end of qargo preloader ---*/

@@ -1,0 +1,65 @@
+/*----- Lower Banner style  -------*/
+
+.banner-area {
+  position: relative;
+  right: 50%;
+  transform: translateX(50%);
+}
+
+.single-banner {
+  position: relative;
+  // max-width: 600px;
+  overflow: hidden;
+  a {
+    img {
+      width: 100%;
+      transition: all 0.5s ease 0s;
+      transform: scale(1);
+    }
+  }
+  &:hover img {
+    transform: scale(1.2);
+  }
+  .banner-content {
+    position: absolute;
+    top: 40px;
+    left: 36px;
+    content: "";
+    h3 {
+      font-family: "Cormorant Garamond";
+      font-size: 36px;
+      font-weight: 500;
+      margin: 0;
+      color: #915342;
+    }
+    h4 {
+      font-family: "Cormorant Garamond";
+      font-size: 18px;
+      font-weight: 500;
+      margin: 3px 0 58px;
+      color: #010101;
+      span {
+        font-size: 20px;
+        line-height: 1;
+        position: relative;
+        top: 2px;
+        display: inline-block;
+        margin: 0 0 0 2px;
+        color: #935644;
+      }
+    }
+    a {
+      font-size: 14px;
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      text-align: center;
+      color: #97584a;
+      border: 2px solid #97584a;
+      border-radius: 100%;
+      i {
+        line-height: 25px;
+      }
+    }
+  }
+}

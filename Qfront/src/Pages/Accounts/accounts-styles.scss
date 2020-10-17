@@ -1,0 +1,56 @@
+.user-account {
+  .account-page {
+    margin: 20px auto;
+
+    a {
+      color: var(--main);
+      font-weight: 600;
+    }
+
+    .card.contained {
+      padding: 10px 20px 20px;
+    }
+
+    .account-title {
+      font-size: 1rem;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .list-group-item span {
+      font-weight: 600;
+    }
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+  textarea {
+    height: 100px;
+  }
+
+  .srollable {
+    width: auto;
+    height: 100px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .image-preview {
+    position: relative;
+    height: 150px;
+    img.no-image {
+      height: 150px;
+      position: absolute;
+      right: 50%;
+      transform: translateX(50%);
+    }
+  }
+}
+
+#addProducts {
+  label {
+    font-weight: 500;
+  }
+}

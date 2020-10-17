@@ -1,0 +1,28 @@
+.cart-page {
+  height: auto;
+  padding: 60px;
+
+  h1 {
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+
+  .table-headings {
+    p {
+      color: rgb(169, 169, 169);
+      font-weight: 500;
+      font-size: smaller;
+    }
+  }
+
+  .cart-arrange {
+    img {
+      height: 100px;
+      margin: 20px;
+    }
+    h2 {
+      font-size: medium;
+      display: inline-block;
+    }
+  }
+}

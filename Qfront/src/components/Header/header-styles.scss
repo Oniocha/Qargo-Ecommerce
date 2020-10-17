@@ -1,0 +1,44 @@
+header {
+  .nav-link.clickable {
+    cursor: pointer;
+  }
+
+  .middle-bar {
+    background-color: var(--main);
+  }
+
+  #top-bar {
+    position: relative;
+
+    .brand {
+      width: 100px;
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+    }
+  }
+
+  .brand {
+    width: 120px;
+    cursor: pointer;
+  }
+
+  .bottom-bar {
+    background-color: var(--main);
+  }
+
+  .cart {
+    position: relative;
+    margin: 0 20px;
+  }
+
+  .cart-count {
+    color: #fff;
+    font-weight: 700;
+    position: absolute;
+    z-index: 3;
+    right: 51px;
+    transform: translate(50%, 50%);
+  }
+}
