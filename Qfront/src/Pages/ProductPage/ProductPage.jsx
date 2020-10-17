@@ -51,7 +51,10 @@ const ProductPage = ({ match }) => {
     });
   };
 
-  const shouldRedirect = () => redirect && <Redirect to="/cart" />;
+  const shouldRedirect = () =>
+    redirect && (
+      <Redirect to={{ pathname: "/cart", state: { product: product } }} />
+    );
 
   const showRelated = () => (
     <Fragment>
