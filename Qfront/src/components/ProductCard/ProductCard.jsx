@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import ShowImage from "./ShowImage";
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 const ProductCard = ({ product }) => {
   return (
@@ -26,6 +27,18 @@ const ProductCard = ({
 }) => {
   const [count, setCount] = useState(product.count);
 
+=======
+import { updateQuantity, removeItem } from "../../helpers/cartHelpers";
+
+const ProductCard = ({
+  product,
+  cart = false,
+  run = undefined,
+  setRun = (f) => f,
+}) => {
+  const [count, setCount] = useState(product.count);
+
+>>>>>>> Stashed changes
   const handleChange = (productId) => (e) => {
     setRun(!run);
     let counter = e.target.value;

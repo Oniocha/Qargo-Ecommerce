@@ -8,13 +8,20 @@ import { Link } from "react-router-dom";
 import { cartTotal, getCart } from "../../helpers/cartHelpers";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import CheckOut from "../../components/CheckOut/CheckOut";
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 import "./cart-styles.scss";
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   const [count, setCount] = useState(1);
+=======
+  const [run, setRun] = useState(false);
+>>>>>>> Stashed changes
 =======
   const [run, setRun] = useState(false);
 >>>>>>> Stashed changes
@@ -44,6 +51,7 @@ const CartPage = () => {
         </div>
         <div>
           {cartItems.length > 0 ? (
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
             <table>
               <thead className="table-headings">
@@ -85,6 +93,8 @@ const CartPage = () => {
               </tbody>
             </table>
 =======
+=======
+>>>>>>> Stashed changes
             <Fragment>
               <ul className="cart-arrange">
                 {cartItems.map((item, i) => (
@@ -104,6 +114,9 @@ const CartPage = () => {
                 received.
               </span>
             </Fragment>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
           ) : (
             <div>Your cart is empty</div>
