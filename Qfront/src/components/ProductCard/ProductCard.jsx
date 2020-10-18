@@ -52,34 +52,21 @@ const ProductCard = ({
   //What to render if the card is showing on the cart page
   const cartComp = () => {
     return (
-      // <div className="row mt-3 card pt-3 pb-3 pl-auto">
-      //   <div className="col-12">
-      <div className="row">
-        <div className="col-2">
-          <div className="col-1">
+      <div className="row mt-3 card pt-3 pb-3 pl-auto">
+        <div className="col-12 row">
+          <div className="col-2">
             <ShowImage item={product} url="product" />
           </div>
-          <div className="col-1">
-            <div className="vertical-line"></div>
-          </div>
-          <div className="col-3">
+          <div className="col-4">
             <span>{product.name}</span>
           </div>
-          <div className="col-1">
-            <div className="vertical-line"></div>
-          </div>
-          <div className="col-1">{AdjustQuantity(product)}</div>{" "}
-          <div className="col-1">
-            <div className="vertical-line"></div>
-          </div>
+          <div className="col-3">{AdjustQuantity(product)}</div>
           <div className="col-1">
             <span>¢{product.price}</span>
-          </div>{" "}
-          <div className="col-1">
-            <div className="vertical-line"></div>
           </div>
           <div className="col-1">
             <button
+              className="btn btn-danger"
               onClick={() => {
                 removeItem(product._id);
                 setRun(!run);
@@ -101,11 +88,6 @@ const ProductCard = ({
               </svg>
               <div>Remove</div>
             </button>
-            <div className="col-6">
-              <div>
-                <span>{product.name}</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>

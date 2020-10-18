@@ -19,7 +19,9 @@ const CartPage = () => {
       <div>
         <h2>Your cart is empty</h2>
         <br />
-        <Link to="/">Continue shopping</Link>
+        <Link to="/">
+          <h2>Continue shopping</h2>
+        </Link>
       </div>
     );
   };
@@ -60,7 +62,7 @@ const CartPage = () => {
       </div>
       <div className="col-lg-4 col-md-4 col-xl-4">
         <CheckOut products={cartItems} />
-        Put in ahipping details, billing details and shipping
+        Put in shipping details, billing details and shipping
       </div>
     </div>
   );

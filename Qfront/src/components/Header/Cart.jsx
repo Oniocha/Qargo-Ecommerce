@@ -8,6 +8,7 @@ const Cart = ({ fill, className }) => {
 
   useEffect(() => {
     setItems(getCart());
+    cartTotal();
   }, []);
 
   return (
