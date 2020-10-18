@@ -1,25 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { cartTotal, getCart, updateQuantity } from "../../helpers/cartHelpers";
-import ShowImage from "../../components/ProductCard/ShowImage";
+import React, { useState, useEffect, Fragment } from "react";
+import { Link } from "react-router-dom";
+import { cartTotal, getCart } from "../../helpers/cartHelpers";
+import ProductCard from "../../components/ProductCard/ProductCard";
 import "./cart-styles.scss";
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
-  const [count, setCount] = useState(1);
 
   useEffect(() => {
     setCartItems(getCart());
   }, []);
 
-  const handleChange = (productId) => (e) => {
-    setCount(e.target.value < 1 ? 1 : e.target.value);
-    if (e.value.target >= 1) {
-      updateQuantity(productId, e.target.value);
-    }
-  };
-
-  const AdjustQantity = () => {
-    return;
+  const noItemsMessage = () => {
+    return (
+      <div>
+        <h2>Your cart is empty</h2>
+        <br />
+        <Link to="/">Continue shopping</Link>
+      </div>
+    );
   };
 
   return (
@@ -32,47 +31,16 @@ const CartPage = () => {
         </div>
         <div>
           {cartItems.length > 0 ? (
-            <table>
-              <thead className="table-headings">
-                <tr>
-                  <th>
-                    <p>ITEM</p>
-                  </th>
-                  <th className="text-center">
-                    <p>QUANTITY</p>
-                  </th>
-                  <th className="text-center">
-                    <p>UNIT PRICE</p>
-                  </th>
-                  <th className="text-center">
-                    <p>SUBTOTAL</p>
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="cart-arrange">
-                {cartItems.map((item, i) => (
-                  <tr key={i}>
-                    <td>
-                      <h2>{item.name}</h2>
-                      <ShowImage item={item} url="product" className="img" />
-                    </td>
-                    <td>
-                      <select>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                      </select>
-                    </td>
-                    <td>₵{item.price}</td>
-                    <td>₵{item.category.name}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <ul className="cart-arrange">
+              {cartItems.map((item, i) => (
+                <Fragment key={i}>
+                  <ProductCard product={item} cart={true} />
+                  <hr />
+                </Fragment>
+              ))}
+            </ul>
           ) : (
-            <div>Your cart is empty</div>
+            noItemsMessage()
           )}
         </div>
       </div>
