@@ -28,13 +28,25 @@ header {
     background-color: var(--main);
   }
 
+  .cart-icon {
+    cursor: pointer;
+  }
+
   .cart {
     position: relative;
     margin: 0 20px;
   }
 
-  .cart-count {
+  .mid-cart-count {
     color: #fff;
+  }
+
+  .top-cart-count {
+    color: inherit;
+  }
+
+  .mid-cart-count,
+  .top-cart-count {
     font-weight: 700;
     position: absolute;
     z-index: 3;

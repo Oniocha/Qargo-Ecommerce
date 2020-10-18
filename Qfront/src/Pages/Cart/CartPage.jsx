@@ -1,12 +1,16 @@
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 import React, { useState, useEffect } from "react";
 import { cartTotal, getCart, updateQuantity } from "../../helpers/cartHelpers";
 import ShowImage from "../../components/ProductCard/ShowImage";
 =======
+=======
+>>>>>>> 77fb3f6e581cd5d8b24f3cafed2b77c1c85a052e
 import React, { useState, useEffect, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { cartTotal, getCart } from "../../helpers/cartHelpers";
 import ProductCard from "../../components/ProductCard/ProductCard";
+<<<<<<< HEAD
 import CheckOut from "../../components/CheckOut/CheckOut";
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -15,10 +19,13 @@ import CheckOut from "../../components/CheckOut/CheckOut";
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> 77fb3f6e581cd5d8b24f3cafed2b77c1c85a052e
 import "./cart-styles.scss";
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -32,20 +39,21 @@ const CartPage = () => {
 =======
   const [run, setRun] = useState(false);
 >>>>>>> Stashed changes
+=======
+>>>>>>> 77fb3f6e581cd5d8b24f3cafed2b77c1c85a052e
 
   useEffect(() => {
     setCartItems(getCart());
   }, [run]);
 
-  const handleChange = (productId) => (e) => {
-    setCount(e.target.value < 1 ? 1 : e.target.value);
-    if (e.value.target >= 1) {
-      updateQuantity(productId, e.target.value);
-    }
-  };
-
-  const AdjustQantity = () => {
-    return;
+  const noItemsMessage = () => {
+    return (
+      <div>
+        <h2>Your cart is empty</h2>
+        <br />
+        <Link to="/">Continue shopping</Link>
+      </div>
+    );
   };
 
   return (
@@ -58,6 +66,7 @@ const CartPage = () => {
         </div>
         <div>
           {cartItems.length > 0 ? (
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -131,8 +140,18 @@ const CartPage = () => {
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
+=======
+            <ul className="cart-arrange">
+              {cartItems.map((item, i) => (
+                <Fragment key={i}>
+                  <ProductCard product={item} cart={true} />
+                  <hr />
+                </Fragment>
+              ))}
+            </ul>
+>>>>>>> 77fb3f6e581cd5d8b24f3cafed2b77c1c85a052e
           ) : (
-            <div>Your cart is empty</div>
+            noItemsMessage()
           )}
         </div>
       </div>

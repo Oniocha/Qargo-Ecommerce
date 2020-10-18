@@ -43,7 +43,7 @@ export const getCart = () => {
 };
 
 //Update quantity of items in the cart
-export const updateQuantity = (productId, count) => {
+export const updateQuantity = (prodId, count) => {
   let cart = [];
 
   if (typeof window !== "undefined") {
@@ -51,7 +51,7 @@ export const updateQuantity = (productId, count) => {
       cart = JSON.parse(localStorage.getItem("cart"));
     }
     cart.map((product, i) => {
-      if (product._id === productId) {
+      if (product._id === prodId) {
         cart[i].count = count;
       }
     });
