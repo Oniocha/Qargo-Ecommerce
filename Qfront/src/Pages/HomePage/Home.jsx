@@ -7,6 +7,7 @@ import "../../components/Banners/LowerHomeBanner/styles.scss";
 import "./home-styles.scss";
 
 const Home = () => {
+  console.log("home");
   return (
     <div className="homepage container-fluid">
       <HomeBanner />
