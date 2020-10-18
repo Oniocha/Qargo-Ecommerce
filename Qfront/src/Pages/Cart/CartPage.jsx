@@ -1,54 +1,14 @@
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-import React, { useState, useEffect } from "react";
-import { cartTotal, getCart, updateQuantity } from "../../helpers/cartHelpers";
-import ShowImage from "../../components/ProductCard/ShowImage";
-=======
-=======
->>>>>>> 77fb3f6e581cd5d8b24f3cafed2b77c1c85a052e
 import React, { useState, useEffect, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { cartTotal, getCart } from "../../helpers/cartHelpers";
 import ProductCard from "../../components/ProductCard/ProductCard";
-<<<<<<< Updated upstream
-<<<<<<< HEAD
 import CheckOut from "../../components/CheckOut/CheckOut";
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> 77fb3f6e581cd5d8b24f3cafed2b77c1c85a052e
-=======
-import CheckOut from "../../components/CheckOut/CheckOut";
->>>>>>> Stashed changes
 import "./cart-styles.scss";
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
   const [count, setCount] = useState(1);
-=======
   const [run, setRun] = useState(false);
->>>>>>> Stashed changes
-=======
-  const [run, setRun] = useState(false);
->>>>>>> Stashed changes
-=======
-  const [run, setRun] = useState(false);
->>>>>>> Stashed changes
-=======
->>>>>>> 77fb3f6e581cd5d8b24f3cafed2b77c1c85a052e
-=======
-  const [run, setRun] = useState(false);
->>>>>>> Stashed changes
 
   useEffect(() => {
     setCartItems(getCart());
@@ -74,57 +34,6 @@ const CartPage = () => {
         </div>
         <div>
           {cartItems.length > 0 ? (
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            <table>
-              <thead className="table-headings">
-                <tr>
-                  <th>
-                    <p>ITEM</p>
-                  </th>
-                  <th className="text-center">
-                    <p>QUANTITY</p>
-                  </th>
-                  <th className="text-center">
-                    <p>UNIT PRICE</p>
-                  </th>
-                  <th className="text-center">
-                    <p>SUBTOTAL</p>
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="cart-arrange">
-                {cartItems.map((item, i) => (
-                  <tr key={i}>
-                    <td>
-                      <h2>{item.name}</h2>
-                      <ShowImage item={item} url="product" className="img" />
-                    </td>
-                    <td>
-                      <select>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                      </select>
-                    </td>
-                    <td>₵{item.price}</td>
-                    <td>₵{item.category.name}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             <Fragment>
               <ul className="cart-arrange">
                 {cartItems.map((item, i) => (
@@ -144,26 +53,6 @@ const CartPage = () => {
                 received.
               </span>
             </Fragment>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
-            <ul className="cart-arrange">
-              {cartItems.map((item, i) => (
-                <Fragment key={i}>
-                  <ProductCard product={item} cart={true} />
-                  <hr />
-                </Fragment>
-              ))}
-            </ul>
->>>>>>> 77fb3f6e581cd5d8b24f3cafed2b77c1c85a052e
-=======
->>>>>>> Stashed changes
           ) : (
             noItemsMessage()
           )}
