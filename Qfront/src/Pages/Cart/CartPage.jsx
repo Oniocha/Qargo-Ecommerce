@@ -10,6 +10,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { cartTotal, getCart } from "../../helpers/cartHelpers";
 import ProductCard from "../../components/ProductCard/ProductCard";
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 import CheckOut from "../../components/CheckOut/CheckOut";
 <<<<<<< Updated upstream
@@ -21,10 +22,14 @@ import CheckOut from "../../components/CheckOut/CheckOut";
 >>>>>>> Stashed changes
 =======
 >>>>>>> 77fb3f6e581cd5d8b24f3cafed2b77c1c85a052e
+=======
+import CheckOut from "../../components/CheckOut/CheckOut";
+>>>>>>> Stashed changes
 import "./cart-styles.scss";
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -41,6 +46,9 @@ const CartPage = () => {
 >>>>>>> Stashed changes
 =======
 >>>>>>> 77fb3f6e581cd5d8b24f3cafed2b77c1c85a052e
+=======
+  const [run, setRun] = useState(false);
+>>>>>>> Stashed changes
 
   useEffect(() => {
     setCartItems(getCart());
@@ -66,6 +74,7 @@ const CartPage = () => {
         </div>
         <div>
           {cartItems.length > 0 ? (
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -114,6 +123,8 @@ const CartPage = () => {
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
             <Fragment>
               <ul className="cart-arrange">
                 {cartItems.map((item, i) => (
@@ -135,6 +146,7 @@ const CartPage = () => {
             </Fragment>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -150,6 +162,8 @@ const CartPage = () => {
               ))}
             </ul>
 >>>>>>> 77fb3f6e581cd5d8b24f3cafed2b77c1c85a052e
+=======
+>>>>>>> Stashed changes
           ) : (
             noItemsMessage()
           )}

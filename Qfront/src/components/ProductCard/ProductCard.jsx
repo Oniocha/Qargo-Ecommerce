@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ShowImage from "./ShowImage";
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -74,35 +75,41 @@ const ProductCard = ({
   //What to render if the card is showing on the homepage
 =======
 import { updateQuantity } from "../../helpers/cartHelpers";
+=======
+import { updateQuantity, removeItem } from "../../helpers/cartHelpers";
+>>>>>>> Stashed changes
 
-const ProductCard = ({ product, cart }) => {
-  const [count, setCount] = useState(1);
+const ProductCard = ({
+  product,
+  cart = false,
+  run = undefined,
+  setRun = (f) => f,
+}) => {
+  const [count, setCount] = useState(product.count);
 
-  const handleChange = () => (e) => {
-    console.log(e);
-    setCount(e.target.value < 1 ? 1 : e.target.value);
-    if (e.value.target >= 1) {
-      updateQuantity(product._id, e.target.value);
+  const handleChange = (productId) => (e) => {
+    setRun(!run);
+    let counter = e.target.value;
+    setCount(counter < 1 ? 1 : counter);
+    if (counter >= 1) {
+      updateQuantity(productId, counter);
     }
   };
 
-  const AdjustQuantity = () => {
-    return (
-      <div className="input-group">
-        <div className="inout-group-prepend">
-          <span className="input-group-text">Adjust Quantity</span>
-        </div>
-        <input
-          type="number"
-          className="form-control"
-          onChange={handleChange(product._id)}
-          value={count}
-        />
-      </div>
-    );
-  };
+  const AdjustQuantity = (product) => (
+    <input
+      type="number"
+      className="form-control"
+      onChange={handleChange(product._id)}
+      value={count}
+    />
+  );
 
+<<<<<<< Updated upstream
 >>>>>>> 77fb3f6e581cd5d8b24f3cafed2b77c1c85a052e
+=======
+  //What to render if the card is showing on the homepage
+>>>>>>> Stashed changes
   const homePage = () => {
     return (
       <div>
@@ -121,6 +128,7 @@ const ProductCard = ({ product, cart }) => {
     );
   };
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
   //What to render if the card is showing on the cart page
   const cartComp = () => {
@@ -130,19 +138,29 @@ const ProductCard = ({ product, cart }) => {
           <div className="row">
             <div className="col-1">
 =======
+=======
+  //What to render if the card is showing on the cart page
+>>>>>>> Stashed changes
   const cartComp = () => {
     return (
-      <div className="row mt-5 card pt-3 pb-3 pl-auto pr-auto">
-        <div className="col-6">
+      <div className="row mt-3 card pt-3 pb-3 pl-auto">
+        <div className="col-12">
           <div className="row">
+<<<<<<< Updated upstream
             <div className="col-2">
 >>>>>>> 77fb3f6e581cd5d8b24f3cafed2b77c1c85a052e
+=======
+            <div className="col-1">
+>>>>>>> Stashed changes
               <ShowImage item={product} url="product" />
             </div>
             <div className="col-1">
               <div className="vertical-line"></div>
             </div>
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
             <div className="col-3">
               <span>{product.name}</span>
             </div>
@@ -182,12 +200,15 @@ const ProductCard = ({ product, cart }) => {
                 </svg>
                 <div>Remove</div>
               </button>
+<<<<<<< Updated upstream
 =======
             <div className="col-6">
               <div>
                 <span>{product.name}</span>
               </div>
 >>>>>>> 77fb3f6e581cd5d8b24f3cafed2b77c1c85a052e
+=======
+>>>>>>> Stashed changes
             </div>
           </div>
         </div>
