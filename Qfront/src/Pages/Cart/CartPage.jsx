@@ -9,6 +9,9 @@ import { cartTotal, getCart } from "../../helpers/cartHelpers";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import CheckOut from "../../components/CheckOut/CheckOut";
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -18,7 +21,11 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   const [count, setCount] = useState(1);
+=======
+  const [run, setRun] = useState(false);
+>>>>>>> Stashed changes
 =======
   const [run, setRun] = useState(false);
 >>>>>>> Stashed changes
@@ -51,6 +58,7 @@ const CartPage = () => {
         </div>
         <div>
           {cartItems.length > 0 ? (
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
             <table>
@@ -95,6 +103,8 @@ const CartPage = () => {
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
             <Fragment>
               <ul className="cart-arrange">
                 {cartItems.map((item, i) => (
@@ -115,6 +125,9 @@ const CartPage = () => {
               </span>
             </Fragment>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
