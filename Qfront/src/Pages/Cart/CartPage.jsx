@@ -70,7 +70,7 @@ const CartPage = () => {
             <div>
               <Link to={{ pathname: "/signin", state: { prevPath: "/cart" } }}>
                 <button className="btn btn-action m-3">
-                  Sign In and checkout
+                  Sign in to checkout
                 </button>
               </Link>{" "}
               <br />
