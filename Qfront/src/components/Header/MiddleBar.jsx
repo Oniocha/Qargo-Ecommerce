@@ -18,7 +18,7 @@ const MiddleBar = ({ checkout = false }) => {
           />
         </Link>
         {checkout && (
-          <h2 style={{ color: "white", fontWeight: "300" }}>
+          <h2 style={{ color: "white", fontWeight: "300", fontSize: "1.5rem" }}>
             Checkout Securely
           </h2>
         )}

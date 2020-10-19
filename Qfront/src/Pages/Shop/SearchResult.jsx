@@ -2,12 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import ShowImage from "../../components/ProductCard/ShowImage";
 
+import "./styles.scss";
+
 const SearchResult = ({ product }) => {
   return (
     <div className="row mb-4 justify-content-center">
       <div className="col-3">
         <Link to={`product/${product._id}`}>
-          <ShowImage item={product} url="product" className="product-img" />
+          <ShowImage item={product} url="product" className="shop-products" />
         </Link>
       </div>
       <div className="col-9">

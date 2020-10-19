@@ -1,17 +1,31 @@
 import React, { Fragment } from "react";
+import { Link } from "react-router-dom";
+import { cartTotal, getCart } from "../../helpers/cartHelpers";
+import PayStack from "./PayStack";
+
 import MiddleBar from "../../components/Header/MiddleBar";
 
 import "../../components/Header/header-styles.scss";
 import "./styles.scss";
+import { useEffect } from "react";
+import { useState } from "react";
 
-const CheckOutPage = (props) => {
+const CheckOutPage = () => {
+  const [products, setProducts] = useState([]);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    setCount(cartTotal());
+    setProducts(getCart());
+  }, []);
+
   const shippingAddress = () => {
     return (
       <div>
-        <div class="card-header" id="headingOne">
+        <div className="card-header" id="headingOne">
           <h2 className="mb-0">
             <button
-              class="btn btn-link btn-block text-left"
+              className="btn btn-link btn-block text-left"
               type="button"
               data-toggle="collapse"
               data-target="#collapseOne"
@@ -24,9 +38,9 @@ const CheckOutPage = (props) => {
         </div>
         <div
           id="collapseOne"
-          class="collapse show"
+          className="collapse show"
           aria-labelledby="headingOne"
-          data-parent="#accordionExample"
+          data-parent="#accordion"
         >
           <form>
             <div className="row">
@@ -59,12 +73,12 @@ const CheckOutPage = (props) => {
               className="form-control mb-4"
             />
             <div className="row mb-5">
-              <div className="col-9">
+              <div className="col-8">
                 <label className="form-input-label">Town / City</label>
                 <br />
                 <input type="text" name="city" className="form-control" />
               </div>
-              <div className="col-3">
+              <div className="col-4">
                 <label className="form-input-label">Digital Address</label>
                 <br />
                 <input type="text" name="postalCode" className="form-control" />
@@ -97,7 +111,7 @@ const CheckOutPage = (props) => {
           id="collapseTwo"
           className="collapse"
           aria-labelledby="headingTwo"
-          data-parent="#accordionExample"
+          data-parent="#accordion"
         >
           <form>
             <div className="row">
@@ -129,53 +143,44 @@ const CheckOutPage = (props) => {
               name="addressLine2"
               className="form-control mb-4"
             />
-            <div className="row">
-              <div className="col-9">
-                <label className="form-input-label">Town / City</label>
-                <br />
-                <input type="text" name="city" className="form-control" />
-              </div>
-              <div className="col-3">
-                <label className="form-input-label">Digital Address</label>
-                <br />
-                <input type="text" name="postalCode" className="form-control" />
-              </div>
-            </div>
+
+            <label className="form-input-label">Town / City</label>
+            <br />
+            <input type="text" name="city" className="form-control mb-4" />
           </form>
         </div>
       </div>
     );
   };
 
-const paymentMethod = () => {
-  return (
-    <div>
-      <div className="card-header" id="headingTwo">
-        <h2 className="mb-0">
-          <button
-            className="btn btn-link btn-block text-left"
-            type="button"
-            data-toggle="collapse"
-            data-target="#collapseTwo"
-            aria-expanded="false"
-            aria-controls="collapseTwo"
-          >
-            <h3>2. Billing details</h3>
-          </button>
-        </h2>
+  const paymentMethod = () => {
+    return (
+      <div>
+        <div className="card-header" id="headingThree">
+          <h2 className="mb-0">
+            <button
+              className="btn btn-link btn-block text-left"
+              type="button"
+              data-toggle="collapse"
+              data-target="#collapseThree"
+              aria-expanded="false"
+              aria-controls="collapseThree"
+            >
+              <h3>3. Choose Payment Method</h3>
+            </button>
+          </h2>
+        </div>
+        <div
+          id="collapseThree"
+          className="collapse"
+          aria-labelledby="headingThree"
+          data-parent="#accordion"
+        >
+          <PayStack products={products} />
+        </div>
       </div>
-      <div
-        id="collapseTwo"
-        className="collapse"
-        aria-labelledby="headingTwo"
-        data-parent="#accordionExample"
-      >
-      
-      </div>
-    </div>
-  );
-}
-
+    );
+  };
 
   return (
     <Fragment>
@@ -183,18 +188,23 @@ const paymentMethod = () => {
         <MiddleBar checkout={true} />
       </header>
       <div className="checkout-page">
-        <div className="container-fluid mr-5 row">
-          <div className="col-lg-8 col-md-8 col-12">
+        <div className="row">
+          <div className="col-lg-9 col-md-9 col-12">
             <h2>Getting your order</h2>
             <hr />
-            <div class="accordion" id="accordionExample">
+            <div className="accordion" id="accordion">
               {shippingAddress()}
               {billingAddress()}
+              {paymentMethod()}
             </div>
           </div>
-          <div className="col-lg-1 col-md-1"></div>
-          <div className="col-lg-3 col md-3 card pt-4">
-            <button className="btn btn-action">Place Order</button>
+          {/* <div className="col-lg-1 col-md-1"></div> */}
+          <div className="col-lg-3 col-md-3 card pt-4 mt-4">
+            <button className="btn btn-action mb-5">Place Order</button>
+            <Link to="/cart">
+              {" "}
+              <button className="btn btn-pale mb-5">Modify Cart</button>
+            </Link>
           </div>
         </div>
       </div>

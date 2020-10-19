@@ -73,7 +73,21 @@ img {
   left: 50%;
 }
 
-/*--- qargo preloader ---*/
+button.btn-link {
+  color: #212529;
+}
+
+.btn.btn-pale {
+  background: #e7e9ec;
+  width: 100%;
+  border-color: #adb1b8 #a2a6ac #8d9096;
+  border-style: solid;
+  border-width: 1px;
+  text-decoration: none !important;
+  vertical-align: middle;
+}
+
+/*--- qargo preloader for Suspense---*/
 
 .qargo-preloader-wrapper {
   position: fixed;
