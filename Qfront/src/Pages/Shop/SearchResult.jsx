@@ -6,8 +6,8 @@ import "./styles.scss";
 
 const SearchResult = ({ product }) => {
   return (
-    <div className="row mb-4 justify-content-center">
-      <div className="col-3">
+    <div className="row mb-4 container">
+      <div className="col-3 ">
         <Link to={`product/${product._id}`}>
           <ShowImage item={product} url="product" className="shop-products" />
         </Link>
@@ -20,8 +20,8 @@ const SearchResult = ({ product }) => {
           <button className="btn btn-outline-warning mr-3">View product</button>
         </Link>
         <button className="btn btn-outline-success">Add product</button>
+        <hr />
       </div>
-      <hr />
     </div>
   );
 };

@@ -6,10 +6,13 @@ import Cart from "./Cart";
 
 const MiddleBar = ({ checkout = false }) => {
   const checkoutMargin = checkout ? "mb-5" : "";
+  const checkoutBarColor = checkout
+    ? "navbar navbar-expand-lg middle-bar"
+    : "navbar navbar-expand-lg middle-bar";
 
   return (
     <div className={checkoutMargin}>
-      <nav className="navbar navbar-expand-lg middle-bar">
+      <nav className={checkoutBarColor}>
         <Link to="/" className="navbar-brand">
           <img
             src={Qargo}

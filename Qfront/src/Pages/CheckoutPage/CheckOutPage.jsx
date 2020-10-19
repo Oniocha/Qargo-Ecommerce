@@ -198,8 +198,9 @@ const CheckOutPage = () => {
               {paymentMethod()}
             </div>
           </div>
-          {/* <div className="col-lg-1 col-md-1"></div> */}
-          <div className="col-lg-3 col-md-3 card pt-4 mt-4">
+          <div className="col-lg-3 col-md-3 ">
+            <h2>Order Summary</h2>
+            <hr />
             <button className="btn btn-action mb-5">Place Order</button>
             <Link to="/cart">
               {" "}

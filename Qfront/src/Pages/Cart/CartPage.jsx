@@ -27,6 +27,33 @@ const CartPage = () => {
     );
   };
 
+  const showCheckOut = () => {
+    return (
+      <div className="col-lg-4 col-md-4 col-xl-4">
+        <CheckOut products={cartItems} />
+        <div>
+          {isAuthenticated() ? (
+            <Link to="/checkout">
+              {" "}
+              <button className="btn btn-action">Proceed to checkout</button>
+            </Link>
+          ) : (
+            <div>
+              <Link to={{ pathname: "/signin", state: { prevPath: "/cart" } }}>
+                <button className="btn btn-action m-3">
+                  Sign in to checkout
+                </button>
+              </Link>{" "}
+              <br />
+              <Link to="/checkout">Checkout as guest</Link>{" "}
+            </div>
+          )}
+        </div>
+        Put in shipping details, billing details and shipping
+      </div>
+    );
+  };
+
   return (
     <div className="row cart-page">
       <div className="col-lg-8 col-md-8 col-xl-8">
@@ -61,28 +88,7 @@ const CartPage = () => {
           )}
         </div>
       </div>
-      <div className="col-lg-4 col-md-4 col-xl-4">
-        <CheckOut products={cartItems} />
-        <div>
-          {isAuthenticated() ? (
-            <Link to="/checkout">
-              {" "}
-              <button className="btn btn-action">Proceed to checkout</button>
-            </Link>
-          ) : (
-            <div>
-              <Link to={{ pathname: "/signin", state: { prevPath: "/cart" } }}>
-                <button className="btn btn-action m-3">
-                  Sign in to checkout
-                </button>
-              </Link>{" "}
-              <br />
-              <Link to="/checkout">Checkout as guest</Link>{" "}
-            </div>
-          )}
-        </div>
-        Put in shipping details, billing details and shipping
-      </div>
+      {cartItems.length > 0 && showCheckOut()}
     </div>
   );
 };

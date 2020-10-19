@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import PrivateRoute from "./API_CALLS/Auth/PrivateRoute";
+import PrivateRoute, { CheckoutRoute } from "./API_CALLS/Auth/PrivateRoute";
 import VendorRoute from "./API_CALLS/Auth/VendorRoute";
 import ScrollToTop from "./helpers/ScrollToTop";
 import Header from "./components/Header/Header";
@@ -53,7 +53,7 @@ const Routes = () => {
             />
             <VendorRoute path="/create/product" exact component={AddProduct} />
             <Route exact path="/cart" component={CartPage} />
-            <Route exact path="/checkout" component={CheckOutPage} />
+            <CheckoutRoute exact path="/checkout" component={CheckOutPage} />
           </Suspense>
         </ScrollToTop>
       </Switch>
