@@ -147,6 +147,36 @@ const CheckOutPage = (props) => {
     );
   };
 
+const paymentMethod = () => {
+  return (
+    <div>
+      <div className="card-header" id="headingTwo">
+        <h2 className="mb-0">
+          <button
+            className="btn btn-link btn-block text-left"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapseTwo"
+            aria-expanded="false"
+            aria-controls="collapseTwo"
+          >
+            <h3>2. Billing details</h3>
+          </button>
+        </h2>
+      </div>
+      <div
+        id="collapseTwo"
+        className="collapse"
+        aria-labelledby="headingTwo"
+        data-parent="#accordionExample"
+      >
+      
+      </div>
+    </div>
+  );
+}
+
+
   return (
     <Fragment>
       <header>
