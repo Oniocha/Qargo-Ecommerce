@@ -8,12 +8,12 @@ import "./styles.scss";
 const ProductCard = lazy(() => import("../ProductCard/ProductCard"));
 
 const SampleNextArrow = (props) => {
-  const { className, style, onClick } = props;
+  const { className, onClick } = props;
   return <div className={className} onClick={onClick} />;
 };
 
 const SamplePrevArrow = (props) => {
-  const { className, style, onClick } = props;
+  const { className, onClick } = props;
   return <div id="slicker" className={className} onClick={onClick} />;
 };
 

@@ -4,6 +4,7 @@ import { cartTotal, getCart } from "../../helpers/cartHelpers";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import CheckOut from "../../components/CheckOut/CheckOut";
 import "./cart-styles.scss";
+import { isAuthenticated } from "../../API_CALLS/Auth/authMethods";
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -62,6 +63,21 @@ const CartPage = () => {
       </div>
       <div className="col-lg-4 col-md-4 col-xl-4">
         <CheckOut products={cartItems} />
+        <div>
+          {isAuthenticated() ? (
+            <button className="btn btn-action">Checkout</button>
+          ) : (
+            <div>
+              <Link to={{ pathname: "/signin", state: { prevPath: "/cart" } }}>
+                <button className="btn btn-action m-3">
+                  Sign In and checkout
+                </button>
+              </Link>{" "}
+              <br />
+              <Link to="checkout">Checkout as guest</Link>{" "}
+            </div>
+          )}
+        </div>
         Put in shipping details, billing details and shipping
       </div>
     </div>

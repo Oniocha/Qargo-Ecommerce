@@ -8,14 +8,23 @@ import {
 
 import "./styles.scss";
 import Qargo from "../images/Qargo.png";
+import { useEffect } from "react";
 
-const SignIn = () => {
+const SignIn = ({ location }) => {
+  const path = location.state;
+  const [prev, setPrev] = useState(undefined);
   const [form, setForm] = useState({
     email: "jaduntiamoah@gmail.com",
     password: "Reacted123",
     error: "",
     loading: false,
     redirectToReferrer: false,
+  });
+
+  useEffect(() => {
+    if (path !== undefined) {
+      setPrev(path.prevPath);
+    }
   });
 
   const handleChange = (e) => {
@@ -68,6 +77,9 @@ const SignIn = () => {
 
   const redirectUser = () => {
     if (redirectToReferrer) {
+      if (prev !== undefined) {
+        return <Redirect to="/cart" />;
+      }
       if (isAuthenticated() && isAuthenticated().user.role === 0) {
         return <Redirect to="/" />;
       }

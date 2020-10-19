@@ -3,7 +3,7 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 
 function SearchPage({ location }) {
   const results = location.state;
-  console.log("search page", results.searchResults);
+  // console.log("search page", results.searchResults);
   const [search, setSearch] = useState([]);
 
   const searchMessage = () => {
