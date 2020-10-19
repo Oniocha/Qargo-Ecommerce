@@ -65,7 +65,10 @@ const CartPage = () => {
         <CheckOut products={cartItems} />
         <div>
           {isAuthenticated() ? (
-            <button className="btn btn-action">Checkout</button>
+            <Link to="/checkout">
+              {" "}
+              <button className="btn btn-action">Proceed to checkout</button>
+            </Link>
           ) : (
             <div>
               <Link to={{ pathname: "/signin", state: { prevPath: "/cart" } }}>
@@ -74,7 +77,7 @@ const CartPage = () => {
                 </button>
               </Link>{" "}
               <br />
-              <Link to="checkout">Checkout as guest</Link>{" "}
+              <Link to="/checkout">Checkout as guest</Link>{" "}
             </div>
           )}
         </div>

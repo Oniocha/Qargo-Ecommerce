@@ -9,7 +9,7 @@ const CheckOut = ({ products }) => {
 
   return (
     <div>
-      <h2>Your sutotal is</h2>
+      <h2>Your subtotal is</h2>
       <h2>¢{getSum()}</h2>
     </div>
   );

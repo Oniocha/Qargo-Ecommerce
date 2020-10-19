@@ -9,13 +9,14 @@ const SignIn = lazy(() => import("./user/SignIn"));
 const SignUp = lazy(() => import("./user/SignUp"));
 const Home = lazy(() => import("./Pages/HomePage/Home"));
 const Shop = lazy(() => import("./Pages/Shop/Shop"));
-const CartPage = lazy(() => import("./Pages/Cart/CartPage"));
 const UserAccount = lazy(() => import("./Pages/Accounts/UserAccount"));
 const VendorAccount = lazy(() => import("./Pages/Accounts/VendorAccount"));
 const AddCategory = lazy(() => import("./Pages/Admin/AddCategory"));
 const AddProduct = lazy(() => import("./Pages/Admin/AddProduct"));
 const SearchPage = lazy(() => import("./Pages/SearchPage/SearchPage"));
 const ProductPage = lazy(() => import("./Pages/ProductPage/ProductPage"));
+const CartPage = lazy(() => import("./Pages/Cart/CartPage"));
+const CheckOutPage = lazy(() => import("./Pages/CheckoutPage/CheckOutPage"));
 
 const Routes = () => {
   return (
@@ -52,6 +53,7 @@ const Routes = () => {
             />
             <VendorRoute path="/create/product" exact component={AddProduct} />
             <Route exact path="/cart" component={CartPage} />
+            <Route exact path="/checkout" component={CheckOutPage} />
           </Suspense>
         </ScrollToTop>
       </Switch>

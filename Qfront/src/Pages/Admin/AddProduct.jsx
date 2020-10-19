@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { isAuthenticated } from "../../API_CALLS/Auth/authMethods";
 import { createProduct } from "../../API_CALLS/vendorApis";
 import { VendorLinks } from "../../components/Dashboard/Dashboard";
-// import Checkbox from "../../components/Checkbox";
 
 import "../Accounts/accounts-styles.scss";
 

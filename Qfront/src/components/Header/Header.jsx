@@ -5,23 +5,28 @@ import ScrollableTabsButtonAuto from "./ScrollableTabsButtonAuto";
 import { useEffect } from "react";
 
 const Header = () => {
-  const [toggle, setToggle] = useState(true);
-
+  let currentPage = window.location.pathname;
+  const [toggle, setToggle] = useState(false);
+  const [location] = useState(currentPage);
   const toggleHeader = toggle ? { display: "" } : { display: "none" };
-
-  useEffect(() => {
-    if (
-      window.location.pathname === "/signin" ||
-      window.location.pathname === "/signup"
-    ) {
+  const showHideHeader = () => {
+    if (location === "/signin") {
+      setToggle(false);
+    } else if (location === "/signup") {
+      setToggle(false);
+    } else if (location === "/checkout") {
       setToggle(false);
     } else {
       setToggle(true);
     }
-  }, []);
+  };
+
+  useEffect(() => {
+    showHideHeader();
+  }, [currentPage]);
 
   return (
-    <header className={toggleHeader}>
+    <header style={toggleHeader}>
       <TopBar />
       <MiddleBar />
       <ScrollableTabsButtonAuto />
