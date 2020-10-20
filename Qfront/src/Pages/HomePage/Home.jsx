@@ -8,7 +8,7 @@ import "./home-styles.scss";
 
 const Home = () => {
   return (
-    <div className="homepage container-fluid">
+    <div className="homepage pb-5">
       <HomeBanner />
       <BannerOne />
       <NewArrivals />

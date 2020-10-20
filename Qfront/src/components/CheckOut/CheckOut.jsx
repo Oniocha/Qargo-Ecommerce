@@ -9,8 +9,7 @@ const CheckOut = ({ products }) => {
 
   return (
     <div>
-      <h2>Your sub-total is</h2>
-      <h2>¢{getSum()}</h2>
+      <h2>Your subtotal is ¢{getSum()}</h2>
     </div>
   );
 };

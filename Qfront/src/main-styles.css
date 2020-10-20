@@ -3,7 +3,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #ffffff !important;
-  color: #212529;
+  color: #001011;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -13,16 +13,16 @@ body {
 :root {
   overflow-x: hidden !important;
   font-size: 14px;
-  --button: transparent linear-gradient(180deg, #f0c14b 0%, #e4b43a 100%) 0% 0%
+  --button: transparent linear-gradient(180deg, #ffbc0a 0%, #f3ba1d 100%) 0% 0%
     no-repeat padding-box;
   --buttonborder: #a88734 #9c7e31 #846a29;
-  --buttonhover: transparent linear-gradient(180deg, #e4b43a 0%, #f0c14b 100%)
+  --buttonhover: transparent linear-gradient(180deg, #f3ba1d 0%, #ffbc0a 100%)
     0% 0% no-repeat padding-box;
-  --buttonactive: transparent linear-gradient(180deg, #faa606 0%, #e4b43a 100%)
+  --buttonactive: transparent linear-gradient(180deg, #ffbc0a 0%, #f3ba1d 100%)
     0% 0% no-repeat padding-box;
   --natural: #e7e9ec;
-  --main: #0b79bf;
-  /* #4DCCC5 */
+  /* --main: #0b79bf; */
+  --main: #024af8;
   --passive: transparent linear-gradient(180deg, #0b79bf 0%, #3678a2 100%) 0% 0%
     no-repeat padding-box;
   --passivehover: transparent linear-gradient(180deg, #3678a2 0%, #0b79bf 100%)

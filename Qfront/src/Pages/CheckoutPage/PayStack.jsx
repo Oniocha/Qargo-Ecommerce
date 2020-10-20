@@ -36,7 +36,7 @@ const PayStack = () => {
   };
 
   return (
-    <div>
+    <div className="d-flex">
       <PaystackHookExample />
       <PaystackButton {...componentProps} />
       <PaystackConsumer {...componentProps}>

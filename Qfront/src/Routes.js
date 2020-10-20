@@ -4,6 +4,7 @@ import PrivateRoute, { CheckoutRoute } from "./API_CALLS/Auth/PrivateRoute";
 import VendorRoute from "./API_CALLS/Auth/VendorRoute";
 import ScrollToTop from "./helpers/ScrollToTop";
 import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 
 const SignIn = lazy(() => import("./user/SignIn"));
 const SignUp = lazy(() => import("./user/SignUp"));
@@ -54,6 +55,7 @@ const Routes = () => {
             <VendorRoute path="/create/product" exact component={AddProduct} />
             <Route exact path="/cart" component={CartPage} />
             <CheckoutRoute exact path="/checkout" component={CheckOutPage} />
+            <Footer />
           </Suspense>
         </ScrollToTop>
       </Switch>
