@@ -16,13 +16,17 @@ const userSchema = new mongoose.Schema(
       required: true,
       maxlength: 32,
       unique: true,
+      collation: { locale: "en", strength: 2 },
     },
     email: {
       type: String,
       trim: true,
       required: true,
       maxlength: 50,
-      unique: true,
+      index: {
+        unique: true,
+        collation: { locale: "en", strength: 2 },
+      },
     },
     hashed_password: {
       type: String,

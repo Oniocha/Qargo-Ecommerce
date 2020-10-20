@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const { generateToken } = require("../controllers/qargoController");
+const { initTransaction } = require("../controllers/raveController");
 
-router.get("rave/getToken", generateToken);
+router.post("rave/init", initTransaction);
 
 module.exports = router;

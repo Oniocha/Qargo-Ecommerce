@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { cartTotal, getCart } from "../../helpers/cartHelpers";
-import PayStack from "./PayStack";
+import Rave from "./Rave";
 
 import MiddleBar from "../../components/Header/MiddleBar";
 
@@ -190,7 +190,7 @@ const CheckOutPage = () => {
           aria-labelledby="headingThree"
           data-parent="#accordion"
         >
-          <PayStack products={products} />
+          <Rave />
         </div>
       </div>
     );
