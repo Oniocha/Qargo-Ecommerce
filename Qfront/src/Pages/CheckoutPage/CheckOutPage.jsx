@@ -17,7 +17,21 @@ const CheckOutPage = () => {
   useEffect(() => {
     setCount(cartTotal());
     setProducts(getCart());
-  }, []);
+  }, [count]);
+
+  const getSum = () => {
+    return products.reduce((currentValue, nextValue) => {
+      return currentValue + nextValue.count * nextValue.price;
+    }, 0);
+  };
+
+  // Getting all shipping durations for later use
+  const shippingTime = () => {
+    let newArr = [];
+    for (var i = 0; i < products.length; i++) {
+      newArr.push(products[i].shippingTime);
+    }
+  };
 
   const shippingAddress = () => {
     return (
@@ -199,12 +213,52 @@ const CheckOutPage = () => {
             </div>
           </div>
           <div className="col-lg-3 col-md-3 ">
-            <h2>Order Summary</h2>
+            {/* <h2>Order Summary</h2>
+            <hr /> */}
+            <div>
+              <button className="btn btn-action">Place Order</button>
+              <p className="checkout-summary mt-3 text-center">
+                By placing your order you agree to Qargo's Conditions of Use &
+                Sale. Please see our{" "}
+                <Link to="/privacy-policy">Privacy Notice</Link>, and our
+                <Link to="/terms"> Terms and Conditions.</Link>
+              </p>
+            </div>
             <hr />
-            <button className="btn btn-action mb-5">Place Order</button>
+            <h4>Order Summary</h4>
+            <div className="row">
+              <div className="col-6">
+                <p className="checkout-summary text-left">
+                  Items: {cartTotal()}
+                </p>
+              </div>
+              <div className="col-6">
+                <p className="checkout-summary text-right">GHS {getSum()}</p>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-6">
+                <p className="checkout-summary text-left">Shipping:</p>
+              </div>
+              <div className="col-6 text-right">
+                <select className="checkout-summary">
+                  <option>FREE Shipping</option>
+                  <option>Pick up</option>
+                </select>
+              </div>
+            </div>
+            <hr />
+            <div className="row order-total">
+              <div className="col-6">
+                <h4 className="text-left">Order Total:</h4>
+              </div>
+              <div className="col-6">
+                <h4 className="text-right">GHS {getSum()}</h4>
+              </div>
+            </div>
+            <hr />
             <Link to="/cart">
-              {" "}
-              <button className="btn btn-pale mb-5">Modify Cart</button>
+              <button className="btn btn-pale mb-5 mt-5">Modify Cart</button>
             </Link>
           </div>
         </div>

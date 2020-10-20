@@ -1,5 +1,5 @@
 .checkout-page {
-  padding: 10px;
+  padding: 20px 15px;
 
   h2,
   h3 {
@@ -8,5 +8,16 @@
 
   h3 {
     font-size: 1.4rem;
+  }
+
+  .checkout-summary {
+    font-size: 0.8rem;
+  }
+
+  .order-total {
+    color: rgb(146, 83, 66);
+    h4 {
+      font-weight: 700;
+    }
   }
 }

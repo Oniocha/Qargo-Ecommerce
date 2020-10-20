@@ -21,16 +21,16 @@ const PaystackHookExample = () => {
           initializePayment();
         }}
       >
-        Paystack Hooks Implementation
+        Paystack Hooks
       </button>
     </div>
   );
 };
 
-const PayStack = ({ products }) => {
+const PayStack = () => {
   const componentProps = {
     ...config,
-    text: "Paystack Button Implementation",
+    text: "Paystack Button",
     onSuccess: () => null,
     onClose: () => null,
   };
@@ -41,9 +41,7 @@ const PayStack = ({ products }) => {
       <PaystackButton {...componentProps} />
       <PaystackConsumer {...componentProps}>
         {({ initializePayment }) => (
-          <button onClick={() => initializePayment()}>
-            Paystack Consumer Implementation
-          </button>
+          <button onClick={() => initializePayment()}>Paystack Consumer</button>
         )}
       </PaystackConsumer>
     </div>
