@@ -37,14 +37,14 @@ exports.verifyTransaction = (req, res) => {
   console.log(transactionId);
   axios({
     method: "GET",
-    url: `${verifyUrl}/${transactionId}/verify`,
+    url: `https://api.flutterwave.com/v3/transactions/${transactionId}/verify`,
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${secret}`,
     },
   })
     .then((data) => {
-      res.json(data.data);
+      res.json(data.body);
     })
     .catch((err) => res.status(400).json({ error: err }));
 };
