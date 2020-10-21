@@ -78,6 +78,11 @@ button.btn-link {
   color: #212529;
 }
 
+button.btn-link:hover,
+button.btn-link:focus {
+  text-decoration: none;
+}
+
 .btn.btn-pale {
   background: #e7e9ec;
   width: 100%;

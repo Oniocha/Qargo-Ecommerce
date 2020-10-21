@@ -23,10 +23,8 @@ const userSchema = new mongoose.Schema(
       trim: true,
       required: true,
       maxlength: 50,
-      index: {
-        unique: true,
-        collation: { locale: "en", strength: 2 },
-      },
+      unique: true,
+      collation: { locale: "en", strength: 2 },
     },
     hashed_password: {
       type: String,

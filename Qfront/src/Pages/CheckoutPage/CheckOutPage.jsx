@@ -1,18 +1,37 @@
-import React, { Fragment } from "react";
+import React, { useEffect, Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { cartTotal, getCart } from "../../helpers/cartHelpers";
-import Rave from "./Rave";
+import Rave from "./PaymentMethods";
 
 import MiddleBar from "../../components/Header/MiddleBar";
 
 import "../../components/Header/header-styles.scss";
 import "./styles.scss";
-import { useEffect } from "react";
-import { useState } from "react";
 
 const CheckOutPage = () => {
   const [products, setProducts] = useState([]);
   const [count, setCount] = useState(0);
+  const [shipping, setShipping] = useState({
+    name: "",
+    country: "",
+    address: {
+      line1: "",
+      line2: "",
+      city: "",
+    },
+    phonenumber: "",
+  });
+
+  const [billing, setBilling] = useState({
+    name: "",
+    country: "",
+    address: {
+      line1: "",
+      line2: "",
+      city: "",
+    },
+    phonenumber: "",
+  });
 
   useEffect(() => {
     setCount(cartTotal());
@@ -23,6 +42,14 @@ const CheckOutPage = () => {
     return products.reduce((currentValue, nextValue) => {
       return currentValue + nextValue.count * nextValue.price;
     }, 0);
+  };
+
+  const vat = (sum) => {
+    return sum * 0.03;
+  };
+
+  const orderTotal = (vat, sum, shippingCost = 0) => {
+    return vat + sum + shippingCost;
   };
 
   // Getting all shipping durations for later use
@@ -46,7 +73,7 @@ const CheckOutPage = () => {
               aria-expanded="true"
               aria-controls="collapseOne"
             >
-              <h3>1. Shipping information</h3>
+              <h3>1. Delivery information</h3>
             </button>
           </h2>
         </div>
@@ -59,14 +86,14 @@ const CheckOutPage = () => {
           <form>
             <div className="row">
               <div className="col-6 mt-4 mb-4">
-                <label className="form-input-label">First Name</label>
+                <label className="form-input-label">Full Name</label>
                 <br />
-                <input type="text" name="fName" className="form-control" />
+                <input type="text" name="name" className="form-control" />
               </div>
               <div className="col-6 mt-4 mb-4">
-                <label className="form-input-label">Last Name</label>
+                <label className="form-input-label">Email</label>
                 <br />
-                <input type="text" name="lName" className="form-control" />
+                <input type="email" name="email" className="form-control" />
               </div>
             </div>
             <label className="form-input-label">Country</label>
@@ -93,9 +120,9 @@ const CheckOutPage = () => {
                 <input type="text" name="city" className="form-control" />
               </div>
               <div className="col-4">
-                <label className="form-input-label">Digital Address</label>
+                <label className="form-input-label">Phone Number</label>
                 <br />
-                <input type="text" name="postalCode" className="form-control" />
+                <input type="tel" name="phonenumber" className="form-control" />
               </div>
             </div>
           </form>
@@ -130,14 +157,14 @@ const CheckOutPage = () => {
           <form>
             <div className="row">
               <div className="col-6 mt-4 mb-4">
-                <label className="form-input-label">First Name</label>
+                <label className="form-input-label">Full Name</label>
                 <br />
-                <input type="text" name="fName" className="form-control" />
+                <input type="text" name="name" className="form-control" />
               </div>
               <div className="col-6 mt-4 mb-4">
-                <label className="form-input-label">Last Name</label>
+                <label className="form-input-label">Email</label>
                 <br />
-                <input type="text" name="lName" className="form-control" />
+                <input type="email" name="email" className="form-control" />
               </div>
             </div>
             <label className="form-input-label">Country</label>
@@ -157,10 +184,18 @@ const CheckOutPage = () => {
               name="addressLine2"
               className="form-control mb-4"
             />
-
-            <label className="form-input-label">Town / City</label>
-            <br />
-            <input type="text" name="city" className="form-control mb-4" />
+            <div className="row mb-5">
+              <div className="col-8">
+                <label className="form-input-label">Town / City</label>
+                <br />
+                <input type="text" name="city" className="form-control" />
+              </div>
+              <div className="col-4">
+                <label className="form-input-label">Phone Number</label>
+                <br />
+                <input type="tel" name="phonenumber" className="form-control" />
+              </div>
+            </div>
           </form>
         </div>
       </div>
@@ -180,7 +215,7 @@ const CheckOutPage = () => {
               aria-expanded="false"
               aria-controls="collapseThree"
             >
-              <h3>3. Choose Payment Method</h3>
+              <h3>3. How would you like to pay?</h3>
             </button>
           </h2>
         </div>
@@ -212,54 +247,64 @@ const CheckOutPage = () => {
               {paymentMethod()}
             </div>
           </div>
-          <div className="col-lg-3 col-md-3 ">
-            {/* <h2>Order Summary</h2>
-            <hr /> */}
-            <div>
-              <button className="btn btn-action">Place Order</button>
-              <p className="checkout-summary mt-3 text-center">
-                By placing your order you agree to Qargo's Conditions of Use &
-                Sale. Please see our{" "}
-                <Link to="/privacy-policy">Privacy Notice</Link>, and our
-                <Link to="/terms"> Terms and Conditions.</Link>
-              </p>
-            </div>
-            <hr />
-            <h4>Order Summary</h4>
-            <div className="row">
-              <div className="col-6">
-                <p className="checkout-summary text-left">
-                  Items: {cartTotal()}
+          <div className="col-lg-3 col-md-3">
+            <div className="card p-4">
+              <Link to="/cart">
+                <button className="btn btn-pale">Modify Cart</button>
+              </Link>
+              <hr />
+              <h4>Order Summary</h4>
+              <div className="row">
+                <div className="col-6">
+                  <p className="checkout-summary text-left">
+                    Items: {cartTotal()}
+                  </p>
+                </div>
+                <div className="col-6">
+                  <p className="checkout-summary text-right">GHS {getSum()}</p>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-6">
+                  <p className="checkout-summary text-left">Shipping:</p>
+                </div>
+                <div className="col-6 text-right">
+                  <select className="checkout-summary">
+                    <option>FREE Shipping</option>
+                    <option>Pick up</option>
+                  </select>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-6">
+                  <p className="checkout-summary text-left">VAT (3%)</p>
+                </div>
+                <div className="col-6">
+                  <p className="checkout-summary text-right">{vat(getSum())}</p>
+                </div>
+              </div>
+              <hr />
+              <div className="row order-total">
+                <div className="col-6">
+                  <h4 className="text-left">Order Total:</h4>
+                </div>
+                <div className="col-6">
+                  <h4 className="text-right">
+                    GHS {orderTotal(vat(getSum()), getSum())}
+                  </h4>
+                </div>
+              </div>
+              <hr />
+              <div>
+                <button className="btn btn-action">Place Order</button>
+                <p className="checkout-summary mt-3 text-center">
+                  By placing your order you agree to Qargo's Conditions of Use &
+                  Sale. Please see our{" "}
+                  <Link to="/privacy-policy">Privacy Notice</Link>, and our
+                  <Link to="/terms"> Terms and Conditions.</Link>
                 </p>
               </div>
-              <div className="col-6">
-                <p className="checkout-summary text-right">GHS {getSum()}</p>
-              </div>
             </div>
-            <div className="row">
-              <div className="col-6">
-                <p className="checkout-summary text-left">Shipping:</p>
-              </div>
-              <div className="col-6 text-right">
-                <select className="checkout-summary">
-                  <option>FREE Shipping</option>
-                  <option>Pick up</option>
-                </select>
-              </div>
-            </div>
-            <hr />
-            <div className="row order-total">
-              <div className="col-6">
-                <h4 className="text-left">Order Total:</h4>
-              </div>
-              <div className="col-6">
-                <h4 className="text-right">GHS {getSum()}</h4>
-              </div>
-            </div>
-            <hr />
-            <Link to="/cart">
-              <button className="btn btn-pale mb-5 mt-5">Modify Cart</button>
-            </Link>
           </div>
         </div>
       </div>
