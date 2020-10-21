@@ -31,6 +31,7 @@ const CheckOutPage = () => {
       city: "",
     },
     phonenumber: "",
+    amount: "",
   });
 
   useEffect(() => {
