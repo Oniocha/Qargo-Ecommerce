@@ -1,6 +1,5 @@
 require("dotenv").config();
 const axios = require("axios");
-const stringify = require("json-stringify-safe");
 
 let API_KEY = process.env.RAVE_PULICKEY;
 let payUrl = process.env.RAVE_API;
@@ -14,11 +13,19 @@ exports.initTransaction = (req, res) => {
     headers: {
       Authorization: `Bearer ${secret}`,
     },
-    data: req.body,
+    data: payment,
   })
-    .then((response) => {
-      res.send(response);
-      console.log(response);
+    .then((data) => {
+      // res.send(response);
+      // console.log(data.data.status);
+      if (data.data.status === "success") {
+        console.log(data);
+        res.json();
+      } else {
+        return res.status(400).json({
+          error: "Payment failed",
+        });
+      }
     })
     .catch((err) => console.log(err));
 };
