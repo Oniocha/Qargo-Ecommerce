@@ -5,15 +5,23 @@ const router = express.Router();
 // const { requireSignin } = require("../controllers/authController");
 
 const {
-  initTransaction,
-  verifyTransaction,
+  get_fee,
+  resendWebhook,
+  Gh_mobilemoney,
+  verify,
 } = require("../controllers/raveController");
 
-// Initiate transaction
-router.post("/rave/init", initTransaction);
+// Get transaction fees
+router.post("/rave/transaction-fees", get_fee);
 
-// Verify transaction
-router.post("/rave/verify", verifyTransaction);
+// Verify Payment
+router.post("/rave/verify-payment", verify);
+
+// Make momo payment
+router.post("/rave/momopayment", Gh_mobilemoney);
+
+// Resend Webhook
+router.post("/rave/failed/webhook", resendWebhook);
 
 // router.param("userId", userById);
 module.exports = router;

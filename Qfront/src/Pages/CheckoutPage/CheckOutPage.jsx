@@ -53,11 +53,16 @@ const CheckOutPage = () => {
     return vat + sum + shippingCost;
   };
 
-  // Getting all shipping durations for later use
-  const shippingTime = () => {
-    let newArr = [];
+  // Getting all shipping methods and durations for later use
+  const shippingController = () => {
+    let shippingArr = [],
+      shippingDuration = [];
     for (var i = 0; i < products.length; i++) {
-      newArr.push(products[i].shippingTime);
+      shippingArr.push(products[i].shipping);
+      shippingDuration.push(products[i].shippingTime);
+      if (shippingArr.includes("pickUp")) {
+        console.log("One of more of your items are only available for pick up");
+      }
     }
   };
 
@@ -145,7 +150,12 @@ const CheckOutPage = () => {
               aria-expanded="false"
               aria-controls="collapseTwo"
             >
-              <h3>2. Billing details</h3>
+              <h3>
+                2. Who is Paying For This?{" "}
+                <small>
+                  <input type="checkbox" /> Same as delivery information
+                </small>
+              </h3>
             </button>
           </h2>
         </div>
@@ -226,7 +236,12 @@ const CheckOutPage = () => {
           aria-labelledby="headingThree"
           data-parent="#accordion"
         >
-          <Rave />
+          <p>Select your payment method</p>
+          <ul>
+            <li>
+              <Rave />
+            </li>
+          </ul>
         </div>
       </div>
     );

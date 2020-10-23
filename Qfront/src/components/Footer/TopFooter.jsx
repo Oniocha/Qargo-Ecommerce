@@ -17,9 +17,9 @@ const TopFooter = () => {
                 placeholder="Enter email address"
               />
               <div className="input-group-append">
-                <a className="btn btn-action" style={{ height: "auto" }}>
+                <button className="btn btn-action" style={{ height: "auto" }}>
                   Subscribe
-                </a>
+                </button>
               </div>
             </div>
           </div>

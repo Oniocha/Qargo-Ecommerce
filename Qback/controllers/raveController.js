@@ -1,50 +1,58 @@
 require("dotenv").config();
 const axios = require("axios");
+const Flutterwave = require("flutterwave-node-v3");
 
 const API_KEY = process.env.RAVE_PULICKEY,
-  payUrl = process.env.RAVE_API,
   verifyUrl = process.env.RAVE_VERIFY,
   secret = process.env.RAVE_SECRETKEY;
 
-exports.initTransaction = (req, res) => {
-  let payment = req.body;
-  axios({
-    url: `${payUrl}`,
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${secret}`,
-    },
-    data: payment,
-  })
-    .then((data) => {
-      if (data.data.status === "success") {
-        res.json(data.data);
-      } else {
-        return res.status(400).json({
-          error: "Failed to generate payment",
-        });
-      }
-    })
-    .catch((err) =>
-      res.status(400).json({
-        error: err,
-      })
-    );
+const flw = new Flutterwave(API_KEY, secret);
+
+// Get transaction fee on checkout page load, and add to the order total in the payment method checkout
+exports.get_fee = async (req, res) => {
+  try {
+    const payload = {
+      amount: req.body.amount,
+      currency: "GHS",
+    };
+    const response = await flw.Transaction.fee(payload);
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-exports.verifyTransaction = (req, res) => {
-  let transactionId = req.body.transactionId;
-  console.log(transactionId);
-  axios({
-    method: "GET",
-    url: `https://api.flutterwave.com/v3/transactions/${transactionId}/verify`,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${secret}`,
-    },
-  })
-    .then((data) => {
-      res.json(data.body);
-    })
-    .catch((err) => res.status(400).json({ error: err }));
+// Process Mobile Money Payment
+exports.Gh_mobilemoney = async (req, res) => {
+  try {
+    const payload = req.body;
+
+    const response = await flw.MobileMoney.ghana(payload);
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Verfiy Payment
+exports.verify = async (req, res) => {
+  try {
+    const payload = req.body; //This is the transaction unique identifier. It is returned in the initiate transaction call as data.id
+
+    const response = await flw.Transaction.verify(payload);
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Fire this when a transaction fails
+exports.resendWebhook = async (req, res) => {
+  try {
+    const payload = req.body;
+    const response = await flw.Transaction.resend_hooks(payload);
+    res.justify - content(response);
+  } catch (error) {
+    console.log(error);
+  }
 };
