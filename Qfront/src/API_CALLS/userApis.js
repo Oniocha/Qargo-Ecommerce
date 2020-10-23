@@ -50,3 +50,17 @@ export const listRelated = (prodId) => {
     .then((res) => res.json())
     .catch((err) => console.log(err));
 };
+
+export const getTransactionFees = (cost) => {
+  let fee = { amount: cost };
+  return fetch(`${process.env.REACT_APP_API_URL}/rave/transaction/fees`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(fee),
+  })
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+};

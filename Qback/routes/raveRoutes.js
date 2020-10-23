@@ -12,7 +12,7 @@ const {
 } = require("../controllers/raveController");
 
 // Get transaction fees
-router.post("/rave/transaction-fees", get_fee);
+router.post("/rave/transaction/fees", get_fee);
 
 // Verify Payment
 router.post("/rave/verify-payment", verify);

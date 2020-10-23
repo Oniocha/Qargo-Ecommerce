@@ -8,6 +8,7 @@ const flw = new Flutterwave(API_KEY, secret);
 
 // Get transaction fee on checkout page load, and add to the order total in the payment method checkout
 exports.get_fee = async (req, res) => {
+  console.log(req.body.amount);
   try {
     const payload = {
       amount: req.body.amount,

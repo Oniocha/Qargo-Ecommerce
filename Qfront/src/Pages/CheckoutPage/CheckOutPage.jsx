@@ -1,6 +1,7 @@
 import React, { useEffect, Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { cartTotal, getCart } from "../../helpers/cartHelpers";
+import { getTransactionFees } from "../../API_CALLS/userApis";
 import Rave from "./PaymentMethods";
 
 import MiddleBar from "../../components/Header/MiddleBar";
@@ -11,28 +12,22 @@ import "./styles.scss";
 const CheckOutPage = () => {
   const [products, setProducts] = useState([]);
   const [count, setCount] = useState(0);
-  const [shipping, setShipping] = useState({
+  const [values, setValues] = useState({
     name: "",
-    country: "",
-    address: {
-      line1: "",
-      line2: "",
-      city: "",
-    },
-    phonenumber: "",
-  });
-
-  const [billing, setBilling] = useState({
-    name: "",
-    country: "",
-    address: {
-      line1: "",
-      line2: "",
-      city: "",
-    },
+    email: "",
     phonenumber: "",
     amount: "",
+    fees: "",
+    error: false,
+    address: {
+      country: "",
+      line1: "",
+      line2: "",
+      city: "",
+    },
   });
+
+  const { name, email, phonenumber, amount, fees, address } = values;
 
   useEffect(() => {
     setCount(cartTotal());
@@ -52,6 +47,25 @@ const CheckOutPage = () => {
   const orderTotal = (vat, sum, shippingCost = 0) => {
     return vat + sum + shippingCost;
   };
+
+  const setFees = (cost) => {
+    setValues({ ...values, error: "" });
+    getTransactionFees(cost)
+      .then((data) => {
+        if (data.error) {
+          setValues({ ...values, error: data.error });
+        } else {
+          setValues({ ...values, fees: data, error: false });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    let tax = vat(getSum());
+    let fullOrder = orderTotal(tax, getSum());
+    setFees(fullOrder);
+  }, []);
 
   // Getting all shipping methods and durations for later use
   const shippingController = () => {
