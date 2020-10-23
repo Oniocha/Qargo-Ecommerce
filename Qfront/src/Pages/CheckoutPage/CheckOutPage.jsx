@@ -2,7 +2,7 @@ import React, { useEffect, Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { cartTotal, getCart } from "../../helpers/cartHelpers";
 import { getTransactionFees } from "../../API_CALLS/userApis";
-import Rave from "./PaymentMethods";
+import Momo from "../../images/Mobile-Money.png";
 
 import MiddleBar from "../../components/Header/MiddleBar";
 
@@ -13,9 +13,14 @@ const CheckOutPage = () => {
   const [products, setProducts] = useState([]);
   const [count, setCount] = useState(0);
   const [values, setValues] = useState({
-    name: "",
+    fullname: "",
     email: "",
-    phonenumber: "",
+    tx_ref: Date.now(),
+    phone_number: "",
+    currency: "GHS",
+    type: "mobile_money_ghana",
+    network: "",
+    redirect_url: "https://qargo.express",
     amount: "",
     fees: "",
     error: false,
@@ -27,7 +32,123 @@ const CheckOutPage = () => {
     },
   });
 
-  const { name, email, phonenumber, amount, fees, address } = values;
+  const {
+    fullname,
+    email,
+    amount,
+    fees,
+    address,
+    phone_number,
+    redirect_url,
+    network,
+    type,
+    currency,
+    tx_ref,
+    error,
+  } = values;
+
+  // States for Mobile payment
+  const [toggle, setToggle] = useState(false);
+  const [showMomo, setShowMomo] = useState(false);
+  const [phonenumber, setPhonenumber] = useState("");
+  const [showSelector, setShowSelector] = useState(false);
+
+  const momoPay = toggle ? "none" : "";
+  const payMomo = showMomo ? "" : "none";
+  const approved = showSelector ? "" : "none";
+
+  const handleMomoChange = (e) => {
+    setPhonenumber(e.target.value);
+  };
+
+  const handleMobileSelector = () => {
+    if (
+      phonenumber &&
+      phonenumber.toString().length &&
+      parseInt(phonenumber.toString()[0]) === 0 &&
+      phonenumber.toString().length === 10
+    ) {
+      if (
+        phonenumber.indexOf(parseInt("020")) === 1 ||
+        phonenumber.indexOf(parseInt("050")) === 1 ||
+        phonenumber.indexOf(parseInt("027")) === 1 ||
+        phonenumber.indexOf(parseInt("026")) === 1 ||
+        phonenumber.indexOf(parseInt("057")) === 1 ||
+        phonenumber.indexOf(parseInt("056")) === 1 ||
+        phonenumber.indexOf(parseInt("054")) === 1 ||
+        phonenumber.indexOf(parseInt("055")) === 1 ||
+        phonenumber.indexOf(parseInt("024")) === 1 ||
+        phonenumber.indexOf(parseInt("059")) === 1
+      ) {
+        setShowSelector(true);
+      }
+    } else if (
+      phonenumber &&
+      phonenumber.toString().length &&
+      phonenumber.toString().length < 10
+    ) {
+      setShowSelector(false);
+    } else if (
+      phonenumber &&
+      phonenumber.toString().length &&
+      phonenumber.toString().length > 10
+    ) {
+      setShowSelector(false);
+    }
+  };
+
+  useEffect(() => {
+    handleMobileSelector();
+  }, [phonenumber]);
+
+  const mobileMoney = () => {
+    return (
+      <div style={{ display: payMomo }}>
+        <span>Please provide your Mobile Money number below for payment</span>
+        <br />
+        <p>
+          Transaction fee: {fees} <small>(Powered by Flutterwave)</small>
+        </p>
+        <input
+          type="number"
+          className="form-control mt-3"
+          placeholder="Enter mobile number"
+          name="phonenumber"
+          value={phonenumber}
+          onChange={handleMomoChange}
+        />
+        <select style={{ display: approved }} name="network">
+          <option value="MTN">MTN</option>
+          <option value="Vodafone">Vodafone</option>
+          <option value="airteltigo">AirtelTigo</option>
+        </select>
+      </div>
+    );
+  };
+
+  const Rave = () => {
+    return (
+      <div>
+        <div
+          onClick={() => {
+            setToggle(true);
+            setShowMomo(true);
+          }}
+          style={{ display: momoPay }}
+        >
+          <img
+            src={Momo}
+            alt="mobile money"
+            style={{ width: "50px", marginRight: "20px" }}
+          />
+          <span className="momo"> Mobile Money (Ghana)</span>
+        </div>
+        {mobileMoney()}
+      </div>
+    );
+  };
+
+  // Mobile Payment Code ended
 
   useEffect(() => {
     setCount(cartTotal());
@@ -55,7 +176,7 @@ const CheckOutPage = () => {
         if (data.error) {
           setValues({ ...values, error: data.error });
         } else {
-          setValues({ ...values, fees: data, error: false });
+          setValues({ ...values, fees: data.data.fee, error: false });
         }
       })
       .catch((err) => console.log(err));
@@ -65,7 +186,7 @@ const CheckOutPage = () => {
     let tax = vat(getSum());
     let fullOrder = orderTotal(tax, getSum());
     setFees(fullOrder);
-  }, []);
+  }, [showMomo]);
 
   // Getting all shipping methods and durations for later use
   const shippingController = () => {
@@ -133,17 +254,10 @@ const CheckOutPage = () => {
               name="addressLine2"
               className="form-control mb-4"
             />
-            <div className="row mb-5">
-              <div className="col-8">
-                <label className="form-input-label">Town / City</label>
-                <br />
-                <input type="text" name="city" className="form-control" />
-              </div>
-              <div className="col-4">
-                <label className="form-input-label">Phone Number</label>
-                <br />
-                <input type="tel" name="phonenumber" className="form-control" />
-              </div>
+            <div className="mb-5">
+              <label className="form-input-label">Town / City</label>
+              <br />
+              <input type="text" name="city" className="form-control" />
             </div>
           </form>
         </div>
@@ -151,7 +265,7 @@ const CheckOutPage = () => {
     );
   };
 
-  const billingAddress = () => {
+  const paymentMethod = () => {
     return (
       <div>
         <div className="card-header" id="headingTwo">
@@ -164,12 +278,7 @@ const CheckOutPage = () => {
               aria-expanded="false"
               aria-controls="collapseTwo"
             >
-              <h3>
-                2. Who is Paying For This?{" "}
-                <small>
-                  <input type="checkbox" /> Same as delivery information
-                </small>
-              </h3>
+              <h3>2. How would you like to pay?</h3>
             </button>
           </h2>
         </div>
@@ -179,82 +288,9 @@ const CheckOutPage = () => {
           aria-labelledby="headingTwo"
           data-parent="#accordion"
         >
-          <form>
-            <div className="row">
-              <div className="col-6 mt-4 mb-4">
-                <label className="form-input-label">Full Name</label>
-                <br />
-                <input type="text" name="name" className="form-control" />
-              </div>
-              <div className="col-6 mt-4 mb-4">
-                <label className="form-input-label">Email</label>
-                <br />
-                <input type="email" name="email" className="form-control" />
-              </div>
-            </div>
-            <label className="form-input-label">Country</label>
-            <br />
-            <input type="text" name="country" className="form-control mb-4" />
-            <label className="form-input-label">Street Address</label>
-            <br />
-            <input
-              type="text"
-              placeholder="Address line 1"
-              name="addressLine1"
-              className="form-control mb-4"
-            />
-            <input
-              type="text"
-              placeholder="Address line 2"
-              name="addressLine2"
-              className="form-control mb-4"
-            />
-            <div className="row mb-5">
-              <div className="col-8">
-                <label className="form-input-label">Town / City</label>
-                <br />
-                <input type="text" name="city" className="form-control" />
-              </div>
-              <div className="col-4">
-                <label className="form-input-label">Phone Number</label>
-                <br />
-                <input type="tel" name="phonenumber" className="form-control" />
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    );
-  };
-
-  const paymentMethod = () => {
-    return (
-      <div>
-        <div className="card-header" id="headingThree">
-          <h2 className="mb-0">
-            <button
-              className="btn btn-link btn-block text-left"
-              type="button"
-              data-toggle="collapse"
-              data-target="#collapseThree"
-              aria-expanded="false"
-              aria-controls="collapseThree"
-            >
-              <h3>3. How would you like to pay?</h3>
-            </button>
-          </h2>
-        </div>
-        <div
-          id="collapseThree"
-          className="collapse"
-          aria-labelledby="headingThree"
-          data-parent="#accordion"
-        >
           <p>Select your payment method</p>
           <ul>
-            <li>
-              <Rave />
-            </li>
+            <li>{Rave()}</li>
           </ul>
         </div>
       </div>
@@ -273,7 +309,6 @@ const CheckOutPage = () => {
             <hr />
             <div className="accordion" id="accordion">
               {shippingAddress()}
-              {billingAddress()}
               {paymentMethod()}
             </div>
           </div>

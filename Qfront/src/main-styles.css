@@ -41,6 +41,10 @@ a {
   color: var(--main) !important;
 }
 
+ul {
+  list-style: none;
+}
+
 .btn.btn-action {
   background: var(--button);
   width: 100%;

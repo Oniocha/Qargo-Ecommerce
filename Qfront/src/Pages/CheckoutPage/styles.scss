@@ -20,4 +20,16 @@
       font-weight: 700;
     }
   }
+
+  .momo {
+    cursor: pointer;
+    position: relative;
+    left: 0;
+    transition-property: left;
+    transition-duration: 0.3s;
+
+    &:hover {
+      left: 10px;
+    }
+  }
 }
