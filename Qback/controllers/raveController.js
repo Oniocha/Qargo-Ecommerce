@@ -1,5 +1,4 @@
 require("dotenv").config();
-const axios = require("axios");
 const Flutterwave = require("flutterwave-node-v3");
 
 const API_KEY = process.env.RAVE_PULICKEY,
