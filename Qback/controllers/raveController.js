@@ -2,7 +2,6 @@ require("dotenv").config();
 const Flutterwave = require("flutterwave-node-v3");
 
 const API_KEY = process.env.RAVE_PULICKEY,
-  verifyUrl = process.env.RAVE_VERIFY,
   secret = process.env.RAVE_SECRETKEY;
 
 const flw = new Flutterwave(API_KEY, secret);

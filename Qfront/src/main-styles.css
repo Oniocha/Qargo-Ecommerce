@@ -37,6 +37,10 @@ body {
   margin: 0;
 }
 
+a {
+  color: var(--main) !important;
+}
+
 .btn.btn-action {
   background: var(--button);
   width: 100%;

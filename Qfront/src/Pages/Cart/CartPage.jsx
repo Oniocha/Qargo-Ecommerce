@@ -20,7 +20,7 @@ const CartPage = () => {
       <div>
         <h2>Your cart is empty</h2>
         <br />
-        <Link to="/">
+        <Link to="/shop">
           <h2>Continue shopping</h2>
         </Link>
       </div>
