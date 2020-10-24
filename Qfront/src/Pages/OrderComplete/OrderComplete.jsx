@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { emptyCart } from "../../helpers/cartHelpers";
 
 function OrderComplete() {
-  return <div>Thank you for your order</div>;
+  useEffect(() => {
+    emptyCart();
+  }, []);
+  return (
+    <div>
+      <h2>Thank you for your order</h2>
+    </div>
+  );
 }
 
 export default OrderComplete;

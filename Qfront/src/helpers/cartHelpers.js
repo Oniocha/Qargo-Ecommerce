@@ -78,9 +78,8 @@ export const removeItem = (prodId) => {
 };
 
 // Empty cart after checkout
-export const emptyCart = (next) => {
-  if (typeof window === "undefined") {
+export const emptyCart = () => {
+  if (typeof window !== "undefined") {
     localStorage.removeItem("cart");
-    next();
   }
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, Fragment, useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { cartTotal, getCart } from "../../helpers/cartHelpers";
 import {
   getTransactionFees,
