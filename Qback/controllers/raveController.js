@@ -23,6 +23,7 @@ exports.get_fee = async (req, res) => {
 
 // Process Mobile Money Payment
 exports.Gh_mobilemoney = async (req, res) => {
+  console.log(req.body);
   try {
     const payload = req.body;
 

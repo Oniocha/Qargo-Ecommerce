@@ -18,6 +18,7 @@ const SearchPage = lazy(() => import("./Pages/SearchPage/SearchPage"));
 const ProductPage = lazy(() => import("./Pages/ProductPage/ProductPage"));
 const CartPage = lazy(() => import("./Pages/Cart/CartPage"));
 const CheckOutPage = lazy(() => import("./Pages/CheckoutPage/CheckOutPage"));
+const OrderComplete = lazy(() => import("./Pages/OrderComplete/OrderComplete"));
 
 const Routes = () => {
   return (
@@ -55,6 +56,7 @@ const Routes = () => {
             <VendorRoute path="/create/product" exact component={AddProduct} />
             <Route exact path="/cart" component={CartPage} />
             <CheckoutRoute exact path="/checkout" component={CheckOutPage} />
+            <Route exact path="/order-complete" component={OrderComplete} />
             <Footer />
           </Suspense>
         </ScrollToTop>

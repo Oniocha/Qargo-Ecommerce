@@ -1,7 +1,10 @@
 import React, { useEffect, Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { cartTotal, getCart } from "../../helpers/cartHelpers";
-import { getTransactionFees } from "../../API_CALLS/userApis";
+import {
+  getTransactionFees,
+  initateTransaction,
+} from "../../API_CALLS/userApis";
 import Momo from "../../images/Mobile-Money.png";
 
 import MiddleBar from "../../components/Header/MiddleBar";
@@ -20,7 +23,7 @@ const CheckOutPage = () => {
     currency: "GHS",
     type: "mobile_money_ghana",
     network: "",
-    redirect_url: "https://qargo.express",
+    redirect_url: "http://localhost:3000/order-complete",
     amount: "",
     fees: "",
     error: false,
@@ -31,7 +34,9 @@ const CheckOutPage = () => {
       city: "",
     },
   });
-
+  const [redirect, setRedirect] = useState(false),
+    [paymentUrl, setPaymentUrl] = useState(null),
+    [loading, setLoading] = useState(false);
   const {
     fullname,
     email,
@@ -42,7 +47,6 @@ const CheckOutPage = () => {
     redirect_url,
     network,
     type,
-    currency,
     tx_ref,
     error,
   } = values;
@@ -50,48 +54,43 @@ const CheckOutPage = () => {
   // States for Mobile payment
   const [toggle, setToggle] = useState(false);
   const [showMomo, setShowMomo] = useState(false);
-  const [phonenumber, setPhonenumber] = useState("");
   const [showSelector, setShowSelector] = useState(false);
 
   const momoPay = toggle ? "none" : "";
   const payMomo = showMomo ? "" : "none";
   const approved = showSelector ? "" : "none";
 
-  const handleMomoChange = (e) => {
-    setPhonenumber(e.target.value);
-  };
-
   const handleMobileSelector = () => {
     if (
-      phonenumber &&
-      phonenumber.toString().length &&
-      parseInt(phonenumber.toString()[0]) === 0 &&
-      phonenumber.toString().length === 10
+      phone_number &&
+      phone_number.toString().length &&
+      parseInt(phone_number.toString()[0]) === 0 &&
+      phone_number.toString().length === 10
     ) {
       if (
-        phonenumber.indexOf(parseInt("020")) === 1 ||
-        phonenumber.indexOf(parseInt("050")) === 1 ||
-        phonenumber.indexOf(parseInt("027")) === 1 ||
-        phonenumber.indexOf(parseInt("026")) === 1 ||
-        phonenumber.indexOf(parseInt("057")) === 1 ||
-        phonenumber.indexOf(parseInt("056")) === 1 ||
-        phonenumber.indexOf(parseInt("054")) === 1 ||
-        phonenumber.indexOf(parseInt("055")) === 1 ||
-        phonenumber.indexOf(parseInt("024")) === 1 ||
-        phonenumber.indexOf(parseInt("059")) === 1
+        phone_number.indexOf(parseInt("020")) === 1 ||
+        phone_number.indexOf(parseInt("050")) === 1 ||
+        phone_number.indexOf(parseInt("027")) === 1 ||
+        phone_number.indexOf(parseInt("026")) === 1 ||
+        phone_number.indexOf(parseInt("057")) === 1 ||
+        phone_number.indexOf(parseInt("056")) === 1 ||
+        phone_number.indexOf(parseInt("054")) === 1 ||
+        phone_number.indexOf(parseInt("055")) === 1 ||
+        phone_number.indexOf(parseInt("024")) === 1 ||
+        phone_number.indexOf(parseInt("059")) === 1
       ) {
         setShowSelector(true);
       }
     } else if (
-      phonenumber &&
-      phonenumber.toString().length &&
-      phonenumber.toString().length < 10
+      phone_number &&
+      phone_number.toString().length &&
+      phone_number.toString().length < 10
     ) {
       setShowSelector(false);
     } else if (
-      phonenumber &&
-      phonenumber.toString().length &&
-      phonenumber.toString().length > 10
+      phone_number &&
+      phone_number.toString().length &&
+      phone_number.toString().length > 10
     ) {
       setShowSelector(false);
     }
@@ -99,32 +98,7 @@ const CheckOutPage = () => {
 
   useEffect(() => {
     handleMobileSelector();
-  }, [phonenumber]);
-
-  const mobileMoney = () => {
-    return (
-      <div style={{ display: payMomo }}>
-        <span>Please provide your Mobile Money number below for payment</span>
-        <br />
-        <p>
-          Transaction fee: {fees} <small>(Powered by Flutterwave)</small>
-        </p>
-        <input
-          type="number"
-          className="form-control mt-3"
-          placeholder="Enter mobile number"
-          name="phonenumber"
-          value={phonenumber}
-          onChange={handleMomoChange}
-        />
-        <select style={{ display: approved }} name="network">
-          <option value="MTN">MTN</option>
-          <option value="Vodafone">Vodafone</option>
-          <option value="airteltigo">AirtelTigo</option>
-        </select>
-      </div>
-    );
-  };
+  }, [phone_number]);
 
   const Rave = () => {
     return (
@@ -148,27 +122,38 @@ const CheckOutPage = () => {
     );
   };
 
-  // Mobile Payment Code ended
+  // Handle change from delivery form
+  const handleChange = (name) => (e) => {
+    const value = e.target.value;
+    setLoading(false);
+    setValues({ ...values, [name]: value });
+  };
 
+  // First load to get cart count and products
   useEffect(() => {
     setCount(cartTotal());
     setProducts(getCart());
-  }, [count]);
+    setValues({ ...values, amount: orderTotal(vat(getSum()), getSum()) });
+  }, [count, amount]);
 
+  // Get subtotal for items in cart
   const getSum = () => {
     return products.reduce((currentValue, nextValue) => {
       return currentValue + nextValue.count * nextValue.price;
     }, 0);
   };
 
+  // Calculate Tax
   const vat = (sum) => {
     return sum * 0.03;
   };
 
+  // Add tax to subtotal + shipping
   const orderTotal = (vat, sum, shippingCost = 0) => {
     return vat + sum + shippingCost;
   };
 
+  // Get transaction fees
   const setFees = (cost) => {
     setValues({ ...values, error: "" });
     getTransactionFees(cost)
@@ -182,6 +167,7 @@ const CheckOutPage = () => {
       .catch((err) => console.log(err));
   };
 
+  // Set transaction fees
   useEffect(() => {
     let tax = vat(getSum());
     let fullOrder = orderTotal(tax, getSum());
@@ -201,6 +187,81 @@ const CheckOutPage = () => {
     }
   };
 
+  // Initiate payment
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    initateTransaction(
+      tx_ref,
+      email,
+      amount,
+      type,
+      phone_number,
+      network,
+      redirect_url,
+      fullname
+    )
+      .then((data) => {
+        if (data.error) {
+          console.log("error", data.error);
+          setLoading(false);
+        } else {
+          setPaymentUrl(data.meta.authorization.redirect);
+          setRedirect(true);
+          setLoading(false);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  // Mobile Payment field
+  const mobileMoney = () => {
+    return (
+      <div style={{ display: payMomo }}>
+        <div className="card momo-window">
+          <div className="card-header">
+            <h5>Please provide your Mobile Money number below for payment</h5>
+          </div>
+          <div className="row p-3">
+            <div className="col-4">
+              <p>
+                Transaction fee: {fees} <small>(Powered by Flutterwave)</small>
+              </p>
+            </div>
+          </div>
+          <div className="m-3">
+            <form>
+              <input
+                type="number"
+                className="form-control mb-3"
+                placeholder="Enter mobile number"
+                value={phone_number}
+                onChange={handleChange("phone_number")}
+              />
+              <select
+                style={{ display: approved }}
+                onChange={handleChange("network")}
+              >
+                <option>Choose Your Network</option>
+                <option value="MTN">MTN</option>
+                <option value="Vodafone">Vodafone</option>
+                <option value="airteltigo">AirtelTigo</option>
+              </select>
+              {loading ? (
+                showLoading()
+              ) : (
+                <button className="btn btn-action mt-3" onClick={handleSubmit}>
+                  Place order
+                </button>
+              )}
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Delivery details field
   const shippingAddress = () => {
     return (
       <div>
@@ -229,12 +290,23 @@ const CheckOutPage = () => {
               <div className="col-6 mt-4 mb-4">
                 <label className="form-input-label">Full Name</label>
                 <br />
-                <input type="text" name="name" className="form-control" />
+                <input
+                  type="text"
+                  className="form-control"
+                  value={fullname}
+                  onChange={handleChange("fullname")}
+                />
               </div>
               <div className="col-6 mt-4 mb-4">
                 <label className="form-input-label">Email</label>
                 <br />
-                <input type="email" name="email" className="form-control" />
+                <input
+                  type="email"
+                  name="email"
+                  value={email}
+                  className="form-control"
+                  onChange={handleChange("email")}
+                />
               </div>
             </div>
             <label className="form-input-label">Country</label>
@@ -288,7 +360,7 @@ const CheckOutPage = () => {
           aria-labelledby="headingTwo"
           data-parent="#accordion"
         >
-          <p>Select your payment method</p>
+          <p className="mt-3">Select your payment method</p>
           <ul>
             <li>{Rave()}</li>
           </ul>
@@ -297,8 +369,30 @@ const CheckOutPage = () => {
     );
   };
 
+  const redirectUserForPayment = () => {
+    return paymentUrl && redirect && (window.location.href = paymentUrl);
+  };
+
+  const showLoading = () => {
+    return (
+      <div>
+        <button className="btn btn-action mt-3" type="button" disabled>
+          <span
+            className="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+          >
+            {" "}
+          </span>
+          Initiating Payment...
+        </button>
+      </div>
+    );
+  };
+
   return (
     <Fragment>
+      {redirectUserForPayment()}
       <header>
         <MiddleBar checkout={true} />
       </header>
@@ -361,7 +455,11 @@ const CheckOutPage = () => {
               </div>
               <hr />
               <div>
-                <button className="btn btn-action">Place Order</button>
+                {loading ? (
+                  showLoading()
+                ) : (
+                  <button className="btn btn-action">Place Order</button>
+                )}
                 <p className="checkout-summary mt-3 text-center">
                   By placing your order you agree to Qargo's Conditions of Use &
                   Sale. Please see our{" "}
