@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { getDepartments, listProducts } from "../../API_CALLS/userApis";
 
 import "./search-styles.scss";
@@ -28,6 +28,8 @@ const SearchBar = () => {
 
   useEffect(() => {
     init();
+
+    // eslint-disable-next-line
   }, []);
 
   const searchProduct = () => {

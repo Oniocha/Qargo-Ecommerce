@@ -98,6 +98,8 @@ const CheckOutPage = () => {
 
   useEffect(() => {
     handleMobileSelector();
+
+    // eslint-disable-next-line
   }, [phone_number]);
 
   const Rave = () => {
@@ -134,6 +136,8 @@ const CheckOutPage = () => {
     setCount(cartTotal());
     setProducts(getCart());
     setValues({ ...values, amount: orderTotal(vat(getSum()), getSum()) });
+
+    // eslint-disable-next-line
   }, [count, amount]);
 
   // Get subtotal for items in cart
@@ -172,6 +176,8 @@ const CheckOutPage = () => {
     let tax = vat(getSum());
     let fullOrder = orderTotal(tax, getSum());
     setFees(fullOrder);
+
+    // eslint-disable-next-line
   }, [showMomo]);
 
   // Getting all shipping methods and durations for later use

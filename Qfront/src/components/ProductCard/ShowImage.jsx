@@ -26,6 +26,8 @@ const ShowImage = ({ item, url, className }) => {
     return () => {
       isCancelled = true;
     };
+
+    // eslint-disable-next-line
   }, []);
 
   const showLoading = () => {
@@ -48,12 +50,7 @@ const ShowImage = ({ item, url, className }) => {
       {loading ? (
         showLoading()
       ) : (
-        <img
-          src={image}
-          alt={item.name}
-          className="mb-3 product-img"
-          className={className}
-        />
+        <img src={image} alt={item.name} className={className} />
       )}
     </div>
   );

@@ -37,6 +37,8 @@ const ProductPage = ({ match }) => {
 
   useEffect(() => {
     fetchSingleProduct(productId);
+
+    // eslint-disable-next-line
   }, [match]);
 
   const buyItem = () => {

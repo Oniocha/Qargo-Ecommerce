@@ -25,7 +25,9 @@ const SignIn = ({ location }) => {
     if (path !== undefined) {
       setPrev(path.prevPath);
     }
-  });
+
+    // eslint-disable-next-line
+  }, []);
 
   const handleChange = (e) => {
     const { value, name } = e.target;

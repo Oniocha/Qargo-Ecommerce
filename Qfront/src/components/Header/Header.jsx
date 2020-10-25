@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { useState } from "react";
 import TopBar from "./TopBar";
 import MiddleBar from "./MiddleBar";
 import ScrollableTabsButtonAuto from "./ScrollableTabsButtonAuto";
@@ -23,6 +23,8 @@ const Header = () => {
 
   useEffect(() => {
     showHideHeader();
+
+    // eslint-disable-next-line
   }, [currentPage]);
 
   return (

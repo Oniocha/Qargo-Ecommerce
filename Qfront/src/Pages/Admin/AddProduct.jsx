@@ -38,7 +38,6 @@ const AddProduct = () => {
     price,
     quantity,
     photo,
-    category,
     loading,
     error,
     createdProduct,
@@ -56,6 +55,8 @@ const AddProduct = () => {
       .get(two)
       .then((data) => setTags(data.data))
       .catch((err) => console.log(err));
+
+      // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -63,6 +64,8 @@ const AddProduct = () => {
       .get(three)
       .then((data) => setDepartments(data.data))
       .catch((err) => console.log(err));
+
+      // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -70,10 +73,14 @@ const AddProduct = () => {
       .get(one)
       .then((data) => setCategories(data.data))
       .catch((err) => console.log(err));
+
+      // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     setFormData(new FormData());
+
+    // eslint-disable-next-line
   }, []);
 
   const handleChange = (name) => (e) => {

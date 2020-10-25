@@ -81,6 +81,8 @@ const Shop = () => {
   useEffect(() => {
     init();
     loadFilteredResults(limit, skip, myFilters.filters);
+
+    // eslint-disable-next-line
   }, []);
 
   // Method for collecting values to use as filters from each checkbox user checks
