@@ -80,7 +80,9 @@ const SignUp = () => {
           {showSuccess()}
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label className="text-muted">Your name</label>
+              <label className="text-muted">
+                Your full name<sup>*</sup>
+              </label>
               <input
                 autoFocus
                 tabIndex="2"
@@ -92,7 +94,9 @@ const SignUp = () => {
               />
             </div>
             <div className="form-group">
-              <label className="text-muted">Create username</label>
+              <label className="text-muted">
+                Create username<sup>*</sup>
+              </label>
               <div className="input-group mb-3">
                 <div className="input-group-prepend">
                   <span className="input-group-text" id="basic-addon1">
@@ -111,7 +115,9 @@ const SignUp = () => {
               </div>
             </div>
             <div className="form-group">
-              <label className="text-muted">Email</label>
+              <label className="text-muted">
+                Email<sup>*</sup>
+              </label>
               <input
                 type="email"
                 name="email"
@@ -121,7 +127,9 @@ const SignUp = () => {
               />
             </div>
             <div className="form-group">
-              <label className="text-muted">Create password</label>
+              <label className="text-muted">
+                Create password<sup>*</sup>
+              </label>
               <input
                 type="password"
                 name="password"
@@ -131,7 +139,9 @@ const SignUp = () => {
               />
             </div>
             <div className="form-group">
-              <label className="text-muted">Confirm password</label>
+              <label className="text-muted">
+                Confirm password<sup>*</sup>
+              </label>
               <input
                 required
                 type="password"

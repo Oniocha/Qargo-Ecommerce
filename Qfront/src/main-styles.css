@@ -45,6 +45,11 @@ ul {
   list-style: none;
 }
 
+sup {
+  color: red;
+  font-weight: 700;
+}
+
 /* Remove arrows from input type number */
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,

@@ -295,7 +295,9 @@ const CheckOutPage = () => {
           <form>
             <div className="row">
               <div className="col-6 mt-4 mb-4">
-                <label className="form-input-label">Full Name</label>
+                <label className="form-input-label">
+                  Full Name<sup>*</sup>
+                </label>
                 <br />
                 <input
                   type="text"
@@ -305,7 +307,9 @@ const CheckOutPage = () => {
                 />
               </div>
               <div className="col-6 mt-4 mb-4">
-                <label className="form-input-label">Email</label>
+                <label className="form-input-label">
+                  Email<sup>*</sup>
+                </label>
                 <br />
                 <input
                   type="email"
@@ -316,7 +320,9 @@ const CheckOutPage = () => {
                 />
               </div>
             </div>
-            <label className="form-input-label">Country</label>
+            <label className="form-input-label">
+              Country<sup>*</sup>
+            </label>
             <br />
             <input type="text" name="country" className="form-control mb-4" />
             <label className="form-input-label">Street Address</label>
