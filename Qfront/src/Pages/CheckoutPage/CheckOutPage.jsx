@@ -149,7 +149,7 @@ const CheckOutPage = () => {
 
   // Calculate Tax
   const vat = (sum) => {
-    return sum * 0.03;
+    return +(sum * 0.03).toFixed(2);
   };
 
   // Add tax to subtotal + shipping
