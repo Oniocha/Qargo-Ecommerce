@@ -16,6 +16,7 @@ exports.get_fee = async (req, res) => {
     };
     const response = await flw.Transaction.fee(payload);
     res.json(response);
+    console.log(response);
   } catch (error) {
     console.log(error);
   }

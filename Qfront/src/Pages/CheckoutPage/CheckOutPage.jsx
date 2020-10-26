@@ -110,7 +110,7 @@ const CheckOutPage = () => {
             setToggle(true);
             setShowMomo(true);
           }}
-          style={{ display: momoPay }}
+          style={{ display: momoPay, cursor: "pointer" }}
         >
           <img
             src={Momo}
@@ -247,6 +247,7 @@ const CheckOutPage = () => {
               <select
                 style={{ display: approved }}
                 onChange={handleChange("network")}
+                required
               >
                 <option>Choose Your Network</option>
                 <option value="MTN">MTN</option>
@@ -387,9 +388,7 @@ const CheckOutPage = () => {
             className="spinner-border spinner-border-sm"
             role="status"
             aria-hidden="true"
-          >
-            {" "}
-          </span>
+          ></span>
           Initiating Payment...
         </button>
       </div>
@@ -398,7 +397,7 @@ const CheckOutPage = () => {
 
   return (
     <Fragment>
-      {redirectUserForPayment()}
+      <div style={{ display: "none" }}>{redirectUserForPayment()}</div>
       <header>
         <MiddleBar checkout={true} />
       </header>
@@ -461,11 +460,6 @@ const CheckOutPage = () => {
               </div>
               <hr />
               <div>
-                {loading ? (
-                  showLoading()
-                ) : (
-                  <button className="btn btn-action">Place Order</button>
-                )}
                 <p className="checkout-summary mt-3 text-center">
                   By placing your order you agree to Qargo's Conditions of Use &
                   Sale. Please see our{" "}
