@@ -228,26 +228,28 @@ const CheckOutPage = () => {
           <div className="card-header">
             <h5>Please provide your Mobile Money number below for payment</h5>
           </div>
-          <div className="row p-3">
+          {/* <div className="row pt-3 pl-3 pr-3">
             <div className="col-4">
               <p>
                 Transaction fee: {fees} <small>(Powered by Flutterwave)</small>
               </p>
             </div>
-          </div>
+          </div> */}
           <div className="m-3">
             <form>
               <input
                 type="number"
+                required
                 className="form-control mb-3"
                 placeholder="Enter mobile number"
                 value={phone_number}
                 onChange={handleChange("phone_number")}
               />
               <select
-                style={{ display: approved }}
-                onChange={handleChange("network")}
                 required
+                style={{ display: approved }}
+                className="form-control"
+                onChange={handleChange("network")}
               >
                 <option>Choose Your Network</option>
                 <option value="MTN">MTN</option>
@@ -257,11 +259,23 @@ const CheckOutPage = () => {
               {loading ? (
                 showLoading()
               ) : (
-                <button className="btn btn-action mt-3" onClick={handleSubmit}>
+                <button
+                  className="btn btn-action  mt-3 mb-3"
+                  onClick={handleSubmit}
+                >
                   Place order
                 </button>
               )}
             </form>
+            <span
+              className="pay-different"
+              onClick={() => {
+                setToggle(false);
+                setShowMomo(false);
+              }}
+            >
+              Choose another payment method
+            </span>
           </div>
         </div>
       </div>
@@ -419,9 +433,9 @@ const CheckOutPage = () => {
           </div>
           <div className="col-lg-3 col-md-3">
             <div className="card p-4">
-              <Link to="/cart">
+              <a href="/cart">
                 <button className="btn btn-pale">Modify Cart</button>
-              </Link>
+              </a>
               <hr />
               <h4>Order Summary</h4>
               <div className="row">

@@ -38,14 +38,14 @@ const TopBar = ({ history }) => {
             {!isAuthenticated() && (
               <Fragment>
                 <li className="nav-item active">
-                  <Link to="/signin" className="nav-link">
+                  <a href="/signin" className="nav-link">
                     Sign in <span className="sr-only">(current)</span>
-                  </Link>
+                  </a>
                 </li>
                 <li className="nav-item">
-                  <Link to="/signup" className="nav-link">
+                  <a href="/signup" className="nav-link">
                     Sign up
-                  </Link>
+                  </a>
                 </li>
               </Fragment>
             )}

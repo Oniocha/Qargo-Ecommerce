@@ -10,6 +10,10 @@
     font-size: 1.4rem;
   }
 
+  h5 {
+    font-size: medium;
+  }
+
   .checkout-summary {
     font-size: 0.8rem;
   }
@@ -40,5 +44,11 @@
   #collapseTwo {
     background-color: #eeeeee;
     padding: 10px;
+  }
+
+  .pay-different {
+    text-decoration: underline;
+    color: var(--main);
+    cursor: pointer;
   }
 }

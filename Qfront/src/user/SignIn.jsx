@@ -83,20 +83,20 @@ const SignIn = ({ location }) => {
         return <Redirect to="/cart" />;
       }
       if (isAuthenticated() && isAuthenticated().user.role === 0) {
-        return <Redirect to="/" />;
+        return window.location.href == "/";
       }
       if (isAuthenticated() && isAuthenticated().user.role === 1) {
-        return <Redirect to="/partners/account" />;
+        return (window.location.href = "/partners/account");
       }
     }
     if (isAuthenticated()) {
-      return <Redirect to="/" />;
+      return (window.location.href = "/");
     }
   };
 
   return (
     <div>
-      {redirectUser()}
+      <div style={{ display: "none" }}>{redirectUser()}</div>
       <Link to="/">
         <img src={Qargo} alt="logo" className="logo" />
       </Link>

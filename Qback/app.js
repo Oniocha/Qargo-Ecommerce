@@ -17,6 +17,7 @@ const departmentRoutes = require("./routes/departmentRoutes");
 const tagRoutes = require("./routes/tagRoutes");
 const productRoutes = require("./routes/productRoutes");
 const raveRoutes = require("./routes/raveRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.use("/api", departmentRoutes);
 app.use("/api", tagRoutes);
 app.use("/api", productRoutes);
 app.use("/api", raveRoutes);
+app.use("/api", orderRoutes);
 
 const port = process.env.PORT || 8000;
 

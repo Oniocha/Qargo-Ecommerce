@@ -13,6 +13,7 @@ const {
   productDepartments,
   productTags,
   listBySearch,
+  listProductSizes,
   productPhoto,
   listSearchedProducts,
 } = require("../controllers/productController");
@@ -38,6 +39,9 @@ router.get("/product/:productId", readProduct);
 
 // List products
 router.get("/products", listProducts);
+
+// List sizes
+router.get("/products/sizes", listProductSizes);
 
 // Edit product
 router.put(

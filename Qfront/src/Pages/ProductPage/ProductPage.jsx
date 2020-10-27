@@ -49,7 +49,7 @@ const ProductPage = ({ match }) => {
 
   const addToCart = () => {
     addItem(product, () => {
-      console.log("Thank you for patronizing");
+      window.location.reload();
     });
   };
 
