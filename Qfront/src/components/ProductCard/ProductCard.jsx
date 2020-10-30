@@ -66,7 +66,7 @@ const ProductCard = ({
           </div>
           <div className="col-1">
             <button
-              className="btn btn-danger"
+              className="btn btn-danger btn-sm"
               onClick={() => {
                 removeItem(product._id);
                 setRun(!run);

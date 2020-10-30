@@ -13,6 +13,8 @@ body {
 :root {
   overflow-x: hidden !important;
   font-size: 14px;
+
+  /* Action button */
   --button: transparent linear-gradient(180deg, #fca311 0%, #fca311 100%) 0% 0%
     no-repeat padding-box;
   --buttonborder: #a88734 #9c7e31 #846a29;
@@ -20,6 +22,15 @@ body {
     0% 0% no-repeat padding-box;
   --buttonactive: transparent linear-gradient(180deg, #ffbc0a 0%, #f3ba1d 100%)
     0% 0% no-repeat padding-box;
+
+  /* Passive button */
+  --pale: transparent linear-gradient(180deg, #e7e9ec 0%, #e2e4e7 100%) 0% 0%
+    no-repeat padding-box;
+  --palehover: transparent linear-gradient(180deg, #e2e4e7 0%, #e7e9ec 100%) 0%
+    0% no-repeat padding-box;
+  --paleactive: transparent linear-gradient(180deg, #e7e9ec 0%, #e2e4e7 100%) 0%
+    0% no-repeat padding-box;
+
   --natural: #e7e9ec;
   /* --main: #0b79bf; */
   --main: #0147be;
@@ -110,13 +121,21 @@ button.btn-link:focus {
 }
 
 .btn.btn-pale {
-  background: #e7e9ec;
+  background: var(--pale);
   width: 100%;
   border-color: #adb1b8 #a2a6ac #8d9096;
   border-style: solid;
   border-width: 1px;
   text-decoration: none !important;
   vertical-align: middle;
+}
+
+.btn.btn-pale:hover {
+  background: var(--palehover);
+}
+
+.btn.btn-pale:active {
+  background: var(--paleactive);
 }
 
 /*--- qargo preloader for Suspense---*/

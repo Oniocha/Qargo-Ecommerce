@@ -8,7 +8,6 @@ import { isAuthenticated } from "../../API_CALLS/Auth/authMethods";
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
-  const [count, setCount] = useState(1);
   const [run, setRun] = useState(false);
 
   useEffect(() => {
@@ -48,7 +47,6 @@ const CartPage = () => {
             </div>
           )}
         </div>
-        Put in shipping details, billing details and shipping
       </div>
     );
   };
