@@ -55,6 +55,10 @@ const userSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    products: {
+      type: Array,
+      default: [],
+    },
     mobile: {
       type: Number,
       trim: true,

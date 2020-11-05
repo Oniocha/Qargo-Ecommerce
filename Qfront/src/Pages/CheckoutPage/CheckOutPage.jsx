@@ -1,9 +1,11 @@
 import React, { useEffect, Fragment, useState } from "react";
 import { Link } from "react-router-dom";
+import { isAuthenticated } from "../../API_CALLS/Auth/authMethods";
 import { cartTotal, getCart } from "../../helpers/cartHelpers";
 import {
   getTransactionFees,
   initateTransaction,
+  createOrder,
 } from "../../API_CALLS/userApis";
 import Momo from "../../images/Mobile-Money.png";
 
@@ -27,22 +29,25 @@ const CheckOutPage = () => {
     amount: "",
     fees: "",
     error: false,
-    address: {
-      country: "",
-      line1: "",
-      line2: "",
-      city: "",
-    },
   });
   const [redirect, setRedirect] = useState(false),
     [paymentUrl, setPaymentUrl] = useState(null),
     [loading, setLoading] = useState(false);
+
+  const [address, setAddress] = useState({
+    country: "",
+    street: "",
+    landmark: "",
+    city: "",
+  });
+
+  const { country, street, landmark, city } = address;
+
   const {
     fullname,
     email,
     amount,
     fees,
-    address,
     phone_number,
     redirect_url,
     network,
@@ -60,6 +65,10 @@ const CheckOutPage = () => {
   const payMomo = showMomo ? "" : "none";
   const approved = showSelector ? "" : "none";
 
+  //destructuring localstorage
+  const { user, token } = isAuthenticated();
+
+  // Dynamically show mobile network selector if user's network is supported
   const handleMobileSelector = () => {
     if (
       phone_number &&
@@ -102,6 +111,7 @@ const CheckOutPage = () => {
     // eslint-disable-next-line
   }, [phone_number]);
 
+  // This is the RAVE MOMO form
   const Rave = () => {
     return (
       <div>
@@ -131,14 +141,11 @@ const CheckOutPage = () => {
     setValues({ ...values, [name]: value });
   };
 
-  // First load to get cart count and products
-  useEffect(() => {
-    setCount(cartTotal());
-    setProducts(getCart());
-    setValues({ ...values, amount: orderTotal(vat(getSum()), getSum()) });
-
-    // eslint-disable-next-line
-  }, [count, amount]);
+  const handleAddress = (name) => (e) => {
+    const value = e.target.value;
+    setLoading(false);
+    setAddress({ ...address, [name]: value });
+  };
 
   // Get subtotal for items in cart
   const getSum = () => {
@@ -151,6 +158,14 @@ const CheckOutPage = () => {
   const vat = (sum) => {
     return +(sum * 0.03).toFixed(2);
   };
+
+  // First load to get cart count and products
+  useEffect(() => {
+    setCount(cartTotal());
+    setProducts(getCart());
+    setValues({ ...values, amount: orderTotal(vat(getSum()), getSum()) });
+    // eslint-disable-next-line
+  }, [count, amount]);
 
   // Add tax to subtotal + shipping
   const orderTotal = (vat, sum, shippingCost = 0) => {
@@ -172,13 +187,13 @@ const CheckOutPage = () => {
   };
 
   // Set transaction fees
-  useEffect(() => {
-    let tax = vat(getSum());
-    let fullOrder = orderTotal(tax, getSum());
-    setFees(fullOrder);
+  // useEffect(() => {
+  //   let tax = vat(getSum());
+  //   let fullOrder = orderTotal(tax, getSum());
+  //   setFees(fullOrder);
 
-    // eslint-disable-next-line
-  }, [showMomo]);
+  // eslint-disable-next-line
+  // }, [showMomo]);
 
   // Getting all shipping methods and durations for later use
   const shippingController = () => {
@@ -213,6 +228,20 @@ const CheckOutPage = () => {
           setLoading(false);
         } else {
           setPaymentUrl(data.meta.authorization.redirect);
+
+          // Sending the order to the backend
+          const createOrderData = {
+            products,
+            transaction_id: tx_ref,
+            amount,
+            name: fullname,
+            number: phone_number,
+            email,
+            address,
+          };
+
+          createOrder(user._id, token, createOrderData);
+
           setRedirect(true);
           setLoading(false);
         }
@@ -310,7 +339,7 @@ const CheckOutPage = () => {
             <div className="row">
               <div className="col-6 mt-4 mb-4">
                 <label className="form-input-label">
-                  Full Name<sup>*</sup>
+                  Full Name <sup>*</sup>
                 </label>
                 <br />
                 <input
@@ -322,7 +351,7 @@ const CheckOutPage = () => {
               </div>
               <div className="col-6 mt-4 mb-4">
                 <label className="form-input-label">
-                  Email<sup>*</sup>
+                  Email <sup>*</sup>
                 </label>
                 <br />
                 <input
@@ -335,28 +364,44 @@ const CheckOutPage = () => {
               </div>
             </div>
             <label className="form-input-label">
-              Country<sup>*</sup>
+              Country <sup>*</sup>
             </label>
             <br />
-            <input type="text" name="country" className="form-control mb-4" />
+            <input
+              type="text"
+              name="country"
+              className="form-control mb-4"
+              value={country}
+              onChange={handleAddress("country")}
+            />
             <label className="form-input-label">Street Address</label>
             <br />
             <input
               type="text"
-              placeholder="Address line 1"
-              name="addressLine1"
+              placeholder="Full Address"
+              name="street"
+              value={street}
+              onChange={handleAddress("street")}
               className="form-control mb-4"
             />
             <input
               type="text"
-              placeholder="Address line 2"
-              name="addressLine2"
+              placeholder="Landmark"
+              name="landmark"
+              value={landmark}
+              onChange={handleAddress("landmark")}
               className="form-control mb-4"
             />
             <div className="mb-5">
               <label className="form-input-label">Town / City</label>
               <br />
-              <input type="text" name="city" className="form-control" />
+              <input
+                type="text"
+                name="city"
+                className="form-control"
+                value={city}
+                onChange={handleAddress("city")}
+              />
             </div>
           </form>
         </div>

@@ -17,7 +17,7 @@ const {
   productPhoto,
   listSearchedProducts,
 } = require("../controllers/productController");
-const { userById } = require("../controllers/userController");
+const { userById, addProductToUser } = require("../controllers/userController");
 const {
   requireSignin,
   isAuth,
@@ -31,6 +31,7 @@ router.post(
   requireSignin,
   isAuth,
   isVendor,
+  // addProductToUser,
   createProduct
 );
 

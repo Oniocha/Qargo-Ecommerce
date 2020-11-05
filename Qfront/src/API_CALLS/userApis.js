@@ -98,15 +98,15 @@ export const initateTransaction = (
     .catch((err) => console.log(err));
 };
 
-export const createOrder = (userId, token, orderData) => {
+export const createOrder = (userId, access, orderData) => {
   return fetch(`${process.env.REACT_APP_API_URL}/order/create/${userId}`, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${access}`,
     },
-    body: JSON.stringify(orderData),
+    body: JSON.stringify({ order: orderData }),
   })
     .then((res) => res.json())
     .catch((err) => console.log(err));
