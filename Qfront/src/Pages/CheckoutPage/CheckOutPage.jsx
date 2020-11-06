@@ -5,7 +5,8 @@ import { cartTotal, getCart } from "../../helpers/cartHelpers";
 import {
   getTransactionFees,
   initateTransaction,
-  createOrder,
+  createAuthOrder,
+  createGuestOrder,
 } from "../../API_CALLS/userApis";
 import Momo from "../../images/Mobile-Money.png";
 
@@ -64,9 +65,6 @@ const CheckOutPage = () => {
   const momoPay = toggle ? "none" : "";
   const payMomo = showMomo ? "" : "none";
   const approved = showSelector ? "" : "none";
-
-  //destructuring localstorage
-  const { user, token } = isAuthenticated();
 
   // Dynamically show mobile network selector if user's network is supported
   const handleMobileSelector = () => {
@@ -239,8 +237,11 @@ const CheckOutPage = () => {
             email,
             address,
           };
-
-          createOrder(user._id, token, createOrderData);
+          if (isAuthenticated()) {
+            //destructuring localstorage
+            const { user, token } = isAuthenticated();
+            createAuthOrder(user._id, token, createOrderData);
+          } else createGuestOrder(createOrderData);
 
           setRedirect(true);
           setLoading(false);

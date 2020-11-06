@@ -98,13 +98,26 @@ export const initateTransaction = (
     .catch((err) => console.log(err));
 };
 
-export const createOrder = (userId, access, orderData) => {
+export const createAuthOrder = (userId, access, orderData) => {
   return fetch(`${process.env.REACT_APP_API_URL}/order/create/${userId}`, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-type": "application/json",
       Authorization: `Bearer ${access}`,
+    },
+    body: JSON.stringify({ order: orderData }),
+  })
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+};
+
+export const createGuestOrder = (orderData) => {
+  return fetch(`${process.env.REACT_APP_API_URL}/order/guest/create`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
     },
     body: JSON.stringify({ order: orderData }),
   })
