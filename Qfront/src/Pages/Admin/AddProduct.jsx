@@ -56,7 +56,7 @@ const AddProduct = () => {
       .then((data) => setTags(data.data))
       .catch((err) => console.log(err));
 
-      // eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -65,7 +65,7 @@ const AddProduct = () => {
       .then((data) => setDepartments(data.data))
       .catch((err) => console.log(err));
 
-      // eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const AddProduct = () => {
       .then((data) => setCategories(data.data))
       .catch((err) => console.log(err));
 
-      // eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -273,7 +273,7 @@ const AddProduct = () => {
                   type="checkbox"
                   onChange={handleChange("size")}
                   className="mr-3"
-                  value="Meduim"
+                  value="Medium"
                 />
                 <label>M</label>
                 <br />

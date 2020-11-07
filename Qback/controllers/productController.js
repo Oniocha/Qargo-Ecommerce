@@ -93,6 +93,7 @@ exports.createProduct = (req, res) => {
 
     product.save((err, result) => {
       if (err) {
+        console.log(err);
         return res.status(400).json({
           error: errorHandler(err),
         });

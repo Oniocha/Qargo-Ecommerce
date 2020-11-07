@@ -43,7 +43,14 @@ const productSchema = new mongoose.Schema(
     size: {
       type: String,
       default: "",
-      enum: ["Small", "Medium", "Large", "Extra-Large", "XXL"],
+      enum: [
+        "Small",
+        "Medium",
+        "Large",
+        "Extra-Large",
+        "XXL",
+        "Not Applicable",
+      ],
     },
     photo: {
       data: Buffer,
