@@ -1,8 +1,8 @@
 const { errorHandler } = require("../helpers/dbErrorHandler");
 const Tag = require("../models/tag");
 
-exports.tagById = (req, res, next, id) => {
-  Tag.findById(id).exec((err, tag) => {
+exports.tagById = async (req, res, next, id) => {
+  await Tag.findById(id).exec((err, tag) => {
     if (err || !tag) {
       return res.status(400).json({
         error: "Tag does not exist",
@@ -13,9 +13,9 @@ exports.tagById = (req, res, next, id) => {
   });
 };
 
-exports.createTag = (req, res) => {
+exports.createTag = async (req, res) => {
   const tag = new Tag(req.body);
-  tag.save((err, data) => {
+  await tag.save((err, data) => {
     if (err) {
       return res.status(400).json({
         error: errorHandler(err),
@@ -29,9 +29,9 @@ exports.readTag = (req, res) => {
   return res.json(req.tag);
 };
 
-exports.removeTag = (req, res) => {
+exports.removeTag = async (req, res) => {
   let tag = req.tag;
-  tag.remove((err, removedTag) => {
+  await tag.remove((err, removedTag) => {
     if (err) {
       return res.status(400).json({
         error: errorHandler(err),
@@ -43,10 +43,10 @@ exports.removeTag = (req, res) => {
   });
 };
 
-exports.updateTag = (req, res) => {
+exports.updateTag = async (req, res) => {
   const tag = req.tag;
   tag.name = req.body.name;
-  tag.save((err, data) => {
+  await tag.save((err, data) => {
     if (err) {
       return res.status(400).json({
         error: errorHandler(err),
@@ -56,8 +56,8 @@ exports.updateTag = (req, res) => {
   });
 };
 
-exports.listTags = (req, res) => {
-  Tag.find().exec((err, data) => {
+exports.listTags = async (req, res) => {
+  await Tag.find().exec((err, data) => {
     if (err) {
       return res.status(400).json({
         error: errorHandler(err),

@@ -1,8 +1,8 @@
 const { errorHandler } = require("../helpers/dbErrorHandler");
 const Department = require("../models/department");
 
-exports.departmentById = (req, res, next, id) => {
-  Department.findById(id).exec((err, department) => {
+exports.departmentById = async (req, res, next, id) => {
+  await Department.findById(id).exec((err, department) => {
     if (err || !department) {
       return res.status(400).json({
         error: "Department does not exist",
@@ -13,9 +13,9 @@ exports.departmentById = (req, res, next, id) => {
   });
 };
 
-exports.createDepartment = (req, res) => {
+exports.createDepartment = async (req, res) => {
   const department = new Department(req.body);
-  department.save((err, data) => {
+  await department.save((err, data) => {
     if (err) {
       return res.status(400).json({
         error: errorHandler(err),
@@ -29,9 +29,9 @@ exports.readDepartment = (req, res) => {
   return res.json(req.department);
 };
 
-exports.removeDepartment = (req, res) => {
+exports.removeDepartment = async (req, res) => {
   let department = req.department;
-  department.remove((err, removedDepartment) => {
+  await department.remove((err, removedDepartment) => {
     if (err) {
       return res.status(400).json({
         error: errorHandler(err),
@@ -43,10 +43,10 @@ exports.removeDepartment = (req, res) => {
   });
 };
 
-exports.updateDepartment = (req, res) => {
+exports.updateDepartment = async (req, res) => {
   const department = req.department;
   department.name = req.body.name;
-  department.save((err, data) => {
+  await department.save((err, data) => {
     if (err) {
       return res.status(400).json({
         error: errorHandler(err),
@@ -56,8 +56,8 @@ exports.updateDepartment = (req, res) => {
   });
 };
 
-exports.listDepartments = (req, res) => {
-  Department.find().exec((err, data) => {
+exports.listDepartments = async (req, res) => {
+  await Department.find().exec((err, data) => {
     if (err) {
       return res.status(400).json({
         error: errorHandler(err),

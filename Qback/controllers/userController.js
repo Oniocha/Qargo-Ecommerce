@@ -1,7 +1,7 @@
 const User = require("../models/user");
 
-exports.userById = (req, res, next, id) => {
-  User.findById(id).exec((err, user) => {
+exports.userById = async (req, res, next, id) => {
+  await User.findById(id).exec((err, user) => {
     if (err || !user) {
       return res.status(400).json({
         error: "User not found",
@@ -18,8 +18,8 @@ exports.readUser = (req, res) => {
   return res.json(req.profile);
 };
 
-exports.updateUser = (req, res) => {
-  User.findOneAndUpdate(
+exports.updateUser = async (req, res) => {
+  await User.findOneAndUpdate(
     { _id: req.profile._id },
     { $set: req.body },
     { new: true },
@@ -36,7 +36,7 @@ exports.updateUser = (req, res) => {
   );
 };
 
-exports.addOrderToHistory = (req, res, next) => {
+exports.addOrderToHistory = async (req, res, next) => {
   let history = [];
 
   req.body.order.products.forEach((item) => {
@@ -49,7 +49,7 @@ exports.addOrderToHistory = (req, res, next) => {
     });
   });
 
-  User.findOneAndUpdate(
+  await User.findOneAndUpdate(
     { _id: req.profile._id },
     { $push: { history: history } },
     { new: true },

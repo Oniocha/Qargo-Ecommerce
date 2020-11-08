@@ -3,10 +3,10 @@ const jwt = require("jsonwebtoken"); // => to generage signed token
 const expressJwt = require("express-jwt"); // => to authorization check
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
-exports.signup = (req, res) => {
+exports.signup = async (req, res) => {
   //Check if usernamme is taken
   const { username } = req.body;
-  User.findOne({ username }, (err, user) => {
+  await User.findOne({ username }, (err, user) => {
     if (err || user) {
       return res.status(400).json({
         error: "Username already taken. Try another one",
@@ -29,10 +29,10 @@ exports.signup = (req, res) => {
   });
 };
 
-exports.signin = (req, res) => {
+exports.signin = async (req, res) => {
   // find the user by email
   const { email, password } = req.body;
-  User.findOne({ email }, (err, user) => {
+  await User.findOne({ email }, (err, user) => {
     if (err || !user) {
       res.status(400).json({
         error: "User with that email does not exist. Please sign up",
@@ -52,7 +52,6 @@ exports.signin = (req, res) => {
       //persist token as 't' in cookie with expiry date
       res.cookie("t", token, { expire: new Date() + 9999 });
       // return response with user and token to frontend
-
       const { _id, name, email, username, role } = user;
       return res.json({ token, user: { _id, name, email, username, role } });
     }

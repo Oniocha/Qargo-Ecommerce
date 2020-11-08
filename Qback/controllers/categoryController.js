@@ -2,8 +2,8 @@ const { errorHandler } = require("../helpers/dbErrorHandler");
 const _ = require("lodash");
 const Category = require("../models/category");
 
-exports.categoryById = (req, res, next, id) => {
-  Category.findById(id).exec((err, category) => {
+exports.categoryById = async (req, res, next, id) => {
+  await Category.findById(id).exec((err, category) => {
     if (err || !category) {
       return res.status(400).json({
         error: "Category does not exist",
@@ -14,9 +14,9 @@ exports.categoryById = (req, res, next, id) => {
   });
 };
 
-exports.createCategory = (req, res) => {
+exports.createCategory = async (req, res) => {
   const category = new Category(req.body);
-  category.save((err, data) => {
+  await category.save((err, data) => {
     if (err) {
       return res.status(400).json({
         error: errorHandler(err),
@@ -30,9 +30,9 @@ exports.readCategory = (req, res) => {
   return res.json(req.category);
 };
 
-exports.removeCategory = (req, res) => {
+exports.removeCategory = async (req, res) => {
   let category = req.category;
-  category.remove((err, removedCategory) => {
+  await category.remove((err, removedCategory) => {
     if (err) {
       return res.status(400).json({
         error: errorHandler(err),
@@ -44,10 +44,10 @@ exports.removeCategory = (req, res) => {
   });
 };
 
-exports.updateCategory = (req, res) => {
+exports.updateCategory = async (req, res) => {
   const category = req.category;
   category.name = req.body.name;
-  category.save((err, data) => {
+  await category.save((err, data) => {
     if (err) {
       return res.status(400).json({
         error: errorHandler(err),
@@ -57,8 +57,8 @@ exports.updateCategory = (req, res) => {
   });
 };
 
-exports.listCategories = (req, res) => {
-  Category.find().exec((err, data) => {
+exports.listCategories = async (req, res) => {
+  await Category.find().exec((err, data) => {
     if (err) {
       return res.status(400).json({
         error: errorHandler(err),

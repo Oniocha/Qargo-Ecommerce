@@ -4,8 +4,8 @@ const fs = require("fs");
 const Product = require("../models/product");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
-exports.productById = (req, res, next, id) => {
-  Product.findById(id)
+exports.productById = async (req, res, next, id) => {
+  await Product.findById(id)
     .populate(["tag", "category", "department"])
     .exec((err, product) => {
       if (err || !product) {
@@ -103,9 +103,9 @@ exports.createProduct = (req, res) => {
   });
 };
 
-exports.removeProduct = (req, res) => {
+exports.removeProduct = async (req, res) => {
   let product = req.product;
-  product.remove((err, productDeleted) => {
+  await product.remove((err, productDeleted) => {
     if (err) {
       return res.status(400).json({
         error: errorHandler(err),
@@ -207,12 +207,12 @@ exports.updateProduct = (req, res) => {
  * random pick - /products?order=rand&limit=20
  */
 
-exports.listProducts = (req, res) => {
+exports.listProducts = async (req, res) => {
   let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
   let limit = req.query.limit ? parseInt(req.query.limit) : 10;
   let order = req.query.order ? req.query.order : "asc";
 
-  Product.find()
+  await Product.find()
     .select("-photo")
     .populate("category")
     .sort([[sortBy, order]])
@@ -227,10 +227,13 @@ exports.listProducts = (req, res) => {
     });
 };
 
-exports.relatedProducts = (req, res) => {
+exports.relatedProducts = async (req, res) => {
   let limit = req.query.limit ? parseInt(req.query.limit) : 5;
 
-  Product.find({ id: { $ne: req.product }, category: req.product.category })
+  await Product.find({
+    id: { $ne: req.product },
+    category: req.product.category,
+  })
     .limit(limit)
     .populate("category, 'id_name'")
     .exec((err, products) => {
@@ -243,8 +246,8 @@ exports.relatedProducts = (req, res) => {
     });
 };
 
-exports.productCategories = (req, res) => {
-  Product.distinct("category", {}, (err, categories) => {
+exports.productCategories = async (req, res) => {
+  await Product.distinct("category", {}, (err, categories) => {
     if (err) {
       return res.status(400).json({
         error: "No product categories found",
@@ -254,8 +257,8 @@ exports.productCategories = (req, res) => {
   });
 };
 
-exports.productDepartments = (req, res) => {
-  Product.distinct("department", {}, (err, departments) => {
+exports.productDepartments = async (req, res) => {
+  await Product.distinct("department", {}, (err, departments) => {
     if (err) {
       return res.status(400).json({
         error: "No product department found",
@@ -265,8 +268,8 @@ exports.productDepartments = (req, res) => {
   });
 };
 
-exports.productTags = (req, res) => {
-  Product.distinct("tag", {}, (err, tags) => {
+exports.productTags = async (req, res) => {
+  await Product.distinct("tag", {}, (err, tags) => {
     if (err) {
       return res.status(400).json({
         error: "No product tag found",
@@ -284,7 +287,7 @@ exports.productTags = (req, res) => {
  * we will make api requests and show the products to users based on what they want
  */
 
-exports.listBySearch = (req, res) => {
+exports.listBySearch = async (req, res) => {
   let order = req.body.order ? req.body.order : "desc";
   let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
   let limit = req.body.limit ? parseInt(req.body.limit) : 100;
@@ -310,7 +313,7 @@ exports.listBySearch = (req, res) => {
 
   // console.log("findArgs", findArgs);
 
-  Product.find(findArgs)
+  await Product.find(findArgs)
     .select("-photo")
     .populate(["tag", "category", "department"])
     .sort([[sortBy, order]])
@@ -329,15 +332,15 @@ exports.listBySearch = (req, res) => {
     });
 };
 
-exports.productPhoto = (req, res, next) => {
+exports.productPhoto = async (req, res, next) => {
   if (req.product.photo.data) {
-    res.set("Content-Type", req.product.photo.contentType);
+    await res.set("Content-Type", req.product.photo.contentType);
     return res.send(req.product.photo.data);
   }
   next();
 };
 
-exports.listSearchedProducts = (req, res) => {
+exports.listSearchedProducts = async (req, res) => {
   //creating query object to hold search value and department value
   let query = {};
   //assign query.name to search value
@@ -348,7 +351,7 @@ exports.listSearchedProducts = (req, res) => {
     }
     //find the product based on query with 2 properties
     //search annd department
-    Product.find(query, (err, product) => {
+    await Product.find(query, (err, product) => {
       if (err) {
         return res.status(400).json({
           error: errorHandler(err),
@@ -359,7 +362,7 @@ exports.listSearchedProducts = (req, res) => {
   }
 };
 
-exports.decreaseQuantity = (req, res, next) => {
+exports.decreaseQuantity = async (req, res, next) => {
   let bulkOps = req.body.order.products.map((item) => {
     return {
       updateOne: {
@@ -369,7 +372,7 @@ exports.decreaseQuantity = (req, res, next) => {
     };
   });
 
-  Product.bulkWrite(bulkOps, {}, (error, products) => {
+  await Product.bulkWrite(bulkOps, {}, (error, products) => {
     if (error) {
       return res.status(400).json({
         error: "Could not update products",

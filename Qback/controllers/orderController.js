@@ -2,11 +2,11 @@ const { Order, CartItem } = require("../models/order");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
 // Creating order for authenticated users
-exports.createOrder = (req, res) => {
+exports.createOrder = async (req, res) => {
   // console.log(req.body);
   req.body.order.user = req.profile;
   const order = new Order(req.body.order);
-  order.save((err, data) => {
+  await order.save((err, data) => {
     if (err) {
       return res.status(400).json({
         status: "Failed",
@@ -18,11 +18,11 @@ exports.createOrder = (req, res) => {
 };
 
 // Creating orders for guest users
-exports.createGuestOrder = (req, res) => {
+exports.createGuestOrder = async (req, res) => {
   console.log("profile", req.profile);
   console.log("guest order", req.body);
   const order = new Order(req.body.order);
-  order.save((err, data) => {
+  await order.save((err, data) => {
     if (err) {
       return res.status(400).json({
         status: "Failed",
@@ -33,8 +33,8 @@ exports.createGuestOrder = (req, res) => {
   });
 };
 
-exports.listOrders = (req, res) => {
-  Order.find()
+exports.listOrders = async (req, res) => {
+  await Order.find()
     .populate("user", "_id name address")
     .sort("-created")
     .exec((err, orders) => {
