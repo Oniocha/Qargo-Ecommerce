@@ -42,14 +42,14 @@ app.use(expressValidator());
 app.use(cors());
 
 //routes middleware
-app.use("/api", userAuthRoutes);
-app.use("/api", userRoutes);
-app.use("/api", categoryRoutes);
-app.use("/api", departmentRoutes);
-app.use("/api", tagRoutes);
-app.use("/api", productRoutes);
-app.use("/api", raveRoutes);
-app.use("/api", orderRoutes);
+app.use("/api/v1", userAuthRoutes);
+app.use("/api/v1", userRoutes);
+app.use("/api/v1", categoryRoutes);
+app.use("/api/v1", departmentRoutes);
+app.use("/api/v1", tagRoutes);
+app.use("/api/v1", productRoutes);
+app.use("/api/v1", raveRoutes);
+app.use("/api/v1", orderRoutes);
 
 const port = process.env.PORT || 8000;
 

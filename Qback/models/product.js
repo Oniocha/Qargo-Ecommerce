@@ -19,6 +19,7 @@ const productSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
+    priceDiscount: Number,
     category: {
       type: ObjectId,
       ref: "Category",
@@ -33,15 +34,23 @@ const productSchema = new mongoose.Schema(
       default: 0,
     },
     seller: {
-      type: String,
-      trim: true,
+      type: ObjectId,
+      ref: "User",
+    },
+    ratingAverage: {
+      type: Number,
+      default: 0,
+    },
+    ratingQuantity: {
+      type: Number,
+      default: 0,
     },
     featured: {
       type: Boolean,
       default: false,
     },
     size: {
-      type: String,
+      type: [String],
       default: "",
       enum: [
         "Small",
