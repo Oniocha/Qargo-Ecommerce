@@ -385,3 +385,33 @@ exports.decreaseQuantity = async (req, res, next) => {
 exports.listProductSizes = (req, res) => {
   res.json(Product.schema.path("size").enumValues);
 };
+
+exports.productStats = async (req, res) => {
+  try {
+    const stats = await Product.aggregate([
+      {
+        $match: { sold: { $gte: 0 } },
+      },
+      {
+        $group: {
+          _id: null,
+          numProducts: { $sum: 1 },
+          numRatings: { $sum: "$rating" },
+          numSold: { $sum: "$sold" },
+          avgRating: { $avg: "$ratingAverage" },
+          avgPrice: { $avg: "$price" },
+          minPrice: { $min: "$price" },
+          maxPrice: { $max: "$price" },
+        },
+      },
+    ]);
+    res.status(200).json({
+      status: "success",
+      data: stats,
+    });
+  } catch (err) {
+    return res.status(400).json({
+      error: err,
+    });
+  }
+};

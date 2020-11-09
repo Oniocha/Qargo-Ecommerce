@@ -16,6 +16,7 @@ const {
   listProductSizes,
   productPhoto,
   listSearchedProducts,
+  productStats,
 } = require("../controllers/productController");
 const { userById, addProductToUser } = require("../controllers/userController");
 const {
@@ -34,6 +35,9 @@ router.post(
   // addProductToUser,
   createProduct
 );
+
+// Get product stats
+router.get("/product-stats", productStats);
 
 // View product
 router.get("/product/:productId", readProduct);
