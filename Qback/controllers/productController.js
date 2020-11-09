@@ -394,7 +394,7 @@ exports.productStats = async (req, res) => {
       },
       {
         $group: {
-          _id: null,
+          _id: "$department",
           numProducts: { $sum: 1 },
           numRatings: { $sum: "$rating" },
           numSold: { $sum: "$sold" },
@@ -403,6 +403,9 @@ exports.productStats = async (req, res) => {
           minPrice: { $min: "$price" },
           maxPrice: { $max: "$price" },
         },
+      },
+      {
+        $sort: { numSold: 1 },
       },
     ]);
     res.status(200).json({
