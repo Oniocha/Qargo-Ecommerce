@@ -25,7 +25,10 @@ const productSchema = new mongoose.Schema(
       ref: "Category",
       required: true,
     },
-
+    imageCover: {
+      type: String,
+    },
+    images: [String],
     quantity: {
       type: Number,
     },
