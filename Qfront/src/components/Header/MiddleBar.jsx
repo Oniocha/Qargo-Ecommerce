@@ -13,13 +13,13 @@ const MiddleBar = ({ checkout = false }) => {
   return (
     <div className={checkoutMargin}>
       <nav className={checkoutBarColor}>
-        <Link to="/" className="navbar-brand">
+        <a href="/" className="navbar-brand">
           <img
             src={Qargo}
             alt="Qargo Logo"
             className="brand d-none d-xl-block d-lg-block"
           />
-        </Link>
+        </a>
         {checkout && (
           <h2 style={{ color: "white", fontWeight: "300", fontSize: "1.5rem" }}>
             Checkout Securely

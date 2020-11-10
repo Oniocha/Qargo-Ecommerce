@@ -54,7 +54,7 @@ const productSchema = new mongoose.Schema(
     },
     size: {
       type: [String],
-      default: "",
+      default: "Not Applicable",
       enum: [
         "Small",
         "Medium",

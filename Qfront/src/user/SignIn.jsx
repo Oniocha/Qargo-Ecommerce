@@ -83,7 +83,7 @@ const SignIn = ({ location }) => {
         return <Redirect to="/cart" />;
       }
       if (isAuthenticated() && isAuthenticated().user.role === 0) {
-        return window.location.href == "/";
+        return (window.location.href = "/");
       }
       if (isAuthenticated() && isAuthenticated().user.role === 1) {
         return (window.location.href = "/partners/account");
