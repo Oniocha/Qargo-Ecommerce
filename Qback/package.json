@@ -2,9 +2,11 @@
   "name": "qargo",
   "version": "1.0.0",
   "description": "Find all the clothes to look good",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "nodemon ./app.js"
+    "start": "nodemon ./app.js",
+    "start:prod": "NODE_ENV=production nodemon ./app.js",
+    "debug": "ndb app.js"
   },
   "keywords": [
     "Fashion store in Ghana",
@@ -31,6 +33,11 @@
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.4",
-    "uuid": "^8.3.1"
+    "slugify": "^1.4.6",
+    "uuid": "^8.3.1",
+    "validator": "^13.1.17"
+  },
+  "devDependencies": {
+    "ndb": "^1.1.5"
   }
 }

@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
+const slugify = require("slugify");
+const validator = require("validator");
 
 const productSchema = new mongoose.Schema(
   {
@@ -7,19 +9,34 @@ const productSchema = new mongoose.Schema(
       type: String,
       trim: true,
       required: true,
-      maxlength: 50,
+      maxlength: [50, "Product name should not exceed 50 characters"],
+      validate: [
+        validator.isAlphanumeric,
+        "A product name can only contain alphanumeric characters",
+      ],
     },
+    slug: String,
     description: {
       type: String,
       required: true,
-      maxlength: 2000,
+      maxlength: [2000, "Description should not exceed 2000 charaters"],
     },
     price: {
       type: Number,
       trim: true,
       required: true,
     },
-    priceDiscount: Number,
+    priceDiscount: {
+      type: Number,
+      // Only works with creating new products, not when updating documents
+      validate: {
+        validator: function (val) {
+          return val < this.price;
+        },
+        message:
+          "Discount price ({VALUE}) should be less than the regular price",
+      },
+    },
     category: {
       type: ObjectId,
       ref: "Category",
@@ -43,6 +60,8 @@ const productSchema = new mongoose.Schema(
     ratingAverage: {
       type: Number,
       default: 0,
+      min: [1, "Rating must be above 1.0"],
+      max: [5, "Rating must be below 5.0"],
     },
     ratingQuantity: {
       type: Number,
@@ -108,5 +127,11 @@ const productSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+//Document Middleware
+productSchema.pre("save", function (next) {
+  this.slug = slugify(this.name, { lower: true });
+  next();
+});
 
 module.exports = mongoose.model("Product", productSchema);

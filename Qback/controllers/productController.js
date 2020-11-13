@@ -3,20 +3,18 @@ const _ = require("lodash");
 const fs = require("fs");
 const Product = require("../models/product");
 const { errorHandler } = require("../helpers/dbErrorHandler");
+const catchAsync = require("../utils/catchAsync");
 
-exports.productById = async (req, res, next, id) => {
-  await Product.findById(id)
-    .populate(["tag", "category", "department"])
-    .exec((err, product) => {
-      if (err || !product) {
-        return res.status(400).json({
-          error: "Product was not found",
-        });
-      }
-      req.product = product;
-      next();
-    });
-};
+exports.productById = catchAsync(async (req, res, next) => {
+  console.log(req.params.productId);
+  const product = await Product.findById(req.params.productId).populate([
+    "tag",
+    "category",
+    "department",
+  ]);
+  req.product = product;
+  next();
+});
 
 exports.readProduct = (req, res) => {
   req.product.photo = undefined;
@@ -29,6 +27,7 @@ exports.createProduct = (req, res) => {
   form.parse(req, (err, fields, files) => {
     if (err) {
       return res.status(400).json({
+        status: "Failed",
         error: "Image could not be uploaded",
       });
     }
@@ -44,30 +43,37 @@ exports.createProduct = (req, res) => {
     } = fields;
     if (!name) {
       return res.status(400).json({
+        status: "Failed",
         error: "Product Title is required.",
       });
     } else if (!description) {
       return res.status(400).json({
+        status: "Failed",
         error: "Please input a product description.",
       });
     } else if (!department) {
       return res.status(400).json({
+        status: "Failed",
         error: "Please select a product department.",
       });
     } else if (!price) {
       return res.status(400).json({
+        status: "Failed",
         error: "Oops, you forgot to include a price for your product.",
       });
     } else if (!category) {
       return res.status(400).json({
+        status: "Failed",
         error: "Please select a category for your product.",
       });
     } else if (!shipping) {
       return res.status(400).json({
+        status: "Failed",
         error: "Kindly indicate your product shipping method.",
       });
     } else if (!shippingTime) {
       return res.status(400).json({
+        status: "Failed",
         error:
           "Please provide the delivery duration for your product (in days).",
       });
@@ -80,6 +86,7 @@ exports.createProduct = (req, res) => {
       if (files.photo.size > 1000000) {
         // if the uploaded photo is greater than 1mb
         return res.status(400).json({
+          status: "Failed",
           error: "Image size should not exceed 1mb",
         });
       }
@@ -87,6 +94,7 @@ exports.createProduct = (req, res) => {
       product.photo.contentType = files.photo.type;
     } else {
       return res.status(400).json({
+        status: "Failed",
         error: "Please upload an image for your product",
       });
     }
@@ -95,6 +103,7 @@ exports.createProduct = (req, res) => {
       if (err) {
         console.log(err);
         return res.status(400).json({
+          status: "Failed",
           error: errorHandler(err),
         });
       }
@@ -103,19 +112,14 @@ exports.createProduct = (req, res) => {
   });
 };
 
-exports.removeProduct = async (req, res) => {
+exports.removeProduct = catchAsync(async (req, res, next) => {
   let product = req.product;
-  await product.remove((err, productDeleted) => {
-    if (err) {
-      return res.status(400).json({
-        error: errorHandler(err),
-      });
-    }
-    res.json({
-      message: "Product deleted successfully",
-    });
+  let deletedProduct = await product.remove();
+  res.json({
+    status: "sucess",
+    message: "Product deleted successfully",
   });
-};
+});
 
 exports.updateProduct = (req, res) => {
   let form = new formidable.IncomingForm();
@@ -123,6 +127,7 @@ exports.updateProduct = (req, res) => {
   form.parse(req, (err, fields, files) => {
     if (err) {
       return res.status(400).json({
+        status: "Failed",
         error: "Image could not be uploaded",
       });
     }
@@ -138,30 +143,37 @@ exports.updateProduct = (req, res) => {
     } = fields;
     if (!name) {
       return res.status(400).json({
+        status: "Failed",
         error: "Product Title is required.",
       });
     } else if (!description) {
       return res.status(400).json({
+        status: "Failed",
         error: "Please input a product description.",
       });
     } else if (!price) {
       return res.status(400).json({
+        status: "Failed",
         error: "Oops, you forgot to include a price for your product.",
       });
     } else if (!category) {
       return res.status(400).json({
+        status: "Failed",
         error: "Please select a category for your product.",
       });
     } else if (!department) {
       return res.status(400).json({
+        status: "Failed",
         error: "Please input a product department.",
       });
     } else if (!shipping) {
       return res.status(400).json({
+        status: "Failed",
         error: "Kindly indicate your product shipping status.",
       });
     } else if (!shippingTime) {
       return res.status(400).json({
+        status: "Failed",
         error:
           "Please provide the delivery duration for your product (in days).",
       });
@@ -176,6 +188,7 @@ exports.updateProduct = (req, res) => {
       if (files.photo.size > 1000000) {
         // if the uploaded photo is greater than 1mb
         return res.status(400).json({
+          status: "Failed",
           error: "Image size should not exceed 1mb",
         });
       }
@@ -183,6 +196,7 @@ exports.updateProduct = (req, res) => {
       product.photo.contentType = files.photo.type;
     } else {
       return res.status(400).json({
+        status: "Failed",
         error: "Please upload an image for your product",
       });
     }
@@ -190,6 +204,7 @@ exports.updateProduct = (req, res) => {
     product.save((err, result) => {
       if (err) {
         return res.status(400).json({
+          status: "Failed",
           error: errorHandler(err),
         });
       }
@@ -207,77 +222,60 @@ exports.updateProduct = (req, res) => {
  * random pick - /products?order=rand&limit=20
  */
 
-exports.listProducts = async (req, res) => {
+exports.listProducts = catchAsync(async (req, res, next) => {
   let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
   let limit = req.query.limit ? parseInt(req.query.limit) : 10;
   let order = req.query.order ? req.query.order : "asc";
 
-  await Product.find()
+  let products = await Product.find()
     .select("-photo")
     .populate("category")
     .sort([[sortBy, order]])
-    .limit(limit)
-    .exec((err, products) => {
-      if (err || !products) {
-        return res.status(400).json({
-          error: "Error fetching products",
-        });
-      }
-      res.json(products);
-    });
-};
+    .limit(limit);
+  res.status(200).json({
+    status: "success",
+    data: products,
+  });
+});
 
-exports.relatedProducts = async (req, res) => {
+exports.relatedProducts = catchAsync(async (req, res, next) => {
   let limit = req.query.limit ? parseInt(req.query.limit) : 5;
 
-  await Product.find({
+  let products = await Product.find({
     id: { $ne: req.product },
     category: req.product.category,
   })
     .limit(limit)
-    .populate("category, 'id_name'")
-    .exec((err, products) => {
-      if (err || !products) {
-        return res.status(400).json({
-          error: "No related products found",
-        });
-      }
-      res.json(products);
-    });
-};
-
-exports.productCategories = async (req, res) => {
-  await Product.distinct("category", {}, (err, categories) => {
-    if (err) {
-      return res.status(400).json({
-        error: "No product categories found",
-      });
-    }
-    res.json(categories);
+    .populate("category, 'id_name'");
+  res.status(200).json({
+    status: "success",
+    data: products,
   });
-};
+});
 
-exports.productDepartments = async (req, res) => {
-  await Product.distinct("department", {}, (err, departments) => {
-    if (err) {
-      return res.status(400).json({
-        error: "No product department found",
-      });
-    }
-    res.json(departments);
+exports.productCategories = catchAsync(async (req, res, next) => {
+  let categories = await Product.distinct("category", {});
+  res.status(200).json({
+    status: "success",
+    data: categories,
   });
-};
+});
 
-exports.productTags = async (req, res) => {
-  await Product.distinct("tag", {}, (err, tags) => {
-    if (err) {
-      return res.status(400).json({
-        error: "No product tag found",
-      });
-    }
-    res.json(tags);
+exports.productDepartments = catchAsync(async (req, res, next) => {
+  let departments = await Product.distinct("department", {});
+  res.status(200).json({
+    status: "success",
+    data: departments,
   });
-};
+});
+
+exports.productTags = catchAsync(async (req, res, next) => {
+  let tags = await Product.distinct("tag", {});
+  res.status(200).json({
+    status: "success",
+    data: tags,
+  });
+});
 
 /**
  * list products by search
@@ -322,6 +320,7 @@ exports.listBySearch = async (req, res) => {
     .exec((err, data) => {
       if (err) {
         return res.status(400).json({
+          status: "Failed",
           error: "Products not found",
         });
       }
@@ -340,7 +339,7 @@ exports.productPhoto = async (req, res, next) => {
   next();
 };
 
-exports.listSearchedProducts = async (req, res) => {
+exports.listSearchedProducts = catchAsync(async (req, res, next) => {
   //creating query object to hold search value and department value
   let query = {};
   //assign query.name to search value
@@ -350,19 +349,16 @@ exports.listSearchedProducts = async (req, res) => {
       req.department = req.query.department;
     }
     //find the product based on query with 2 properties
-    //search annd department
-    await Product.find(query, (err, product) => {
-      if (err) {
-        return res.status(400).json({
-          error: errorHandler(err),
-        });
-      }
-      res.json(product);
-    }).select("-photo");
+    //search and department
+    let product = await Product.find(query).select("-photo");
+    res.status(200).json({
+      status: "success",
+      data: product,
+    });
   }
-};
+});
 
-exports.decreaseQuantity = async (req, res, next) => {
+exports.decreaseQuantity = catchAsync(async (req, res, next) => {
   let bulkOps = req.body.order.products.map((item) => {
     return {
       updateOne: {
@@ -372,49 +368,40 @@ exports.decreaseQuantity = async (req, res, next) => {
     };
   });
 
-  await Product.bulkWrite(bulkOps, {}, (error, products) => {
-    if (error) {
-      return res.status(400).json({
-        error: "Could not update products",
-      });
-    }
-    next();
+  await Product.bulkWrite(bulkOps, {});
+  res.status(200).json({
+    status: "sucess",
   });
-};
+  next();
+});
 
 exports.listProductSizes = (req, res) => {
   res.json(Product.schema.path("size").enumValues);
 };
 
-exports.productStats = async (req, res) => {
-  try {
-    const stats = await Product.aggregate([
-      {
-        $match: { sold: { $gte: 0 } },
+exports.productStats = catchAsync(async (req, res, next) => {
+  const stats = await Product.aggregate([
+    {
+      $match: { sold: { $gte: 0 } },
+    },
+    {
+      $group: {
+        _id: "$department",
+        numProducts: { $sum: 1 },
+        numRatings: { $sum: "$rating" },
+        numSold: { $sum: "$sold" },
+        avgRating: { $avg: "$ratingAverage" },
+        avgPrice: { $avg: "$price" },
+        minPrice: { $min: "$price" },
+        maxPrice: { $max: "$price" },
       },
-      {
-        $group: {
-          _id: "$department",
-          numProducts: { $sum: 1 },
-          numRatings: { $sum: "$rating" },
-          numSold: { $sum: "$sold" },
-          avgRating: { $avg: "$ratingAverage" },
-          avgPrice: { $avg: "$price" },
-          minPrice: { $min: "$price" },
-          maxPrice: { $max: "$price" },
-        },
-      },
-      {
-        $sort: { numSold: 1 },
-      },
-    ]);
-    res.status(200).json({
-      status: "success",
-      data: stats,
-    });
-  } catch (err) {
-    return res.status(400).json({
-      error: err,
-    });
-  }
-};
+    },
+    {
+      $sort: { numSold: 1 },
+    },
+  ]);
+  res.status(200).json({
+    status: "success",
+    data: stats,
+  });
+});

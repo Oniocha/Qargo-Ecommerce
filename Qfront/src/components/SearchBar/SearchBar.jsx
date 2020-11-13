@@ -96,7 +96,10 @@ const SearchBar = () => {
             onChange={handleChange("search")}
           />
           <div className="input-group-append">
-            <button className="btn btn-action search-btn">
+            <button
+              className="btn btn-action search-btn"
+              onClick={handleSubmit}
+            >
               <svg
                 width="1em"
                 height="1em"

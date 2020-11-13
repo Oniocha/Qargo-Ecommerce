@@ -1,7 +1,9 @@
 const express = require("express");
-const mongoose = require("mongoose");
 // load env variables
 require("dotenv").config();
+const mongoose = require("mongoose");
+const AppError = require("./utils/appErrors");
+const globalErrorHandler = require("./controllers/errorController");
 
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
@@ -22,8 +24,13 @@ const orderRoutes = require("./routes/orderRoutes");
 const app = express();
 
 //db connection
+const DB = process.env.DATABASE.replace(
+  "<PASSWORD>",
+  process.env.DATABASE_PASSWORD
+);
+
 mongoose
-  .connect(process.env.DATABASE, {
+  .connect(DB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
@@ -50,6 +57,12 @@ app.use("/api/v1", tagRoutes);
 app.use("/api/v1", productRoutes);
 app.use("/api/v1", raveRoutes);
 app.use("/api/v1", orderRoutes);
+
+app.all("*", (req, res, next) => {
+  next(new AppError(`Could not find ${req.originalUrl} on this server!`, 404));
+});
+
+app.use(globalErrorHandler);
 
 const port = process.env.PORT || 8000;
 

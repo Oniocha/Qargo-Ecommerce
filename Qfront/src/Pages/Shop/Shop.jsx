@@ -46,7 +46,6 @@ const Shop = () => {
       } else {
         setFilteredResults(data.data);
         setSize(data.size);
-        console.log(filteredResults);
         setSkip(0);
       }
     });

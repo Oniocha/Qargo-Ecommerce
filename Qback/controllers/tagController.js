@@ -5,6 +5,7 @@ exports.tagById = async (req, res, next, id) => {
   await Tag.findById(id).exec((err, tag) => {
     if (err || !tag) {
       return res.status(400).json({
+        status: "Failed",
         error: "Tag does not exist",
       });
     }
@@ -18,7 +19,8 @@ exports.createTag = async (req, res) => {
   await tag.save((err, data) => {
     if (err) {
       return res.status(400).json({
-        error: errorHandler(err),
+        status: "failed",
+        error: err.errors.name.message,
       });
     }
     res.json({ data });
@@ -34,6 +36,7 @@ exports.removeTag = async (req, res) => {
   await tag.remove((err, removedTag) => {
     if (err) {
       return res.status(400).json({
+        status: "Failed",
         error: errorHandler(err),
       });
     }
@@ -49,6 +52,7 @@ exports.updateTag = async (req, res) => {
   await tag.save((err, data) => {
     if (err) {
       return res.status(400).json({
+        status: "Failed",
         error: errorHandler(err),
       });
     }
@@ -60,6 +64,7 @@ exports.listTags = async (req, res) => {
   await Tag.find().exec((err, data) => {
     if (err) {
       return res.status(400).json({
+        status: "Failed",
         error: errorHandler(err),
       });
     }

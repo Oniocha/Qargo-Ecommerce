@@ -26,7 +26,7 @@ const ProductPage = ({ match }) => {
           if (data.error) {
             setError(data.error);
           } else {
-            setRelated(data);
+            setRelated(data.data);
           }
         });
       }

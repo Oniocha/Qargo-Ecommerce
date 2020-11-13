@@ -7,8 +7,13 @@ const ShowImage = ({ item, url, className }) => {
 
   const fecthImage = () => {
     setLoading(true);
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/${url}/photo/${item._id}`)
+    fetch(`${process.env.REACT_APP_API_URL}/${url}/photo/${item._id}`, {
+      method: "GET",
+      headers: {
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Origin": "*",
+      },
+    })
       .then((data) => {
         setImage(`${process.env.REACT_APP_API_URL}/${url}/photo/${item._id}`);
         setLoading(false);

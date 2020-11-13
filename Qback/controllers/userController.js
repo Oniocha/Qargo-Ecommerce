@@ -4,6 +4,7 @@ exports.userById = async (req, res, next, id) => {
   await User.findById(id).exec((err, user) => {
     if (err || !user) {
       return res.status(400).json({
+        status: "Failed",
         error: "User not found",
       });
     }
@@ -26,6 +27,7 @@ exports.updateUser = async (req, res) => {
     (err, user) => {
       if (err) {
         return res.status(400).json({
+          status: "Failed",
           error: "You are not authorized to perform this action",
         });
       }

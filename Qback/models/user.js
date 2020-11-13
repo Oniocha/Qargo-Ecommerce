@@ -1,6 +1,7 @@
 const crypto = require("crypto");
 const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
+const validator = require("validator");
 
 const userSchema = new mongoose.Schema(
   {
@@ -63,6 +64,7 @@ const userSchema = new mongoose.Schema(
       type: Number,
       trim: true,
       maxlength: 15,
+      validate: [validator.isMobilePhone, "Phone number must be valid"],
     },
   },
   { timestamps: true }
@@ -88,7 +90,7 @@ userSchema.methods = {
 
   encryptPassword: function (password) {
     if (!password) {
-      return "";
+      return "None";
     }
     try {
       return crypto
@@ -96,7 +98,7 @@ userSchema.methods = {
         .update(password)
         .digest("hex");
     } catch (err) {
-      return "";
+      return "Unseasoned";
     }
   },
 };

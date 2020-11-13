@@ -9,6 +9,7 @@ exports.signup = async (req, res) => {
   await User.findOne({ username }, (err, user) => {
     if (err || user) {
       return res.status(400).json({
+        status: "Failed",
         error: "Username already taken. Try another one",
       });
     } else {
@@ -16,6 +17,7 @@ exports.signup = async (req, res) => {
       user.save((err, user) => {
         if (err) {
           return res.status(400).json({
+            status: "Failed",
             error: errorHandler(err),
           });
         }
@@ -35,6 +37,7 @@ exports.signin = async (req, res) => {
   await User.findOne({ email }, (err, user) => {
     if (err || !user) {
       res.status(400).json({
+        status: "Failed",
         error: "User with that email does not exist. Please sign up",
       });
     }
@@ -42,6 +45,7 @@ exports.signin = async (req, res) => {
     // create the authentication method in user model
     if (user !== null && !user.authenticate(password)) {
       return res.status(401).json({
+        status: "Failed",
         error: "Incorrect password, please try again",
       });
     }
@@ -73,6 +77,7 @@ exports.isAuth = (req, res, next) => {
   let user = req.profile && req.auth && req.profile._id == req.auth._id;
   if (!user) {
     return res.status(403).json({
+      status: "Failed",
       error: "Access denied! Sign in required",
     });
   }
@@ -82,6 +87,7 @@ exports.isAuth = (req, res, next) => {
 exports.isVendor = (req, res, next) => {
   if (req.profile.role !== 1) {
     return res.status(403).json({
+      status: "Failed",
       error:
         "Vendor resource! Please turn on 'Start Selling' in your user account",
     });
@@ -92,6 +98,7 @@ exports.isVendor = (req, res, next) => {
 exports.isAdmin = (req, res, next) => {
   if (req.profile.role !== 4286) {
     return res.status(403).json({
+      status: "Failed",
       error: "Admin resource! Access denied",
     });
   }

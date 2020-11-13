@@ -3,7 +3,7 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 
 function SearchPage({ location }) {
   const results = location.state;
-  // console.log("search page", results.searchResults);
+  console.log("search page", results.searchResults.data);
   const [search, setSearch] = useState([]);
 
   const searchMessage = () => {
@@ -15,7 +15,7 @@ function SearchPage({ location }) {
   };
 
   useEffect(() => {
-    setSearch(results.searchResults);
+    setSearch(results.searchResults.data);
   }, [results.searchResults]);
 
   return (

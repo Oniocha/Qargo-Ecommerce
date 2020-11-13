@@ -6,6 +6,7 @@ exports.categoryById = async (req, res, next, id) => {
   await Category.findById(id).exec((err, category) => {
     if (err || !category) {
       return res.status(400).json({
+        status: "Failed",
         error: "Category does not exist",
       });
     }
@@ -19,7 +20,8 @@ exports.createCategory = async (req, res) => {
   await category.save((err, data) => {
     if (err) {
       return res.status(400).json({
-        error: errorHandler(err),
+        status: "failed",
+        error: err.errors.name.message,
       });
     }
     res.json({ data });
@@ -35,6 +37,7 @@ exports.removeCategory = async (req, res) => {
   await category.remove((err, removedCategory) => {
     if (err) {
       return res.status(400).json({
+        status: "Failed",
         error: errorHandler(err),
       });
     }
@@ -50,6 +53,7 @@ exports.updateCategory = async (req, res) => {
   await category.save((err, data) => {
     if (err) {
       return res.status(400).json({
+        status: "Failed",
         error: errorHandler(err),
       });
     }
@@ -61,6 +65,7 @@ exports.listCategories = async (req, res) => {
   await Category.find().exec((err, data) => {
     if (err) {
       return res.status(400).json({
+        status: "Failed",
         error: errorHandler(err),
       });
     }

@@ -28,8 +28,8 @@ const NewArrivals = () => {
       .get(
         `${process.env.REACT_APP_API_URL}/products?sortBy=sold&order=desc&limit=10`
       )
-      .then((res) => setProductsBySell(res.data))
-      .catch((err) => console.log(err.message));
+      .then((res) => setProductsBySell(res.data.data))
+      .catch((err) => console.log(err));
   };
 
   const fetchByArrival = () => {
@@ -37,8 +37,8 @@ const NewArrivals = () => {
       .get(
         `${process.env.REACT_APP_API_URL}/products?sortBy=createdAt&order=desc&limit=10`
       )
-      .then((res) => setProductsByArrival(res.data))
-      .catch((err) => console.log(err.message));
+      .then((res) => setProductsByArrival(res.data.data))
+      .catch((err) => console.log(err));
   };
 
   const fetchByPrice = () => {
@@ -46,8 +46,8 @@ const NewArrivals = () => {
       .get(
         `${process.env.REACT_APP_API_URL}/products?sortBy=price&order=asc&limit=10`
       )
-      .then((res) => setProductsByPrice(res.data))
-      .catch((err) => console.log(err.message));
+      .then((res) => setProductsByPrice(res.data.data))
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
