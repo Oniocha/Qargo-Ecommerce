@@ -19,18 +19,12 @@ const {
   productStats,
 } = require("../controllers/productController");
 const { userById, addProductToUser } = require("../controllers/userController");
-const {
-  protect,
-  isAuth,
-  isAdmin,
-  isVendor,
-} = require("../controllers/authController");
+const { protect, isAdmin, isVendor } = require("../controllers/authController");
 
 // Create product
 router.post(
   "/product/create/:userId",
   protect,
-  isAuth,
   isVendor,
   // addProductToUser,
   createProduct
@@ -49,22 +43,10 @@ router.get("/products", listProducts);
 router.get("/products/sizes", listProductSizes);
 
 // Edit product
-router.put(
-  "/product/:productId/:userId",
-  protect,
-  isAuth,
-  isVendor,
-  updateProduct
-);
+router.put("/product/:productId/:userId", protect, isVendor, updateProduct);
 
 // Delete product
-router.delete(
-  "/product/:productId/:userId",
-  protect,
-  isAuth,
-  isVendor,
-  removeProduct
-);
+router.delete("/product/:productId/:userId", protect, isVendor, removeProduct);
 
 // Get related products
 router.get("/product/related/:productId", relatedProducts);

@@ -6,7 +6,6 @@ const { errorHandler } = require("../helpers/dbErrorHandler");
 const catchAsync = require("../utils/catchAsync");
 
 exports.productById = catchAsync(async (req, res, next) => {
-  console.log(req.params.productId);
   const product = await Product.findById(req.params.productId).populate([
     "tag",
     "category",

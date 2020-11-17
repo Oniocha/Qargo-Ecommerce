@@ -19,7 +19,7 @@ const { isAdmin, protect } = require("../controllers/authController");
 });
  */
 
-router.route("/user/:userId").get(protect, readUser).put(protect, updateMe);
+router.route("/user/:userId").get(protect, readUser).patch(protect, updateMe);
 
 //Get All users
 router.get("/users/:userId", protect, isAdmin, getAllUsers);

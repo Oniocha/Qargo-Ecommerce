@@ -100,19 +100,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.isAuth = (req, res, next) => {
-  let user = req.profile && req.auth && req.profile._id == req.auth.id;
-  console.log(user);
-  if (!user) {
-    return res.status(403).json({
-      status: "Failed",
-      error: "Access denied! jSign in required",
-    });
-  }
-
-  next();
-};
-
 exports.isVendor = (req, res, next) => {
   if (req.auth.role !== 2424) {
     return next(

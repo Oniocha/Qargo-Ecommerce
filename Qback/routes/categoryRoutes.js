@@ -10,39 +10,21 @@ const {
   listCategories,
 } = require("../controllers/categoryController");
 const { userById } = require("../controllers/userController");
-const {
-  protect,
-  isAuth,
-  isAdmin,
-  isVendor,
-} = require("../controllers/authController");
+const { protect, isAdmin, isVendor } = require("../controllers/authController");
 
 //create category
-router.post(
-  "/category/create/:userId",
-  protect,
-  isAuth,
-  isVendor,
-  createCategory
-);
+router.post("/category/create/:userId", protect, isVendor, createCategory);
 
 //view category
 router.get("/category/:categoryId", readCategory);
 
 //edit category
-router.put(
-  "/category/:categoryId/:userId",
-  protect,
-  isAuth,
-  isAdmin,
-  updateCategory
-);
+router.put("/category/:categoryId/:userId", protect, isAdmin, updateCategory);
 
 //delete category
 router.delete(
   "/category/:categoryId/:userId",
   protect,
-  isAuth,
   isAdmin,
   removeCategory
 );

@@ -10,21 +10,10 @@ const {
   listDepartments,
 } = require("../controllers/departmentController");
 const { userById } = require("../controllers/userController");
-const {
-  protect,
-  isAuth,
-  isAdmin,
-  isVendor,
-} = require("../controllers/authController");
+const { protect, isAdmin, isVendor } = require("../controllers/authController");
 
 //Create department
-router.post(
-  "/department/create/:userId",
-  protect,
-  isAuth,
-  isVendor,
-  createDepartment
-);
+router.post("/department/create/:userId", protect, isVendor, createDepartment);
 
 //View Department
 router.get("/department/:departmentId", readDepartment);
@@ -33,7 +22,6 @@ router.get("/department/:departmentId", readDepartment);
 router.put(
   "/department/:departmentId/:userId",
   protect,
-  isAuth,
   isVendor,
   updateDepartment
 );
@@ -42,7 +30,6 @@ router.put(
 router.delete(
   "/department/:departmentId/:userId",
   protect,
-  isAuth,
   isVendor,
   removeDepartment
 );
