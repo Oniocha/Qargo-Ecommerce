@@ -11,29 +11,23 @@ const {
 } = require("../controllers/tagController");
 const { userById } = require("../controllers/userController");
 const {
-  requireSignin,
+  protect,
   isAuth,
   isAdmin,
   isVendor,
 } = require("../controllers/authController");
 
 //Create tag
-router.post("/tag/create/:userId", requireSignin, isAuth, isVendor, createTag);
+router.post("/tag/create/:userId", protect, isAuth, isVendor, createTag);
 
 // View tag
 router.get("/tag/:tagId", readTag);
 
 //Update tag
-router.put("/tag/:tagId/:userId", requireSignin, isAuth, isVendor, updateTag);
+router.put("/tag/:tagId/:userId", protect, isAuth, isVendor, updateTag);
 
 //delete tag
-router.delete(
-  "/tag/:tagId/:userId",
-  requireSignin,
-  isAuth,
-  isVendor,
-  removeTag
-);
+router.delete("/tag/:tagId/:userId", protect, isAuth, isVendor, removeTag);
 
 //list tags
 router.get("/tags", listTags);

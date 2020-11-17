@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Qargo from "../images/Qargo.png";
-import { signup } from "../API_CALLS/Auth/authMethods";
+import { signup, authenticate } from "../API_CALLS/Auth/authMethods";
 import "./styles.scss";
 
 const SignUp = () => {
@@ -41,6 +41,9 @@ const SignUp = () => {
             confirmPassword: "",
             error: "",
             success: true,
+          });
+          authenticate(data, () => {
+            return (window.location.href = "/");
           });
         }
       });

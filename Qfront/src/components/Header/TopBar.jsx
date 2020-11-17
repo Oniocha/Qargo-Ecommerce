@@ -58,7 +58,7 @@ const TopBar = ({ history }) => {
                 </Link>
               </li>
             )}
-            {isAuthenticated() && user.role === 1 && (
+            {isAuthenticated() && user.role === 2424 && (
               <li className="nav-item">
                 <Link to="/partners/account">
                   <span className="nav-link clickable">

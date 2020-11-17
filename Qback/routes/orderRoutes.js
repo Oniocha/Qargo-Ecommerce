@@ -11,16 +11,12 @@ const {
   createGuestOrder,
 } = require("../controllers/orderController");
 const { decreaseQuantity } = require("../controllers/productController");
-const {
-  requireSignin,
-  isAuth,
-  isVendor,
-} = require("../controllers/authController");
+const { protect, isAuth, isVendor } = require("../controllers/authController");
 
 // Create order for authenticated users
 router.post(
   "/order/create/:userId",
-  requireSignin,
+  protect,
   isAuth,
   addOrderToHistory,
   decreaseQuantity,
@@ -30,7 +26,7 @@ router.post(
 // Create order for guest users
 router.post("/order/guest/create", decreaseQuantity, createGuestOrder);
 
-router.get("/orders/list/:userId", requireSignin, isAuth, isVendor, listOrders);
+router.get("/orders/list/:userId", protect, isAuth, isVendor, listOrders);
 
 router.param("userId", userById);
 

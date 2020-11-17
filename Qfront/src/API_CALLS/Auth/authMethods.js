@@ -8,6 +8,8 @@ export const signin = (user) => {
     body: JSON.stringify(user),
   })
     .then((res) => {
+      console.log("signing in");
+
       return res.json();
     })
     .catch((err) => {

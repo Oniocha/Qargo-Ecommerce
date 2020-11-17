@@ -31,7 +31,7 @@ const SignIn = ({ location }) => {
 
   const handleChange = (e) => {
     const { value, name } = e.target;
-    setForm({ ...form, error: false, [name]: value });
+    setForm({ ...form, loading: false, error: false, [name]: value });
   };
 
   const { email, password, error, loading, redirectToReferrer } = form;
@@ -40,9 +40,12 @@ const SignIn = ({ location }) => {
     e.preventDefault();
     setForm({ ...form, error: false, loading: true });
     signin({ email, password }).then((data) => {
+      console.log(data);
       if (data.error) {
+        console.log("stuck");
         setForm({ ...form, error: data.error, loading: false });
       } else {
+        console.log("here");
         authenticate(data, () =>
           setForm({ ...form, error: "", redirectToReferrer: true })
         );

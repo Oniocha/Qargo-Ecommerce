@@ -20,7 +20,7 @@ const {
 } = require("../controllers/productController");
 const { userById, addProductToUser } = require("../controllers/userController");
 const {
-  requireSignin,
+  protect,
   isAuth,
   isAdmin,
   isVendor,
@@ -29,7 +29,7 @@ const {
 // Create product
 router.post(
   "/product/create/:userId",
-  requireSignin,
+  protect,
   isAuth,
   isVendor,
   // addProductToUser,
@@ -51,7 +51,7 @@ router.get("/products/sizes", listProductSizes);
 // Edit product
 router.put(
   "/product/:productId/:userId",
-  requireSignin,
+  protect,
   isAuth,
   isVendor,
   updateProduct
@@ -60,7 +60,7 @@ router.put(
 // Delete product
 router.delete(
   "/product/:productId/:userId",
-  requireSignin,
+  protect,
   isAuth,
   isVendor,
   removeProduct

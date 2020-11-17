@@ -11,7 +11,7 @@ const {
 } = require("../controllers/departmentController");
 const { userById } = require("../controllers/userController");
 const {
-  requireSignin,
+  protect,
   isAuth,
   isAdmin,
   isVendor,
@@ -20,7 +20,7 @@ const {
 //Create department
 router.post(
   "/department/create/:userId",
-  requireSignin,
+  protect,
   isAuth,
   isVendor,
   createDepartment
@@ -32,7 +32,7 @@ router.get("/department/:departmentId", readDepartment);
 //Update department
 router.put(
   "/department/:departmentId/:userId",
-  requireSignin,
+  protect,
   isAuth,
   isVendor,
   updateDepartment
@@ -41,7 +41,7 @@ router.put(
 //Delete department
 router.delete(
   "/department/:departmentId/:userId",
-  requireSignin,
+  protect,
   isAuth,
   isVendor,
   removeDepartment

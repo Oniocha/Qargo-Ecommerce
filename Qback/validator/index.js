@@ -21,7 +21,7 @@ exports.userSignupValidator = (req, res, next) => {
   req.check("password", "Create a password").notEmpty();
   req
     .check("password")
-    .isLength({ min: 6 })
+    .isLength({ min: 8 })
     .withMessage("Password must contain at least 6 characters")
     .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/)
     .withMessage(
@@ -40,6 +40,39 @@ exports.userSignupValidator = (req, res, next) => {
 exports.userSignInValidator = (req, res, next) => {
   req.check("email", "Enter your email").notEmpty();
   req.check("password", "Enter your password").notEmpty();
+  const errors = req.validationErrors();
+  if (errors) {
+    const firstError = errors.map((error) => error.msg)[0];
+    return res.status(400).json({ status: "Failed", error: firstError });
+  }
+
+  next();
+};
+
+exports.userPasswordResetValidator = (req, res, next) => {
+  if (!req.body.newPassword) {
+    req.check("password", "Create a password").notEmpty();
+    req
+      .check("password")
+      .isLength({ min: 8 })
+      .withMessage("Password must contain at least 6 characters")
+      .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/)
+      .withMessage(
+        "Password must contain at least one number, one uppercase and one lowercase letter"
+      );
+  } else {
+    req.check("oldPassword", "Enter your old password").notEmpty();
+    req.check("newPassword", "Create a new password").notEmpty();
+    req
+      .check("newPassword")
+      .isLength({ min: 8 })
+      .withMessage("Password must contain at least 6 characters")
+      .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/)
+      .withMessage(
+        "Password must contain at least one number, one uppercase and one lowercase letter"
+      );
+  }
+
   const errors = req.validationErrors();
   if (errors) {
     const firstError = errors.map((error) => error.msg)[0];

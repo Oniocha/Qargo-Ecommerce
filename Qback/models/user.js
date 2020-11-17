@@ -1,7 +1,7 @@
-const crypto = require("crypto");
 const mongoose = require("mongoose");
-const { v4: uuidv4 } = require("uuid");
 const validator = require("validator");
+const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 
 const userSchema = new mongoose.Schema(
   {
@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       maxlength: 20,
       unique: true,
-      collation: { locale: "en", strength: 2 },
+      lowercase: true,
     },
     email: {
       type: String,
@@ -25,17 +25,19 @@ const userSchema = new mongoose.Schema(
       required: true,
       maxlength: 50,
       unique: true,
-      collation: { locale: "en", strength: 2 },
+      lowercase: true,
     },
-    hashed_password: {
+    photo: String,
+    password: {
       type: String,
       required: true,
+      select: false,
+      minlength: 8,
     },
     about: {
       type: String,
       trim: true,
     },
-    salt: String,
     role: {
       type: Number,
       default: 0,
@@ -66,40 +68,71 @@ const userSchema = new mongoose.Schema(
       maxlength: 15,
       validate: [validator.isMobilePhone, "Phone number must be valid"],
     },
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
   },
   { timestamps: true }
 );
 
-//Virtual fields
-userSchema
-  .virtual("password")
-  .set(function (password) {
-    this._password = password;
-    this.salt = uuidv4();
-    this.hashed_password = this.encryptPassword(password);
-  })
-  .get(function () {
-    return this._password;
-  });
+// Document middlewares
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
 
-//Define userSchema methods
+  this.password = await bcrypt.hash(this.password, 12);
+  next();
+});
+
+userSchema.pre("save", function (next) {
+  if (!this.isModified("password") || this.isNew) return next();
+
+  this.passwordChangedAt = Date.now() - 1000;
+
+  next();
+});
+
+// Define userSchema methods
 userSchema.methods = {
-  authenticate: function (plaintext) {
-    return this.encryptPassword(plaintext) === this.hashed_password;
+  authenticate: async function (plaintextPassword, userPassword) {
+    let correct = await bcrypt.compare(plaintextPassword, userPassword);
+    // console.log(correct);
+    return correct;
   },
 
-  encryptPassword: function (password) {
-    if (!password) {
-      return "None";
+  passwordChanged: function (JWTTimestamp) {
+    if (this.passwordChangedAt) {
+      const changedPasswordTimeStamp = parseInt(
+        this.passwordChangedAt.getTime() / 1000,
+        10
+      );
+      return JWTTimestamp < changedPasswordTimeStamp;
     }
-    try {
-      return crypto
-        .createHmac("sha1", this.salt)
-        .update(password)
-        .digest("hex");
-    } catch (err) {
-      return "Unseasoned";
-    }
+
+    // False means the password has not been changed for current log in token
+    return false;
+  },
+
+  createPasswordResetToken: function () {
+    const resetToken = crypto.randomBytes(32).toString("hex");
+
+    this.passwordResetToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
+
+    // console.log({ resetToken }, this.passwordResetToken);
+
+    this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+    return resetToken;
+  },
+
+  tallyToken: function (token) {
+    let encryptedToken = crypto
+      .createHash("sha256")
+      .update(token)
+      .digest("hex");
+    console.log(encryptedToken === this.passwordResetToken);
   },
 };
 

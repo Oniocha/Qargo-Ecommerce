@@ -4,13 +4,11 @@ const router = express.Router();
 const {
   userById,
   readUser,
+  updateMe,
   updateUser,
+  getAllUsers,
 } = require("../controllers/userController");
-const {
-  requireSignin,
-  isAuth,
-  isAdmin,
-} = require("../controllers/authController");
+const { isAdmin, protect } = require("../controllers/authController");
 
 /**
  * Use this route for account for vendors and another for admins
@@ -21,8 +19,10 @@ const {
 });
  */
 
-router.get("/user/:userId", requireSignin, isAuth, readUser);
-router.put("/user/:userId", requireSignin, isAuth, updateUser);
+router.route("/user/:userId").get(protect, readUser).put(protect, updateMe);
+
+//Get All users
+router.get("/users/:userId", protect, isAdmin, getAllUsers);
 
 router.param("userId", userById);
 

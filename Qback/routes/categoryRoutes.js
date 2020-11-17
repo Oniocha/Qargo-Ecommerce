@@ -11,7 +11,7 @@ const {
 } = require("../controllers/categoryController");
 const { userById } = require("../controllers/userController");
 const {
-  requireSignin,
+  protect,
   isAuth,
   isAdmin,
   isVendor,
@@ -20,7 +20,7 @@ const {
 //create category
 router.post(
   "/category/create/:userId",
-  requireSignin,
+  protect,
   isAuth,
   isVendor,
   createCategory
@@ -32,7 +32,7 @@ router.get("/category/:categoryId", readCategory);
 //edit category
 router.put(
   "/category/:categoryId/:userId",
-  requireSignin,
+  protect,
   isAuth,
   isAdmin,
   updateCategory
@@ -41,7 +41,7 @@ router.put(
 //delete category
 router.delete(
   "/category/:categoryId/:userId",
-  requireSignin,
+  protect,
   isAuth,
   isAdmin,
   removeCategory

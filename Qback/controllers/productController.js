@@ -124,7 +124,7 @@ exports.removeProduct = catchAsync(async (req, res, next) => {
 exports.updateProduct = (req, res) => {
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;
-  form.parse(req, (err, fields, files) => {
+  form.parse(req, async (err, fields, files) => {
     if (err) {
       return res.status(400).json({
         status: "Failed",
@@ -192,7 +192,7 @@ exports.updateProduct = (req, res) => {
           error: "Image size should not exceed 1mb",
         });
       }
-      product.photo.data = fs.readFileSync(files.photo.path);
+      product.photo.data = await fs.readFileSync(files.photo.path);
       product.photo.contentType = files.photo.type;
     } else {
       return res.status(400).json({
@@ -201,7 +201,7 @@ exports.updateProduct = (req, res) => {
       });
     }
 
-    product.save((err, result) => {
+    await product.save((err, result) => {
       if (err) {
         return res.status(400).json({
           status: "Failed",
