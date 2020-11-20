@@ -7,6 +7,7 @@ const {
   updateMe,
   updateUser,
   getAllUsers,
+  deleteMe,
 } = require("../controllers/userController");
 const { isAdmin, protect } = require("../controllers/authController");
 
@@ -19,7 +20,11 @@ const { isAdmin, protect } = require("../controllers/authController");
 });
  */
 
-router.route("/user/:userId").get(protect, readUser).patch(protect, updateMe);
+router
+  .route("/user/:userId")
+  .get(protect, readUser)
+  .patch(protect, updateMe)
+  .delete(protect, deleteMe);
 
 //Get All users
 router.get("/users/:userId", protect, isAdmin, getAllUsers);

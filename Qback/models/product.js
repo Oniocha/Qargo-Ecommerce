@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 const slugify = require("slugify");
+const Category = require("./category");
 const validator = require("validator");
 
 const productSchema = new mongoose.Schema(
@@ -108,21 +109,18 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    country: {
+    address: {
       type: ObjectId,
-      ref: "Country",
-    },
-    region: {
-      type: ObjectId,
-      ref: "Region",
-    },
-    city: {
-      type: ObjectId,
-      ref: "City",
+      ref: "Location",
     },
     shippingTime: {
       type: Number,
       trim: true,
+    },
+    approved: {
+      type: Boolean,
+      default: false,
+      select: false,
     },
   },
   { timestamps: true }
@@ -133,5 +131,14 @@ productSchema.pre("save", function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
+
+// Pre save middleware for embedding documents
+// productSchema.pre("save", async function (next) {
+//   const categoriesPromises = this.category.map(
+//     async (id) => await Category.findById(id)
+//   );
+//   this.category = await Promise.all(categoriesPromises);
+//   next();
+// });
 
 module.exports = mongoose.model("Product", productSchema);

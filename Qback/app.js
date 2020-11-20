@@ -5,6 +5,12 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const expressValidator = require("express-validator");
 const cors = require("cors");
+const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
+const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
+const hpp = require("hpp");
+
 const AppError = require("./utils/appErrors");
 const globalErrorHandler = require("./controllers/errorController");
 
@@ -20,13 +26,39 @@ const productRoutes = require("./routes/productRoutes");
 const raveRoutes = require("./routes/raveRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 
-//middlewares
+// Global middlewares
+// Setting security http
+app.use(helmet());
+
+// Development logging
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-app.use(bodyParser.json());
+
+// Limiting requests from the same IP
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: "Too many requests from this IP, please try again in an hour!",
+});
+app.use("/api", limiter);
+
+// Body parser, reading data from body into req.body
+app.use(bodyParser.json({ limit: "10kb" }));
+
+// Data sanitization against NoSQL query injection
+app.use(mongoSanitize());
+
+// Data sanitization against xss
+app.use(xss());
+
+// Preventing parameter polution
+app.use(hpp());
+
 app.use(cookieParser());
 app.use(expressValidator());
+
+// Allowing cross site requests
 app.use(cors());
 
 //routes middleware

@@ -2,6 +2,16 @@ const User = require("../models/user");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appErrors");
 
+// Filtering the request body for only allowed data
+const filterObj = (obj, ...allowedFields) => {
+  const newObj = {};
+  Object.keys(obj).forEach((el) => {
+    if (allowedFields.includes(el)) newObj[el] = obj[el];
+  });
+
+  return newObj;
+};
+
 exports.userById = async (req, res, next, id) => {
   await User.findById(id).exec((err, user) => {
     if (err || !user) {
@@ -25,12 +35,34 @@ exports.updateMe = catchAsync(async (req, res, next) => {
       )
     );
 
+  // Filtering out unwanted data that we do not want users to change
+  const data = filterObj(req.body, "name", "email", "username", "mobile");
+
+  // 2) Updating user document
+  const updatedUser = await User.findByIdAndUpdate(
+    { _id: req.auth._id },
+    data,
+    { new: true, runValidators: true }
+  );
+
   res.status(200).json({
     status: "success",
     message: "User succefully updated",
+    data: {
+      user: updatedUser,
+    },
   });
 });
 
+exports.deleteMe = catchAsync(async (req, res, next) => {
+  await User.findByIdAndUpdate(req.auth._id, { active: false });
+
+  res.status(204).json({
+    status: "success",
+    data: null,
+  });
+});
+// Updating users by admin
 exports.updateUser = async (req, res, next) => {
   await User.findOneAndUpdate(
     { _id: req.profile._id },
@@ -42,8 +74,6 @@ exports.updateUser = async (req, res, next) => {
           new AppError("You are not authorized to perform this action", 400)
         );
       }
-      user.hashed_password = undefined;
-      user.salt = undefined;
       res.json(user);
     }
   );

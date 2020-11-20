@@ -2,7 +2,6 @@ const User = require("../models/user");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken"); // => to generage signed token
 const crypto = require("crypto");
-const expressJwt = require("express-jwt"); // => to authorization check
 const sendEmail = require("../utils/email");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appErrors");
@@ -11,12 +10,21 @@ const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
-  // res.cookie("t", token, { expire: new Date() + 9999 });
 };
 
 const createAndSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
   const { _id, name, email, username, role } = user;
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  };
+  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+
+  // Sending cookie as "t" to client
+  res.cookie("t", token, cookieOptions);
   res.status(statusCode).json({
     status: "success",
     token,
@@ -92,7 +100,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   // 5) Check User Authorization
   if (req.params.userId !== decoded.id)
     return next(
-      new AppError("Access denied! You are not authorized for this user", 401)
+      new AppError("Access denied! You are not authorized for this user!", 401)
     );
 
   // Granting access to the protected route
