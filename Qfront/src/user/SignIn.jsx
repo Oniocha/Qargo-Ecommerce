@@ -42,7 +42,6 @@ const SignIn = ({ location }) => {
     signin({ email, password }).then((data) => {
       console.log(data);
       if (data.error) {
-        console.log("stuck");
         setForm({ ...form, error: data.error, loading: false });
       } else {
         console.log("here");

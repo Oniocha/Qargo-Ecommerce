@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 const slugify = require("slugify");
-const Category = require("./category");
 const validator = require("validator");
 
 const productSchema = new mongoose.Schema(
