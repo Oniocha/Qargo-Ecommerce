@@ -8,8 +8,6 @@ export const signin = (user) => {
     body: JSON.stringify(user),
   })
     .then((res) => {
-      console.log("signing in");
-
       return res.json();
     })
     .catch((err) => {
@@ -62,4 +60,20 @@ export const isAuthenticated = () => {
   } else {
     return false;
   }
+};
+
+export const sendPasswordResetMail = (email) => {
+  const mail = { email };
+  return fetch(`${process.env.REACT_APP_API_URL}/users/forgotPassword`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(mail),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .catch((err) => console.log("🤯", err));
 };

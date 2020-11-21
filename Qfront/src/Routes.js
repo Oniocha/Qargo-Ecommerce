@@ -5,9 +5,10 @@ import VendorRoute from "./API_CALLS/Auth/VendorRoute";
 import ScrollToTop from "./helpers/ScrollToTop";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
+import ForgotPassword from "./Pages/user/ForgotPassword";
 
-const SignIn = lazy(() => import("./user/SignIn"));
-const SignUp = lazy(() => import("./user/SignUp"));
+const SignIn = lazy(() => import("./Pages/user/SignIn"));
+const SignUp = lazy(() => import("./Pages/user/SignUp"));
 const Home = lazy(() => import("./Pages/HomePage/Home"));
 const Shop = lazy(() => import("./Pages/Shop/Shop"));
 const UserAccount = lazy(() => import("./Pages/Accounts/UserAccount"));
@@ -38,6 +39,7 @@ const Routes = () => {
             <Header />
             <Route exact path="/" component={Home} />
             <Route path="/signin" exact component={SignIn} />
+            <Route path="/forgotPassword" exact component={ForgotPassword} />
             <Route path="/signup" exact component={SignUp} />
             <Route exact path="/shop" component={Shop} />
             <Route path="/products/search" exact component={SearchPage} />

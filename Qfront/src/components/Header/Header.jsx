@@ -16,6 +16,8 @@ const Header = () => {
       setToggle(false);
     } else if (location === "/checkout") {
       setToggle(false);
+    } else if (location === "/forgotpassword") {
+      setToggle(false);
     } else {
       setToggle(true);
     }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Qargo from "../images/Qargo.png";
-import { signup, authenticate } from "../API_CALLS/Auth/authMethods";
+import Qargo from "../../images/Qargo.png";
+import { signup, authenticate } from "../../API_CALLS/Auth/authMethods";
 import "./styles.scss";
 
 const SignUp = () => {

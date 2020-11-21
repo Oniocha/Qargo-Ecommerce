@@ -4,10 +4,10 @@ import {
   signin,
   authenticate,
   isAuthenticated,
-} from "../API_CALLS/Auth/authMethods";
+} from "../../API_CALLS/Auth/authMethods";
 
 import "./styles.scss";
-import Qargo from "../images/Qargo.png";
+import Qargo from "../../images/Qargo.png";
 import { useEffect } from "react";
 
 const SignIn = ({ location }) => {
@@ -129,16 +129,6 @@ const SignIn = ({ location }) => {
                 onChange={handleChange}
               />
             </div>
-            <div className="custom-control custom-switch">
-              <input
-                type="checkbox"
-                className="custom-control-input"
-                id="customSwitch"
-              />
-              <label htmlFor="customSwitch" className="custom-control-label">
-                Keep me signed in
-              </label>
-            </div>
             {loading ? (
               showLoading()
             ) : (
@@ -147,7 +137,10 @@ const SignIn = ({ location }) => {
               </button>
             )}
           </form>
-          <div className="notice">
+
+          <Link to="/forgotpassword">Forgot password?</Link>
+
+          <div className="notice" className="mt-3">
             <small>
               By continuing, you agree to Qargo's{" "}
               <Link to="/">Conditions of Use</Link> and{" "}
