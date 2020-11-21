@@ -108,7 +108,7 @@ function ForgotPassword() {
               showLoading()
             ) : (
               <button className="btn btn-action">
-                Sign into your Qargo Account
+                Send password reset token
               </button>
             )}
           </form>
