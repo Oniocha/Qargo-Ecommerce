@@ -10,10 +10,6 @@ const productSchema = new mongoose.Schema(
       trim: true,
       required: true,
       maxlength: [50, "Product name should not exceed 50 characters"],
-      validate: [
-        validator.isAlphanumeric,
-        "A product name can only contain alphanumeric characters",
-      ],
     },
     slug: String,
     description: {
@@ -37,11 +33,13 @@ const productSchema = new mongoose.Schema(
           "Discount price ({VALUE}) should be less than the regular price",
       },
     },
-    category: {
-      type: ObjectId,
-      ref: "Category",
-      required: true,
-    },
+    category: [
+      {
+        type: ObjectId,
+        ref: "Category",
+        required: true,
+      },
+    ],
     imageCover: {
       type: String,
     },
@@ -59,7 +57,7 @@ const productSchema = new mongoose.Schema(
     },
     ratingAverage: {
       type: Number,
-      default: 0,
+      default: 2,
       min: [1, "Rating must be above 1.0"],
       max: [5, "Rating must be below 5.0"],
     },
@@ -92,10 +90,13 @@ const productSchema = new mongoose.Schema(
       required: true,
       ref: "Department",
     },
-    tag: {
-      type: ObjectId,
-      ref: "Tag",
-    },
+
+    tag: [
+      {
+        type: ObjectId,
+        ref: "Tag",
+      },
+    ],
     sku: {
       type: String,
       trim: true,

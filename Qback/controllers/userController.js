@@ -12,15 +12,13 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
-exports.userById = async (req, res, next, id) => {
-  await User.findById(id).exec((err, user) => {
-    if (err || !user) {
-      return next(new AppError("User not found", 400));
-    }
-    req.profile = user;
-    next();
-  });
-};
+exports.userById = catchAsync(async (req, res, next) => {
+  let user = await User.findById(req.params.userId);
+  if (!user) return next(new AppError("User not found", 400));
+
+  req.profile = user;
+  next();
+});
 
 exports.readUser = (req, res) => {
   return res.json(req.profile);

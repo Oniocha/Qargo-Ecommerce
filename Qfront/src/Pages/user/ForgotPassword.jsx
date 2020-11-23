@@ -24,7 +24,6 @@ function ForgotPassword() {
     e.preventDefault();
     setUtils({ error: "", loading: true, success: "" });
     sendPasswordResetMail(email).then((data) => {
-      console.log(data);
       if (data.error) {
         setUtils({
           loading: false,
@@ -81,9 +80,9 @@ function ForgotPassword() {
 
   return (
     <div>
-      <Link to="/">
+      <a href="/">
         <img src={Qargo} alt="logo" className="logo" />
-      </Link>
+      </a>
       <div className="box container">
         <div className="signup-page container-fluid">
           <h3>Forgot your password?</h3>
@@ -107,9 +106,7 @@ function ForgotPassword() {
             {loading ? (
               showLoading()
             ) : (
-              <button className="btn btn-action">
-                Send password reset token
-              </button>
+              <button className="btn btn-action">Continue</button>
             )}
           </form>
           <div style={{ textAlign: "center" }}>

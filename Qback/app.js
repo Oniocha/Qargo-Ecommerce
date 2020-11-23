@@ -25,6 +25,7 @@ const tagRoutes = require("./routes/tagRoutes");
 const productRoutes = require("./routes/productRoutes");
 const raveRoutes = require("./routes/raveRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
 
 // Global middlewares
 // Setting security http
@@ -70,6 +71,7 @@ app.use("/api/v1", tagRoutes);
 app.use("/api/v1", productRoutes);
 app.use("/api/v1", raveRoutes);
 app.use("/api/v1", orderRoutes);
+app.use("/api/v1", reviewRoutes);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Could not find ${req.originalUrl} on this server!`, 404));
