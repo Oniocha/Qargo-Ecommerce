@@ -27,7 +27,6 @@ export const getDepartments = () => {
 
 export const listProducts = (params) => {
   const query = queryString.stringify(params);
-  console.log("query", query);
   return fetch(`${process.env.REACT_APP_API_URL}/products/search?${query}`, {
     method: "GET",
   })

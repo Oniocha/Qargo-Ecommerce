@@ -57,9 +57,10 @@ const productSchema = new mongoose.Schema(
     },
     ratingAverage: {
       type: Number,
-      default: 2,
+      default: 4,
       min: [1, "Rating must be above 1.0"],
       max: [5, "Rating must be below 5.0"],
+      set: (val) => Math.round(val * 10) / 10, // This will return a rounded decimal
     },
     ratingQuantity: {
       type: Number,
@@ -113,6 +114,7 @@ const productSchema = new mongoose.Schema(
       type: ObjectId,
       ref: "Location",
     },
+    location: [],
     shippingTime: {
       type: Number,
       trim: true,
@@ -126,11 +128,23 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+productSchema.index({ price: 1, ratingAverage: -1 });
+productSchema.index({ slug: 1 });
+
+// Virtual fields
+// productSchema.virtual("reviews", {
+//   ref: "Review",
+//   foreignField: "product",
+//   localField: "_id",
+// });
+
 //Document Middleware
 productSchema.pre("save", function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
+
+productSchema.index({ location: "2dsphere" });
 
 // Pre save middleware for embedding documents
 // productSchema.pre("save", async function (next) {

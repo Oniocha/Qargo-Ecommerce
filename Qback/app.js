@@ -71,7 +71,7 @@ app.use("/api/v1", tagRoutes);
 app.use("/api/v1", productRoutes);
 app.use("/api/v1", raveRoutes);
 app.use("/api/v1", orderRoutes);
-app.use("/api/v1", reviewRoutes);
+app.use("/api/v1/review", reviewRoutes);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Could not find ${req.originalUrl} on this server!`, 404));

@@ -140,7 +140,7 @@ const SignIn = ({ location }) => {
 
           <Link to="/forgotpassword">Forgot password?</Link>
 
-          <div className="notice" className="mt-3">
+          <div className="notice mt-3">
             <small>
               By continuing, you agree to Qargo's{" "}
               <Link to="/">Conditions of Use</Link> and{" "}

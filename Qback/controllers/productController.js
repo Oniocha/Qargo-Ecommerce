@@ -6,11 +6,9 @@ const { errorHandler } = require("../helpers/dbErrorHandler");
 const catchAsync = require("../utils/catchAsync");
 
 exports.productById = catchAsync(async (req, res, next) => {
-  const product = await Product.findById(req.params.productId).populate([
-    "tag",
-    "category",
-    "department",
-  ]);
+  const product = await Product.findById(req.params.productId).populate(
+    "tag category department"
+  );
   req.product = product;
   next();
 });
@@ -312,7 +310,7 @@ exports.listBySearch = async (req, res) => {
 
   await Product.find(findArgs)
     .select("-photo")
-    .populate(["tag", "category", "department"])
+    .populate("tag category department")
     .sort([[sortBy, order]])
     .skip(skip)
     .limit(limit)
@@ -324,6 +322,7 @@ exports.listBySearch = async (req, res) => {
         });
       }
       res.json({
+        status: "success",
         size: data.length,
         data,
       });

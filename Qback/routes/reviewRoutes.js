@@ -7,18 +7,22 @@ const {
   deleteReview,
   updateReview,
   reviewById,
+  getAllReviews,
 } = require("../controllers/reviewController");
 const { userById } = require("../controllers/userController");
-const { protect } = require("../controllers/authController");
+const { protect, isAdmin } = require("../controllers/authController");
 const { productById } = require("../controllers/productController");
 
+// Admin view all reviews
+router.get("/all/:userId", protect, isAdmin, getAllReviews);
+
 // Get reviews
-router.get("/review/:productId", getReviews);
+router.get("/:productId", getReviews);
 
 // Write, delete, update reviews
-router.post("/review/:productId/:userId", protect, postReviews);
+router.post("/:productId/:userId", protect, postReviews);
 router
-  .route("/review/:reviewId/:productId/:userId")
+  .route("/:reviewId/:productId/:userId")
   .patch(protect, updateReview)
   .delete(protect, deleteReview);
 

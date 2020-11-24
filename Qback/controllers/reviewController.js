@@ -1,6 +1,7 @@
 const Review = require("../models/review");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appErrors");
+const review = require("../models/review");
 
 exports.reviewById = catchAsync(async (req, res, next) => {
   const review = await Review.findById(req.params.reviewId);
@@ -14,7 +15,7 @@ exports.getReviews = catchAsync(async (req, res, next) => {
   const reviews = await Review.find({
     product: req.params.productId,
   }).populate({
-    path: "product user",
+    path: "user",
     select: "name email username",
   });
 
@@ -23,7 +24,7 @@ exports.getReviews = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    count: reviews.length,
+    results: reviews.length,
     data: reviews,
   });
 });
@@ -67,6 +68,19 @@ exports.updateReview = catchAsync(async (req, res, next) => {
     message: "Review succefully updated!",
     data: {
       review: updatedReview,
+    },
+  });
+});
+
+//Admin getAll Reviews
+exports.getAllReviews = catchAsync(async (req, res, next) => {
+  const reviews = await Review.find().populate("product user");
+
+  res.status(200).json({
+    status: "success",
+    results: reviews.length,
+    data: {
+      reviews,
     },
   });
 });
