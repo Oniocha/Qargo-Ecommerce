@@ -47,3 +47,23 @@ exports.listOrders = async (req, res) => {
       res.json(orders);
     });
 };
+
+exports.webhookCheckout = (req, res) => {
+  console.log(req.headers);
+  const signature = req.headers["rave-signature"];
+
+  let event;
+  try {
+    event = rave.webhooks.constructEvent(
+      req.body,
+      signature,
+      process.env.RAVE_WEBHOOK_HASH
+    );
+  } catch (err) {
+    return res.status(400).send(`Webhook error: ${err}`);
+  }
+
+  if (event.type === "checkout.session.complete") {
+    // find the order with email and prducts same as the one from the buyer and change the status to processing. And if the payment fails, change it to 'failed'
+  }
+};

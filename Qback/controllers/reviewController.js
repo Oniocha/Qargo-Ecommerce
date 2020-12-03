@@ -1,7 +1,6 @@
 const Review = require("../models/review");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appErrors");
-const review = require("../models/review");
 
 exports.reviewById = catchAsync(async (req, res, next) => {
   const review = await Review.findById(req.params.reviewId);

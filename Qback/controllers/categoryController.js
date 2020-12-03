@@ -1,5 +1,4 @@
 const { errorHandler } = require("../helpers/dbErrorHandler");
-const _ = require("lodash");
 const Category = require("../models/category");
 
 exports.categoryById = async (req, res, next, id) => {
