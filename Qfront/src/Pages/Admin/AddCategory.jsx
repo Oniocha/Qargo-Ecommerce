@@ -27,7 +27,7 @@ const AddCategory = () => {
     setSuccess(false);
     //Process data from api call
     createCategory(user._id, token, { name }).then((data) => {
-      if (data.error) {
+      if (data?.error) {
         setError(true);
       } else {
         setName("");

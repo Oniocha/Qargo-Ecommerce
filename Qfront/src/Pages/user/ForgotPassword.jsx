@@ -24,10 +24,10 @@ function ForgotPassword() {
     e.preventDefault();
     setUtils({ error: "", loading: true, success: "" });
     sendPasswordResetMail(email).then((data) => {
-      if (data.error) {
+      if (data?.error) {
         setUtils({
           loading: false,
-          error: data.error,
+          error: data?.error,
         });
       } else {
         setUtils({

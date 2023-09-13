@@ -16,15 +16,15 @@ const ProductPage = ({ match }) => {
 
   const fetchSingleProduct = (productId) => {
     readProduct(productId).then((data) => {
-      if (data.error) {
+      if (data?.error) {
         setError(true);
       } else {
         setProduct(data);
 
         //fetch related products based on the products
         listRelated(data._id).then((data) => {
-          if (data.error) {
-            setError(data.error);
+          if (data?.error) {
+            setError(data?.error);
           } else {
             setRelated(data.data);
           }
@@ -64,7 +64,7 @@ const ProductPage = ({ match }) => {
         <section>
           <h2 className="mt-5 mb-5">Related Products</h2>
           <div className="row" style={{ width: "100%" }}>
-            {related.map((rel, i) => (
+            {related?.map((rel, i) => (
               <ProductCard product={rel} key={i} />
             ))}
           </div>

@@ -18,8 +18,8 @@ const SearchBar = () => {
 
   const init = () => {
     getDepartments().then((data) => {
-      if (data.error) {
-        console.log(data.error);
+      if (data?.error) {
+        console.log(data?.error);
       } else {
         setQuery({ ...query, departments: data });
       }
@@ -38,8 +38,8 @@ const SearchBar = () => {
         search: search || undefined,
         department: department || undefined,
       }).then((data) => {
-        if (data.error) {
-          console.log(data.error);
+        if (data?.error) {
+          console.log(data?.error);
         } else {
           setQuery({ ...query, results: data });
         }
@@ -83,7 +83,7 @@ const SearchBar = () => {
               onChange={handleChange("department")}
             >
               <option value="All">All Departments</option>
-              {departments.map((d, i) => (
+              {departments?.map((d, i) => (
                 <option key={i} value={d._id}>
                   {d.name}
                 </option>

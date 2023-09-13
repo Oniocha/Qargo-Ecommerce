@@ -29,8 +29,8 @@ const Shop = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.error) {
-          setError(data.error);
+        if (data?.error) {
+          setError(data?.error);
         } else {
           setCategories(data);
         }
@@ -41,8 +41,8 @@ const Shop = () => {
   // Function to send search filters to backend
   const loadFilteredResults = (newFilters) => {
     getFilteredProducts(skip, limit, newFilters).then((data) => {
-      if (data.error) {
-        setError(data.error);
+      if (data?.error) {
+        setError(data?.error);
       } else {
         setFilteredResults(data.data);
         setSize(data.size);
@@ -55,8 +55,8 @@ const Shop = () => {
   const loadMore = () => {
     const toSkip = skip + limit;
     getFilteredProducts(toSkip, limit, myFilters.filters).then((data) => {
-      if (data.error) {
-        setError(data.error);
+      if (data?.error) {
+        setError(data?.error);
       } else {
         setFilteredResults([...filteredResults, ...data.data]);
         setSize(data.size);
@@ -135,7 +135,7 @@ const Shop = () => {
         <div className="col-8">
           <h2 className="mb-4">Products</h2>
           <div className="row">
-            {filteredResults.map((p, i) => (
+            {filteredResults?.map((p, i) => (
               <SearchResult product={p} key={i} />
             ))}
           </div>

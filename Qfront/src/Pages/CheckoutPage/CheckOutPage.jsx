@@ -175,8 +175,8 @@ const CheckOutPage = () => {
     setValues({ ...values, error: "" });
     getTransactionFees(cost)
       .then((data) => {
-        if (data.error) {
-          setValues({ ...values, error: data.error });
+        if (data?.error) {
+          setValues({ ...values, error: data?.error });
         } else {
           setValues({ ...values, fees: data.data.fee, error: false });
         }
@@ -221,8 +221,8 @@ const CheckOutPage = () => {
       fullname
     )
       .then((data) => {
-        if (data.error) {
-          console.log("error", data.error);
+        if (data?.error) {
+          console.log("error", data?.error);
           setLoading(false);
         } else {
           setPaymentUrl(data.meta.authorization.redirect);

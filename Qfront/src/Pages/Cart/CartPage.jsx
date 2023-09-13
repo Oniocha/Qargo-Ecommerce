@@ -63,7 +63,7 @@ const CartPage = () => {
           {cartItems.length > 0 ? (
             <Fragment>
               <ul className="cart-arrange">
-                {cartItems.map((item, i) => (
+                {cartItems?.map((item, i) => (
                   <Fragment key={i}>
                     <ProductCard
                       product={item}

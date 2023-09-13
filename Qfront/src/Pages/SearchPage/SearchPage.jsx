@@ -23,7 +23,7 @@ function SearchPage({ location }) {
       {searchMessage()}
       <div className="row">
         {search.length > 0
-          ? search.map((r, i) => <ProductCard key={i} product={r} />)
+          ? search?.map((r, i) => <ProductCard key={i} product={r} />)
           : null}
       </div>
     </div>

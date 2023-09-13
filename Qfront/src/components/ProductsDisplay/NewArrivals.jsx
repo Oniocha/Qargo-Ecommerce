@@ -82,7 +82,7 @@ const NewArrivals = () => {
         <div className="card mt-5 pt-3 pl-3 pr-3 pb-3">
           <h2 className="home-products-head">New Arrivals</h2>
           <Slider {...settings}>
-            {productsByArrival.map((prod, i) => (
+            {productsByArrival?.map((prod, i) => (
               <div key={i}>
                 <ProductCard product={prod} />
               </div>
@@ -92,7 +92,7 @@ const NewArrivals = () => {
         <div className="card mt-5 pt-3 pl-3 pr-3 pb-3">
           <h2 className="home-products-head">Hot on the market 🔥</h2>
           <Slider {...settings}>
-            {productsBySell.map((prod, i) => (
+            {productsBySell?.map((prod, i) => (
               <div key={i}>
                 <ProductCard product={prod} />
               </div>
@@ -102,7 +102,7 @@ const NewArrivals = () => {
         <div className="card mt-5 pt-3 pl-3 pr-3 pb-3">
           <h2 className="home-products-head">Products under GHS 50</h2>
           <Slider {...settings}>
-            {productsByPrice.map((prod, i) => (
+            {productsByPrice?.map((prod, i) => (
               <div key={i}>
                 <ProductCard product={prod} />
               </div>

@@ -8,7 +8,7 @@ function Radio({ prices, handleFilters }) {
     setValues(e.target.value);
   };
 
-  return prices.map((p, i) => (
+  return prices?.map((p, i) => (
     <div key={i}>
       <input
         className="form-check-input"

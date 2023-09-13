@@ -97,8 +97,8 @@ const AddProduct = () => {
     e.preventDefault();
     setValues({ ...values, error: "", loading: true });
     createProduct(user._id, token, formData).then((data) => {
-      if (data.error) {
-        setValues({ ...values, error: data.error, loading: false });
+      if (data?.error) {
+        setValues({ ...values, error: data?.error, loading: false });
       } else {
         setValues({
           name: "",
@@ -235,7 +235,7 @@ const AddProduct = () => {
               >
                 <option>Pick a Department</option>
                 {departments && departments.length > 0
-                  ? departments.map((dept, i) => (
+                  ? departments?.map((dept, i) => (
                       <option value={dept._id} key={i}>
                         {dept.name}
                       </option>
@@ -252,7 +252,7 @@ const AddProduct = () => {
               >
                 {/* <option>Choose a Category</option> */}
                 {categories && categories.length > 0
-                  ? categories.map((cat, i) => (
+                  ? categories?.map((cat, i) => (
                       <option value={cat._id} key={i}>
                         {cat.name}
                       </option>
@@ -297,7 +297,7 @@ const AddProduct = () => {
                 >
                   {/* <option>Choose a Category</option> */}
                   {tags && tags.length > 0
-                    ? tags.map((tag, i) => (
+                    ? tags?.map((tag, i) => (
                         <option value={tag._id} key={i}>
                           {tag.name}
                         </option>

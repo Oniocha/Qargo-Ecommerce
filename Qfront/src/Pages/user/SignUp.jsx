@@ -30,8 +30,8 @@ const SignUp = () => {
       setForm({ ...form, error: "Passwords do not match." });
     } else {
       signup({ name, username, email, password }).then((data) => {
-        if (data.error) {
-          setForm({ ...form, error: data.error, success: false });
+        if (data?.error) {
+          setForm({ ...form, error: data?.error, success: false });
         } else {
           setForm({
             name: "",
