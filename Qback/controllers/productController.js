@@ -367,9 +367,7 @@ exports.decreaseQuantity = catchAsync(async (req, res, next) => {
   });
 
   await Product.bulkWrite(bulkOps, {});
-  res.status(200).json({
-    status: "sucess",
-  });
+
   next();
 });
 
