@@ -65,7 +65,7 @@ exports.updateUser = async (req, res, next) => {
   await User.findOneAndUpdate(
     { _id: req.profile._id },
     { $set: req.body },
-    { new: true },
+    { new: true, useFindAndModify: false },
     (err, user) => {
       if (err) {
         return next(
@@ -93,7 +93,7 @@ exports.addOrderToHistory = async (req, res, next) => {
   await User.findOneAndUpdate(
     { _id: req.profile._id },
     { $push: { history: history } },
-    { new: true },
+    { new: true, useFindAndModify: false },
     (err, data) => {
       if (err) {
         return res.status(400).json({
@@ -110,7 +110,7 @@ exports.addOrderToHistory = async (req, res, next) => {
 // Adding product to vendor : INITIATED
 exports.addProductToUser = (req, res, next) => {
   let products = [];
-  console.log(req.body);
+  console.log(req.body, 'added');
   next();
 };
 
