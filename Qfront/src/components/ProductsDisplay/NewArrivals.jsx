@@ -4,6 +4,8 @@ import axios from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./styles.scss";
+import {useDispatch, useSelector} from 'react-redux';
+import { getNewArrivals } from "../../redux/product/NewArrivals";
 
 const ProductCard = lazy(() => import("../ProductCard/ProductCard"));
 
@@ -18,11 +20,14 @@ const SamplePrevArrow = (props) => {
 };
 
 const NewArrivals = () => {
+  // const newArrivals = useSelector(state => state.NewArrivals);
+  const dispatch = useDispatch()
   const [productsBySell, setProductsBySell] = useState([]),
     [productsByArrival, setProductsByArrival] = useState([]),
     [productsByPrice, setProductsByPrice] = useState([]),
     [error, setError] = useState(false);
 
+    // console.log(newArrivals)
   const loadBySell = () => {
     axios
       .get(
@@ -32,14 +37,14 @@ const NewArrivals = () => {
       .catch((err) => console.log(err));
   };
 
-  const fetchByArrival = () => {
-    axios
-      .get(
-        `${process.env.REACT_APP_API_URL}/products?sortBy=createdAt&order=desc&limit=10`
-      )
-      .then((res) => setProductsByArrival(res.data.data))
-      .catch((err) => console.log(err));
-  };
+  // const fetchByArrival = () => {
+  //   axios
+  //     .get(
+  //       `${process.env.REACT_APP_API_URL}/products?sortBy=createdAt&order=desc&limit=10`
+  //     )
+  //     .then((res) => setProductsByArrival(res.data.data))
+  //     .catch((err) => console.log(err));
+  // };
 
   const fetchByPrice = () => {
     axios
@@ -51,9 +56,10 @@ const NewArrivals = () => {
   };
 
   useEffect(() => {
-    fetchByArrival();
+    // fetchByArrival();
     fetchByPrice();
     loadBySell();
+    dispatch(getNewArrivals())
   }, []);
 
   var settings = {
