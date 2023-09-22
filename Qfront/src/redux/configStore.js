@@ -1,3 +1,4 @@
+import getAllCategoriesReducer from './product/loadByCategories/LoadByCategories';
 import LoadByPriceReducer from './product/loadByPrice/LoadByPrice';
 import loadBySellReducer from './product/loadBySell/LoadBySell';
 import newArrivalsReducer from './product/newArrivals/NewArrivals';
@@ -8,6 +9,7 @@ const store = configureStore({
         newArrivals : newArrivalsReducer,
         loadBySell : loadBySellReducer,
         loadByPrice : LoadByPriceReducer,
+        loadCategories : getAllCategoriesReducer,
     }
 });
 
