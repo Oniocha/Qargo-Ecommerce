@@ -4,12 +4,15 @@ import Radio from "../../components/Radio";
 import { prices } from "../../helpers/fixedPrices";
 import { getFilteredProducts } from "../../API_CALLS/userApis";
 import SearchResult from "./SearchResult";
-
+import {useDispatch, useSelector} from 'react-redux';
 import "./styles.scss";
+import { getAllCategories } from "../../redux/product/loadByCategories/actions";
 
 const Shop = () => {
+  const allCategories = useSelector(state => state.loadCategories)
+  const dispatch = useDispatch();
+  const categories = allCategories?.data || [];
   // All the states needed for this component
-  const [categories, setCategories] = useState([]);
   const [error, setError] = useState(false);
   const [limit, setLimit] = useState(6);
   const [skip, setSkip] = useState(0);
@@ -18,25 +21,6 @@ const Shop = () => {
     filters: { category: [], price: [] },
   });
   const [filteredResults, setFilteredResults] = useState([]);
-
-  // API url for fetching all categories
-  let one = process.env.REACT_APP_API_URL + "/categories";
-
-  // Function to load up all categories
-  const init = () => {
-    fetch(one, {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.error) {
-          setError(data?.error);
-        } else {
-          setCategories(data);
-        }
-      })
-      .catch((err) => console.log(err));
-  };
 
   // Function to send search filters to backend
   const loadFilteredResults = (newFilters) => {
@@ -78,11 +62,11 @@ const Shop = () => {
 
   // UseEffect to load when component mounts. Fetches all categories and fetches all products
   useEffect(() => {
-    init();
+    dispatch(getAllCategories())
     loadFilteredResults(limit, skip, myFilters.filters);
 
     // eslint-disable-next-line
-  }, []);
+  }, [dispatch]);
 
   // Method for collecting values to use as filters from each checkbox user checks
   const handleFilters = (filters, filterBy) => {
