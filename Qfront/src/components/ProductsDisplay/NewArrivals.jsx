@@ -1,11 +1,12 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import Slider from "react-slick";
-import axios from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./styles.scss";
 import {useDispatch, useSelector} from 'react-redux';
-import { getNewArrivals } from "../../redux/product/NewArrivals";
+import { getNewArrivals } from "../../redux/product/newArrivals/actions";
+import { loadBySell } from "../../redux/product/loadBySell/action";
+import { getProductsByPrice } from "../../redux/product/loadByPrice/actions";
 
 const ProductCard = lazy(() => import("../ProductCard/ProductCard"));
 
@@ -20,47 +21,20 @@ const SamplePrevArrow = (props) => {
 };
 
 const NewArrivals = () => {
-  // const newArrivals = useSelector(state => state.NewArrivals);
+  const newArrivals = useSelector(state => state.newArrivals);
+  const loadedBySell = useSelector(state => state.loadBySell);
+  const loadedByPrice = useSelector(state => state.loadByPrice);
   const dispatch = useDispatch()
-  const [productsBySell, setProductsBySell] = useState([]),
-    [productsByArrival, setProductsByArrival] = useState([]),
-    [productsByPrice, setProductsByPrice] = useState([]),
-    [error, setError] = useState(false);
-
-    // console.log(newArrivals)
-  const loadBySell = () => {
-    axios
-      .get(
-        `${process.env.REACT_APP_API_URL}/products?sortBy=sold&order=desc&limit=10`
-      )
-      .then((res) => setProductsBySell(res.data.data))
-      .catch((err) => console.log(err));
-  };
-
-  // const fetchByArrival = () => {
-  //   axios
-  //     .get(
-  //       `${process.env.REACT_APP_API_URL}/products?sortBy=createdAt&order=desc&limit=10`
-  //     )
-  //     .then((res) => setProductsByArrival(res.data.data))
-  //     .catch((err) => console.log(err));
-  // };
-
-  const fetchByPrice = () => {
-    axios
-      .get(
-        `${process.env.REACT_APP_API_URL}/products?sortBy=price&order=asc&limit=10`
-      )
-      .then((res) => setProductsByPrice(res.data.data))
-      .catch((err) => console.log(err));
-  };
+  const [error, setError] = useState(false);
+  const productsByArrival = newArrivals?.data || [];
+  const productsBySell = loadedBySell?.data || [];
+  const productsByPrice = loadedByPrice?.data || [];
 
   useEffect(() => {
-    // fetchByArrival();
-    fetchByPrice();
-    loadBySell();
+    dispatch(getProductsByPrice())
     dispatch(getNewArrivals())
-  }, []);
+    dispatch(loadBySell())
+  }, [dispatch]);
 
   var settings = {
     dots: false,
