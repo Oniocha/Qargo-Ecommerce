@@ -1,18 +1,9 @@
-import axios from "axios";
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-
-const getNewArrivalsApi = `${process.env.REACT_APP_API_URL}/products?sortBy=sold&order=desc&limit=10`
-
-// create fetch action for new Arrivals
-export const getNewArrivals = createAsyncThunk("FETCH_PRODUCTS", async () => {
-    const data = await axios(getNewArrivalsApi);
-    console.log(data);
-    return data.response;
-});
+import {createSlice} from '@reduxjs/toolkit';
+import { getNewArrivals } from './actions';
 
 // create new arrivals slice
 const newArrivals = createSlice({
-    name: 'products',
+    name: 'newArrivals',
     initialState:{},
     reducer: {},
     extraReducers: (builder) => {
@@ -28,7 +19,7 @@ const newArrivals = createSlice({
         builder.addCase(getNewArrivals.pending, (state) => {
             state.success = false;
             state.loading = true;
-        })
+        });
     }
 });
 
