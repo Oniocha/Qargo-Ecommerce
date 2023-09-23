@@ -6,12 +6,12 @@ import { getFilteredProducts } from "../../API_CALLS/userApis";
 import SearchResult from "./SearchResult";
 import {useDispatch, useSelector} from 'react-redux';
 import "./styles.scss";
-import { getAllCategories } from "../../redux/product/loadByCategories/actions";
+import { getAllCategories } from "../../redux/product/loadProducts/actions";
 
 const Shop = () => {
-  const allCategories = useSelector(state => state.loadCategories)
+  const { fetchedCategories } = useSelector(state => state.loadProducts)
   const dispatch = useDispatch();
-  const categories = allCategories?.data || [];
+  const categories = fetchedCategories || [];
   // All the states needed for this component
   const [error, setError] = useState(false);
   const [limit, setLimit] = useState(6);
