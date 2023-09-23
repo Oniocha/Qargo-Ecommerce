@@ -4,9 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./styles.scss";
 import {useDispatch, useSelector} from 'react-redux';
-import { getNewArrivals } from "../../redux/product/newArrivals/actions";
-import { loadBySell } from "../../redux/product/loadBySell/action";
-import { getProductsByPrice } from "../../redux/product/loadByPrice/actions";
+import { getProductsByPrice, loadBySell, getNewArrivals } from "../../redux/product/loadProducts/actions";
 
 const ProductCard = lazy(() => import("../ProductCard/ProductCard"));
 
@@ -21,14 +19,12 @@ const SamplePrevArrow = (props) => {
 };
 
 const NewArrivals = () => {
-  const newArrivals = useSelector(state => state.newArrivals);
-  const loadedBySell = useSelector(state => state.loadBySell);
-  const loadedByPrice = useSelector(state => state.loadByPrice);
+  const { fetchedNewArrivals, fetchedDataBySell, fetchedProductsByPrice } = useSelector(state => state.loadProducts);
   const dispatch = useDispatch()
   const [error, setError] = useState(false);
-  const productsByArrival = newArrivals?.data || [];
-  const productsBySell = loadedBySell?.data || [];
-  const productsByPrice = loadedByPrice?.data || [];
+  const productsByArrival = fetchedNewArrivals || [];
+  const productsBySell = fetchedDataBySell || [];
+  const productsByPrice = fetchedProductsByPrice || [];
 
   useEffect(() => {
     dispatch(getProductsByPrice())
