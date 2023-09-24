@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import Checkbox from "../../components/Checkbox";
 import Radio from "../../components/Radio";
 import { prices } from "../../helpers/fixedPrices";
-import { getFilteredProducts } from "../../API_CALLS/userApis";
 import SearchResult from "./SearchResult";
 import {useDispatch, useSelector} from 'react-redux';
 import "./styles.scss";
 import { getAllCategories } from "../../redux/product/loadProducts/actions";
+import { getFilteredProducts } from "../../redux/product/filteredProducts/actions";
 
 const Shop = () => {
-  const { fetchedCategories } = useSelector(state => state.loadProducts)
+  const { fetchedCategories } = useSelector(state => state.loadProducts);
+  const { fetchedFilteredProducts } = useSelector(state => state.loadFilteredProducts);
   const dispatch = useDispatch();
   const categories = fetchedCategories || [];
+  const filteredResults = fetchedFilteredProducts?.data || [];
   // All the states needed for this component
   const [error, setError] = useState(false);
   const [limit, setLimit] = useState(6);
@@ -20,33 +22,18 @@ const Shop = () => {
   const [myFilters, setMyFilters] = useState({
     filters: { category: [], price: [] },
   });
-  const [filteredResults, setFilteredResults] = useState([]);
-
+  
   // Function to send search filters to backend
   const loadFilteredResults = (newFilters) => {
-    getFilteredProducts(skip, limit, newFilters).then((data) => {
-      if (data?.error) {
-        setError(data?.error);
-      } else {
-        setFilteredResults(data.data);
-        setSize(data.size);
-        setSkip(0);
-      }
-    });
+    dispatch(getFilteredProducts(skip, limit, newFilters))
   };
 
   // 'Load more' button function
   const loadMore = () => {
     const toSkip = skip + limit;
-    getFilteredProducts(toSkip, limit, myFilters.filters).then((data) => {
-      if (data?.error) {
-        setError(data?.error);
-      } else {
-        setFilteredResults([...filteredResults, ...data.data]);
-        setSize(data.size);
-        setSkip(toSkip);
-      }
-    });
+    const filter = myFilters.filters
+    dispatch(getFilteredProducts(toSkip, limit, filter))
+    // Come back to this function when the loadmore is visible
   };
 
   const loadMoreButton = () => {
