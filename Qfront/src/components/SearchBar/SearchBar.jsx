@@ -1,36 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
-import { getDepartments, listProducts } from "../../API_CALLS/userApis";
+import { listProducts } from "../../API_CALLS/userApis";
+import { getAllDepartments } from "../../redux/departments/actions";
+import { useDispatch, useSelector } from 'react-redux';
 
 import "./search-styles.scss";
 
 const SearchBar = () => {
+  const dispatch = useDispatch();
+  const { fetchedDepartments, departmentsApiError } = useSelector(state => state.loadDepartments);
+  const departments = fetchedDepartments || [];
   const [query, setQuery] = useState({
-    departments: [],
     department: "",
     results: [],
     search: "",
+    error: departmentsApiError || ""
   });
 
   const [redirect, setRedirect] = useState(false);
 
-  const { departments, results, department, search } = query;
-
-  const init = () => {
-    getDepartments().then((data) => {
-      if (data?.error) {
-        console.log(data?.error);
-      } else {
-        setQuery({ ...query, departments: data });
-      }
-    });
-  };
+  const { results, department, search } = query;
 
   useEffect(() => {
-    init();
-
-    // eslint-disable-next-line
-  }, []);
+    dispatch(getAllDepartments())
+  }, [dispatch]);
 
   const searchProduct = () => {
     if (search) {
