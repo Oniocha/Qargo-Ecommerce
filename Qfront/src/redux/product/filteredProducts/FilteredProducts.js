@@ -25,9 +25,20 @@ const filteredProductsSlice = createSlice({
             state.success = false;
             state.loading = false;
         });
-        builder.addCase(updateFilteredProducts, (state, action) => {
+        builder.addCase(updateFilteredProducts.fulfilled, (state, action) => {
             state.fetchedFilteredProducts = action.payload;
-          });
+            state.fetchedSize = action.size;
+            state.success = true;
+            state.loading = false;
+        });
+        builder.addCase(updateFilteredProducts.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(updateFilteredProducts.rejected, (state, action) => {
+            state.loading = false;
+            state.success = false;
+            state.updatedFilteredProductsError = action.payload;
+        })
     }
 })
 
