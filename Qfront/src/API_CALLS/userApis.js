@@ -1,15 +1,15 @@
 import queryString from "query-string";
 
 // API url for fetching all departments
-let one = process.env.REACT_APP_API_URL + "/departments";
+// let one = process.env.REACT_APP_API_URL + "/departments";
 
-export const getDepartments = () => {
-  return fetch(one, {
-    method: "GET",
-  })
-    .then((res) => res.json())
-    .catch((err) => console.log(err));
-};
+// export const getDepartments = () => {
+//   return fetch(one, {
+//     method: "GET",
+//   })
+//     .then((res) => res.json())
+//     .catch((err) => console.log(err));
+// };
 
 export const listProducts = (params) => {
   const query = queryString.stringify(params);
