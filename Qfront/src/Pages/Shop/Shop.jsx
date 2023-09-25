@@ -6,19 +6,19 @@ import SearchResult from "./SearchResult";
 import {useDispatch, useSelector} from 'react-redux';
 import "./styles.scss";
 import { getAllCategories } from "../../redux/product/loadProducts/actions";
-import { getFilteredProducts } from "../../redux/product/filteredProducts/actions";
+import { getFilteredProducts, updateFilteredProducts } from "../../redux/product/filteredProducts/actions";
 
 const Shop = () => {
   const { fetchedCategories } = useSelector(state => state.loadProducts);
-  const { fetchedFilteredProducts } = useSelector(state => state.loadFilteredProducts);
+  const { fetchedFilteredProducts, fetchedSize, departmentsApiError} = useSelector(state => state.loadFilteredProducts);
   const dispatch = useDispatch();
   const categories = fetchedCategories || [];
   const filteredResults = fetchedFilteredProducts?.data || [];
+  const size = fetchedSize || 0
+  const error = departmentsApiError || false;
   // All the states needed for this component
-  const [error, setError] = useState(false);
   const [limit, setLimit] = useState(6);
   const [skip, setSkip] = useState(0);
-  const [size, setSize] = useState(0);
   const [myFilters, setMyFilters] = useState({
     filters: { category: [], price: [] },
   });
@@ -32,8 +32,8 @@ const Shop = () => {
   const loadMore = () => {
     const toSkip = skip + limit;
     const filter = myFilters.filters
-    dispatch(getFilteredProducts(toSkip, limit, filter))
-    // Come back to this function when the loadmore is visible
+    // This function might need more testing
+    dispatch(updateFilteredProducts(toSkip, limit, filter))
   };
 
   const loadMoreButton = () => {
@@ -51,7 +51,7 @@ const Shop = () => {
   useEffect(() => {
     dispatch(getAllCategories())
     loadFilteredResults(limit, skip, myFilters.filters);
-
+    loadMore()
     // eslint-disable-next-line
   }, [dispatch]);
 
