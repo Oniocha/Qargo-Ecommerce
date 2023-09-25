@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { getProductsByPriceApi, getAllCategoriesApi,
     loadBySellApi, getNewArrivalsApi
-} from "../api";
+} from "../../api";
 
 // Create action to load by price
 export const getProductsByPrice = createAsyncThunk("LOAD_BY_PRICE", async() => {
