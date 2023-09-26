@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getProductsByPrice, getAllCategories,
-    loadBySell, getNewArrivals
+    loadBySell, getNewArrivals, listRelated
 } from "./actions";
 
 const loadProducts = createSlice({
@@ -60,6 +60,18 @@ const loadProducts = createSlice({
             state.success = false;
             state.loading = true;
         });
+        builder.addCase(listRelated.fulfilled, (state, action) => {
+            state.success = true;
+            state.loading = false;
+            state.relatedProducts = action.payload;
+        });
+        builder.addCase(listRelated.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(listRelated.rejected, (state) => {
+            state.loading = false;
+            state.success = false;
+        })
     }
 });
 
