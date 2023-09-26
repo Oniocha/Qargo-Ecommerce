@@ -1,45 +1,32 @@
 import React, { useEffect, useState, Fragment } from "react";
 import moment from "moment";
 import { Link, Redirect } from "react-router-dom";
-import { readProduct, listRelated } from "../../API_CALLS/userApis";
+import { listRelated } from "../../redux/product/loadProducts/actions";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import ShowImage from "../../components/ProductCard/ShowImage";
 import { addItem } from "../../helpers/cartHelpers";
+import { useSelector, useDispatch } from "react-redux";
+import { readProduct } from "../../redux/product/loadProduct/actions";
 
 import "./product-styles.scss";
 
 const ProductPage = ({ match }) => {
-  const [product, setProduct] = useState({});
-  const [related, setRelated] = useState([]);
+  const { productQureied, errorQueringProduct } = useSelector(state => state.loadProduct)
+  const { relatedProducts } = useSelector(state => state.loadProducts)
+  const dispatch = useDispatch();
+  const product = productQureied || {}
+  const related = relatedProducts || [];
   const [error, setError] = useState(false);
   const [redirect, setRedirect] = useState(false);
 
-  const fetchSingleProduct = (productId) => {
-    readProduct(productId).then((data) => {
-      if (data?.error) {
-        setError(true);
-      } else {
-        setProduct(data);
-
-        //fetch related products based on the products
-        listRelated(data._id).then((data) => {
-          if (data?.error) {
-            setError(data?.error);
-          } else {
-            setRelated(data.data);
-          }
-        });
-      }
-    });
-  };
-
   let productId = match.params.productId;
 
-  useEffect(() => {
-    fetchSingleProduct(productId);
+  console.log(related)
 
-    // eslint-disable-next-line
-  }, [match]);
+  useEffect(() => {
+    dispatch(readProduct(productId))
+    dispatch(listRelated(productId))
+  }, [dispatch, productId]);
 
   const buyItem = () => {
     addItem(product, () => {
