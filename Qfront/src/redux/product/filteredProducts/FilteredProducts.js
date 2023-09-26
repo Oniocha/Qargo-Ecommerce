@@ -1,15 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getFilteredProducts, updateFilteredProducts } from "./actions";
-
-const initialState = {
-    data: [],
-    loading: false,
-    error: null,
-}
+import { getFilteredProducts, updateFilteredProducts, listProducts
+} from "./actions";
 
 const filteredProductsSlice = createSlice({
     name: "filteredProducts",
-    initialState,
+    initialState: {},
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(getFilteredProducts.fulfilled, (state, action) => {
@@ -38,7 +33,19 @@ const filteredProductsSlice = createSlice({
             state.loading = false;
             state.success = false;
             state.updatedFilteredProductsError = action.payload;
-        })
+        });
+        builder.addCase(listProducts.fulfilled, (state, action) => {
+            state.success = true;
+            state.quriedProducts = action.payload;
+            state.loading = false;
+        });
+        builder.addCase(listProducts.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(listProducts.rejected, (state, action) => {
+            state.success = false;
+            state.errorQueryingProduct = action.payload;
+        });
     }
 })
 
