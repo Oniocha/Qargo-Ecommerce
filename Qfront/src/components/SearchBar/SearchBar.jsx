@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
-import { listProducts } from "../../API_CALLS/userApis";
 import { getAllDepartments } from "../../redux/departments/actions";
+import { listProducts } from "../../redux/product/filteredProducts/actions";
 import { useDispatch, useSelector } from 'react-redux';
 
 import "./search-styles.scss";
@@ -23,20 +23,15 @@ const SearchBar = () => {
 
   useEffect(() => {
     dispatch(getAllDepartments())
+    dispatch(listProducts())
   }, [dispatch]);
 
   const searchProduct = () => {
     if (search) {
-      listProducts({
+      dispatch(listProducts({
         search: search || undefined,
-        department: department || undefined,
-      }).then((data) => {
-        if (data?.error) {
-          console.log(data?.error);
-        } else {
-          setQuery({ ...query, results: data });
-        }
-      });
+        department: department || undefined
+      }))
     }
   };
 
