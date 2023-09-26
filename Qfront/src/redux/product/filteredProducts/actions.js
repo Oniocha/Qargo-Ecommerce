@@ -1,6 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { fetchFilteredProductsApi } from "../../api";
+import { productsEndPointApi } from "../../api";
+
+const fetchFilteredProductsApi = productsEndPointApi + `/by/search`;
 
 // Create action to fetch filtered products
 export const getFilteredProducts = createAsyncThunk("filteredProducts/getFilteredProducts", async(skip, limit, filters) => {
@@ -33,3 +35,14 @@ export const updateFilteredProducts = createAsyncThunk('filteredProducts/updateF
       } )
   return response.data;
 });
+
+// create action to list products
+export const listProducts = createAsyncThunk("loadProducts/listProducts", async(params) => {
+  const query = {
+      search: params.search,
+      department: params.deparment
+  }
+  const listingEndPoint = productsEndPointApi + `/search?${query}`;
+  const response = await axios.get(listingEndPoint);
+  return response.data;
+})
