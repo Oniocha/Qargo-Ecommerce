@@ -21,8 +21,6 @@ const ProductPage = ({ match }) => {
 
   let productId = match.params.productId;
 
-  console.log(related)
-
   useEffect(() => {
     dispatch(readProduct(productId))
     dispatch(listRelated(productId))
