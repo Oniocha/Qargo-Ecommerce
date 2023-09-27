@@ -3,12 +3,14 @@ import { Link } from "react-router-dom";
 import { isAuthenticated } from "../../API_CALLS/Auth/authMethods";
 import { cartTotal, getCart } from "../../helpers/cartHelpers";
 import {
-  getTransactionFees,
+  // getTransactionFees,
   initateTransaction,
   createAuthOrder,
   createGuestOrder,
 } from "../../API_CALLS/userApis";
 import Momo from "../../images/Mobile-Money.png";
+import { getTransactionFees } from "../../redux/transactions/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 import MiddleBar from "../../components/Header/MiddleBar";
 
@@ -16,6 +18,9 @@ import "../../components/Header/header-styles.scss";
 import "./styles.scss";
 
 const CheckOutPage = () => {
+  const { transactionFee } = useSelector(state => state.transaction)
+  const dispatch = useDispatch();
+  const fees = transactionFee || "";
   const [products, setProducts] = useState([]);
   const [count, setCount] = useState(0);
   const [values, setValues] = useState({
@@ -28,7 +33,6 @@ const CheckOutPage = () => {
     network: "",
     redirect_url: "http://localhost:3000/order-complete",
     amount: "",
-    fees: "",
     error: false,
   });
   const [redirect, setRedirect] = useState(false),
@@ -48,7 +52,6 @@ const CheckOutPage = () => {
     fullname,
     email,
     amount,
-    fees,
     phone_number,
     redirect_url,
     network,
@@ -103,8 +106,12 @@ const CheckOutPage = () => {
     }
   };
 
+  console.log(transactionFee);
+
   useEffect(() => {
     handleMobileSelector();
+    // dispatch(getTransactionFees())
+    setFees()
 
     // eslint-disable-next-line
   }, [phone_number]);
@@ -152,6 +159,8 @@ const CheckOutPage = () => {
     }, 0);
   };
 
+  console.log(getSum());
+
   // Calculate Tax
   const vat = (sum) => {
     return +(sum * 0.03).toFixed(2);
@@ -171,17 +180,18 @@ const CheckOutPage = () => {
   };
 
   // Get transaction fees
-  const setFees = (cost) => {
+  const setFees = (getSum) => {
     setValues({ ...values, error: "" });
-    getTransactionFees(cost)
-      .then((data) => {
-        if (data?.error) {
-          setValues({ ...values, error: data?.error });
-        } else {
-          setValues({ ...values, fees: data.data.fee, error: false });
-        }
-      })
-      .catch((err) => console.log(err));
+    // getTransactionFees(cost)
+    //   .then((data) => {
+    //     if (data?.error) {
+    //       setValues({ ...values, error: data?.error });
+    //     } else {
+    //       setValues({ ...values, fees: data.data.fee, error: false });
+    //     }
+    //   })
+    //   .catch((err) => console.log(err));
+    dispatch(getTransactionFees(Number(getSum)))
   };
 
   // Set transaction fees
