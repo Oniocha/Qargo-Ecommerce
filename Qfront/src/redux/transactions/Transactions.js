@@ -1,4 +1,4 @@
-import { getTransactionFees } from "./actions";
+import { getTransactionFees, initiateTransaction } from "./actions";
 import { createSlice } from "@reduxjs/toolkit";
 
 const transactionsSlice = createSlice({
@@ -10,7 +10,28 @@ const transactionsSlice = createSlice({
             state.success = true;
             state.loading = false;
             state.transactionFee = action.payload;
-        })
+        });
+        builder.addCase(getTransactionFees.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(getTransactionFees.rejected, (state, action) => {
+            state.success = false;
+            state.loading = false;
+            state.getTransactionError = action.payload;
+        });
+        builder.addCase(initiateTransaction.fulfilled, (state, action) => {
+            state.success = true;
+            state.loading = false;
+            state.initiationResponse = action.payload;
+        });
+        builder.addCase(initiateTransaction.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(initiateTransaction.rejected, (state, action) => {
+            state.loading = false;
+            state.success = false;
+            state.errorInititatingTransaction = action.payload;
+        });
     }
 });
 
