@@ -4,12 +4,12 @@ import { isAuthenticated } from "../../API_CALLS/Auth/authMethods";
 import { cartTotal, getCart } from "../../helpers/cartHelpers";
 import {
   // getTransactionFees,
-  initateTransaction,
+  // initateTransaction,
   createAuthOrder,
   createGuestOrder,
 } from "../../API_CALLS/userApis";
 import Momo from "../../images/Mobile-Money.png";
-import { getTransactionFees } from "../../redux/transactions/actions";
+import { getTransactionFees, initiateTransaction } from "../../redux/transactions/actions";
 import { useDispatch, useSelector } from "react-redux";
 
 import MiddleBar from "../../components/Header/MiddleBar";
@@ -106,12 +106,11 @@ const CheckOutPage = () => {
     }
   };
 
-  console.log(transactionFee);
+  // console.log(transactionFee);
 
   useEffect(() => {
     handleMobileSelector();
-    // dispatch(getTransactionFees())
-    setFees()
+    dispatch(getTransactionFees({cost: 14}))
 
     // eslint-disable-next-line
   }, [phone_number]);
@@ -159,8 +158,6 @@ const CheckOutPage = () => {
     }, 0);
   };
 
-  console.log(getSum());
-
   // Calculate Tax
   const vat = (sum) => {
     return +(sum * 0.03).toFixed(2);
@@ -180,18 +177,9 @@ const CheckOutPage = () => {
   };
 
   // Get transaction fees
-  const setFees = (getSum) => {
+  const setFees = (cost) => {
     setValues({ ...values, error: "" });
-    // getTransactionFees(cost)
-    //   .then((data) => {
-    //     if (data?.error) {
-    //       setValues({ ...values, error: data?.error });
-    //     } else {
-    //       setValues({ ...values, fees: data.data.fee, error: false });
-    //     }
-    //   })
-    //   .catch((err) => console.log(err));
-    dispatch(getTransactionFees(Number(getSum)))
+    dispatch(getTransactionFees(cost));
   };
 
   // Set transaction fees
@@ -220,44 +208,53 @@ const CheckOutPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    initateTransaction(
-      tx_ref,
-      email,
-      amount,
-      type,
-      phone_number,
-      network,
-      redirect_url,
-      fullname
-    )
-      .then((data) => {
-        if (data?.error) {
-          console.log("error", data?.error);
-          setLoading(false);
-        } else {
-          setPaymentUrl(data.meta.authorization.redirect);
+    // initateTransaction(
+      // tx_ref,
+      // email,
+      // amount,
+      // type,
+      // phone_number,
+      // network,
+      // redirect_url,
+      // fullname
+    // )
+    //   .then((data) => {
+    //     if (data?.error) {
+    //       console.log("error", data?.error);
+    //       setLoading(false);
+    //     } else {
+    //       setPaymentUrl(data.meta.authorization.redirect);
 
-          // Sending the order to the backend
-          const createOrderData = {
-            products,
-            transaction_id: tx_ref,
-            amount,
-            name: fullname,
-            number: phone_number,
-            email,
-            address,
-          };
-          if (isAuthenticated()) {
-            //destructuring localstorage
-            const { user, token } = isAuthenticated();
-            createAuthOrder(user._id, token, createOrderData);
-          } else createGuestOrder(createOrderData);
+    //       // Sending the order to the backend
+    //       const createOrderData = {
+    //         products,
+    //         transaction_id: tx_ref,
+    //         amount,
+    //         name: fullname,
+    //         number: phone_number,
+    //         email,
+    //         address,
+    //       };
+        //   if (isAuthenticated()) {
+        //     //destructuring localstorage
+        //     const { user, token } = isAuthenticated();
+        //     createAuthOrder(user._id, token, createOrderData);
+        //   } else createGuestOrder(createOrderData);
 
-          setRedirect(true);
-          setLoading(false);
-        }
-      })
-      .catch((err) => console.log(err));
+        //   setRedirect(true);
+        //   setLoading(false);
+        // }
+    //   })
+    //   .catch((err) => console.log(err));
+    dispatch(initiateTransaction(tx_ref,email, amount, type, phone_number, network, redirect_url, fullname))
+    // if (isAuthenticated()) {
+    //   //destructuring localstorage
+    //   const { user, token } = isAuthenticated();
+    //   createAuthOrder(user._id, token, createOrderData);
+    // } else createGuestOrder(createOrderData);
+
+    // setRedirect(true);
+    // setLoading(false);
   };
 
   // Mobile Payment field
