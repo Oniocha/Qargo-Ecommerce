@@ -106,8 +106,6 @@ const CheckOutPage = () => {
     }
   };
 
-  // console.log(transactionFee);
-
   useEffect(() => {
     handleMobileSelector();
     dispatch(getTransactionFees({cost: 14}))
@@ -208,53 +206,7 @@ const CheckOutPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    // initateTransaction(
-      // tx_ref,
-      // email,
-      // amount,
-      // type,
-      // phone_number,
-      // network,
-      // redirect_url,
-      // fullname
-    // )
-    //   .then((data) => {
-    //     if (data?.error) {
-    //       console.log("error", data?.error);
-    //       setLoading(false);
-    //     } else {
-    //       setPaymentUrl(data.meta.authorization.redirect);
-
-    //       // Sending the order to the backend
-    //       const createOrderData = {
-    //         products,
-    //         transaction_id: tx_ref,
-    //         amount,
-    //         name: fullname,
-    //         number: phone_number,
-    //         email,
-    //         address,
-    //       };
-        //   if (isAuthenticated()) {
-        //     //destructuring localstorage
-        //     const { user, token } = isAuthenticated();
-        //     createAuthOrder(user._id, token, createOrderData);
-        //   } else createGuestOrder(createOrderData);
-
-        //   setRedirect(true);
-        //   setLoading(false);
-        // }
-    //   })
-    //   .catch((err) => console.log(err));
     dispatch(initiateTransaction(tx_ref,email, amount, type, phone_number, network, redirect_url, fullname))
-    // if (isAuthenticated()) {
-    //   //destructuring localstorage
-    //   const { user, token } = isAuthenticated();
-    //   createAuthOrder(user._id, token, createOrderData);
-    // } else createGuestOrder(createOrderData);
-
-    // setRedirect(true);
-    // setLoading(false);
   };
 
   // Mobile Payment field
@@ -265,13 +217,13 @@ const CheckOutPage = () => {
           <div className="card-header">
             <h5>Please provide your Mobile Money number below for payment</h5>
           </div>
-          {/* <div className="row pt-3 pl-3 pr-3">
+          <div className="row pt-3 pl-3 pr-3">
             <div className="col-4">
               <p>
                 Transaction fee: {fees} <small>(Powered by Flutterwave)</small>
               </p>
             </div>
-          </div> */}
+          </div>
           <div className="m-3">
             <form>
               <input
