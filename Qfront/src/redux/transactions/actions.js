@@ -5,15 +5,13 @@ import { transactionsEndPointApi } from "../api";
 // create action to calculate tranasction fees
 export const getTransactionFees = createAsyncThunk("transactions/getTransactionFees", async(cost) => {
     const getTransactionFeesApi = transactionsEndPointApi + `/transaction/fees`;
-    const data = {amount: cost};
     const response = await axios.post(getTransactionFeesApi, {
         headers: {
             accept: "application/json",
             "Content-type": "application/json" 
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify({amount: cost})
     });
-    debugger;
     return response.data.data
 });
 
