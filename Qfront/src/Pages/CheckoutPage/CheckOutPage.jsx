@@ -2,12 +2,6 @@ import React, { useEffect, Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../../API_CALLS/Auth/authMethods";
 import { cartTotal, getCart } from "../../helpers/cartHelpers";
-import {
-  // getTransactionFees,
-  // initateTransaction,
-  createAuthOrder,
-  createGuestOrder,
-} from "../../API_CALLS/userApis";
 import Momo from "../../images/Mobile-Money.png";
 import { getTransactionFees, initiateTransaction } from "../../redux/transactions/actions";
 import { useDispatch, useSelector } from "react-redux";
