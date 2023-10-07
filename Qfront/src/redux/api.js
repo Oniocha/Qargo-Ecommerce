@@ -1,6 +1,16 @@
-export const getAllCategoriesApi = `${process.env.REACT_APP_API_URL}/categories`;
-export const getDepartmentsApi = `${process.env.REACT_APP_API_URL}/departments`;
-export const productsEndPointApi =  `${process.env.REACT_APP_API_URL}/products`;
-export const productEndPointApi = `${process.env.REACT_APP_API_URL}/product`;
-export const transactionsEndPointApi = `${process.env.REACT_APP_API_URL}/rave`;
-export const ordersEndPoint = `${process.env.REACT_APP_API_URL}/order`
+import axios from 'axios';
+
+// Create base url for axios to
+const axiosInstance = axios.create({
+    baseURL: process.env.REACT_APP_API_URL,
+});
+
+export const baseUrl = axiosInstance;
+
+// End points to query backend
+export const getAllCategoriesApi = `categories`;
+export const getDepartmentsApi = `departments`;
+export const productsEndPointApi =  `products`;
+export const productEndPointApi = `product`;
+export const transactionsEndPointApi = `rave`;
+export const ordersEndPoint = `order`;
