@@ -2,9 +2,20 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getFilteredProducts, updateFilteredProducts, listProducts
 } from "./actions";
 
+const initialState = {
+    success: null,
+    loading: false,
+    fetchedFilteredProducts: [],
+    fetchedSize : [],
+    quriedProducts : [],
+    updatedFilteredProductsError : null,
+    errorQueryingProduct : null,
+    filteredProductsError : null
+};
+
 const filteredProductsSlice = createSlice({
     name: "filteredProducts",
-    initialState: {},
+    initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(getFilteredProducts.fulfilled, (state, action) => {
@@ -16,9 +27,10 @@ const filteredProductsSlice = createSlice({
             state.success =  false;
             state.loading = true;
         });
-        builder.addCase(getFilteredProducts.rejected, (state) => {
+        builder.addCase(getFilteredProducts.rejected, (state, action) => {
             state.success = false;
             state.loading = false;
+            state.filteredProductsError = action.payload;
         });
         builder.addCase(updateFilteredProducts.fulfilled, (state, action) => {
             state.fetchedFilteredProducts = action.payload;

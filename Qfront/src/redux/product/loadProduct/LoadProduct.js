@@ -1,11 +1,17 @@
 import { readProduct } from "./actions";
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+    productQureied: [],
+    loading: false,
+    success: null,
+    errorQueringProduct : null
+};
 
 // reducer to handle for an individual product
 const loadProductSlice = createSlice({
     name: "product",
-    initialState: {},
+    initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(readProduct.fulfilled, (state, action) => {

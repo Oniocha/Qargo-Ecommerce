@@ -3,9 +3,24 @@ import { getProductsByPrice, getAllCategories,
     loadBySell, getNewArrivals, listRelated
 } from "./actions";
 
+const initialState = {
+    fetchedProductsByPrice : [],
+    fetchedCategories : [],
+    fetchedDataBySell : [],
+    relatedProducts : [],
+    fetchedNewArrivals : [],
+    success : null,
+    loading: false,
+    productsByPriceError : null,
+    fetchedCategoriesError : null,
+    dataBySellError : null,
+    newArrivalsError : null,
+    relatedProductsError : null
+}
+
 const loadProducts = createSlice({
     name: "loadProducts",
-    initialState : {},
+    initialState,
     reducers : {},
     extraReducers : (builder) => {
         builder.addCase(getProductsByPrice.fulfilled, (state, action) => {
@@ -17,9 +32,10 @@ const loadProducts = createSlice({
             state.success = false;
             state.loading =  true;
         });
-        builder.addCase(getProductsByPrice.rejected, (state) => {
+        builder.addCase(getProductsByPrice.rejected, (state, action) => {
             state.success = false;
             state.loading = false;
+            state.productsByPriceError = action.payload;
         });
         builder.addCase(getAllCategories.fulfilled, (state, action) => {
             state.success = true;
@@ -30,9 +46,10 @@ const loadProducts = createSlice({
             state.success = false;
             state.loading = true;
         });
-        builder.addCase(getAllCategories.rejected, (state) => {
+        builder.addCase(getAllCategories.rejected, (state, action) => {
             state.success = false;
             state.loading = false;
+            state.fetchedCategoriesError = action.payload
         });
         builder.addCase(loadBySell.fulfilled, (state, action) => {
             state.success = true;
@@ -43,9 +60,10 @@ const loadProducts = createSlice({
             state.success = false;
             state.loading = true;
         });
-        builder.addCase(loadBySell.rejected, (state) => {
+        builder.addCase(loadBySell.rejected, (state, action) => {
             state.success = false;
             state.loading = false;
+            state.dataBySellError = action.payload;
         });
         builder.addCase(getNewArrivals.fulfilled, (state, action) => {
             state.fetchedNewArrivals = action.payload;
@@ -56,9 +74,10 @@ const loadProducts = createSlice({
             state.success = false;
             state.loading = false;
         });
-        builder.addCase(getNewArrivals.pending, (state) => {
+        builder.addCase(getNewArrivals.pending, (state, action) => {
             state.success = false;
             state.loading = true;
+            state.newArrivalsError = action.payload;
         });
         builder.addCase(listRelated.fulfilled, (state, action) => {
             state.success = true;
@@ -68,9 +87,10 @@ const loadProducts = createSlice({
         builder.addCase(listRelated.pending, (state) => {
             state.loading = true;
         });
-        builder.addCase(listRelated.rejected, (state) => {
+        builder.addCase(listRelated.rejected, (state, action) => {
             state.loading = false;
             state.success = false;
+            state.relatedProductsError = action.payload
         })
     }
 });

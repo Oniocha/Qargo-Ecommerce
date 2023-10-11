@@ -1,10 +1,17 @@
 import {getAllDepartments} from './actions';
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+    fetchedDepartments: [],
+    departmentsApiError: null,
+    loading: false,
+    success: null,
+};
+
 // Create departments reducer
 const departmentsSlice = createSlice({
     name: "departments",
-    initialState: {},
+    initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(getAllDepartments.fulfilled, (state, action) => {

@@ -1,9 +1,18 @@
 import { getTransactionFees, initiateTransaction } from "./actions";
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+    transactionFee: [],
+    initiationResponse : [],
+    getTransactionError : null,
+    errorInititatingTransaction : null,
+    success : null,
+    loading: false,
+}
+
 const transactionsSlice = createSlice({
     name: "transactions",
-    initialState: {},
+    initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(getTransactionFees.fulfilled, (state, action) => {
