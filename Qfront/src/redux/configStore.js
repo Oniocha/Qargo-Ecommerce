@@ -4,6 +4,7 @@ import departmentsReducer from './departments/Departments';
 import loadProductReducer from './product/loadProduct/LoadProduct';
 import transactionsReducer  from './transactions/Transactions';
 import orderReducer from './orders/Orders';
+import vendorReducer from './vendor/Vendor';
 import { configureStore } from '@reduxjs/toolkit';
 
 const store = configureStore({
@@ -13,7 +14,8 @@ const store = configureStore({
         loadDepartments : departmentsReducer,
         loadProduct : loadProductReducer,
         transaction: transactionsReducer,
-        order: orderReducer
+        order: orderReducer,
+        vendor: vendorReducer,
     }
 });
 
