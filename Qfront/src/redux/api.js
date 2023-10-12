@@ -14,3 +14,5 @@ export const productsEndPointApi =  `products`;
 export const productEndPointApi = `product`;
 export const transactionsEndPointApi = `rave`;
 export const ordersEndPoint = `order`;
+export const vendorCategoryEndpoint = `category/create`;
+export const vendorProductEndpoint = `product/create`;
