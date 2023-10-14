@@ -19,7 +19,7 @@ const vendorSlice = createSlice({
         });
         builder.addCase(createCategory.fulfilled, (state, action) => {
             state.loading = false;
-            state.successCreatingData = action.payload;
+            state.successCategoryData = action.payload;
             state.success = true;
         });
         builder.addCase(createCategory.rejected, (state, action) => {
@@ -33,7 +33,7 @@ const vendorSlice = createSlice({
         builder.addCase(createProduct.fulfilled, (state, action) => {
             state.success = true;
             state.loading = false;
-            state.data = action.payload;
+            state.successProductData = action.payload;
         });
         builder.addCase(createProduct.rejected, (state, action) => {
             state.success = false;
