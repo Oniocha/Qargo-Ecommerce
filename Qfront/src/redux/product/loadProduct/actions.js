@@ -7,6 +7,6 @@ export const readProduct = createAsyncThunk("loadProduct/readProduct", async( { 
         const response = await axiosInstance.get(`${productEndPointApi}/${prodId}`);
         return response.data;
     } catch (error) {
-        return rejectWithValue(error);
+        return rejectWithValue(error.error);
     }
 });

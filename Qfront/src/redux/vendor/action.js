@@ -29,6 +29,6 @@ export const createProduct = createAsyncThunk("vendor/createProduct", async({ us
         });
         return response.data
     } catch (error) {
-        return rejectWithValue(error);
+        return rejectWithValue(error.error);
     }
 })

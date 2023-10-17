@@ -14,7 +14,7 @@ export const getTransactionFees = createAsyncThunk("transactions/getTransactionF
         });
         return response.data.data
     } catch (error) {
-        return rejectWithValue(error)
+        return rejectWithValue(error.error)
     }
 });
 
@@ -54,6 +54,6 @@ export const initiateTransaction = createAsyncThunk("transactions/initiateTransa
        return response.data.data;
 
     } catch (error) {
-        return rejectWithValue(error)
+        return rejectWithValue(error.error)
     }
 })

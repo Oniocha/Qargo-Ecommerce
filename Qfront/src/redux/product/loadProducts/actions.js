@@ -9,7 +9,7 @@ export const getProductsByPrice = createAsyncThunk("LOAD_BY_PRICE", async( _, { 
        const response = await axiosInstance.get(getProductsByPriceApi);
        return response.data.data;
     } catch (error) {
-        rejectWithValue(error)
+        return rejectWithValue(error.error)
     }
 });
 
@@ -19,7 +19,7 @@ export const getAllCategories = createAsyncThunk("LOAD_BY_CATEGORIES", async( _,
        const response = await axiosInstance.get(getAllCategoriesApi);
        return response.data;
     } catch (error) {
-        rejectWithValue(error)
+        return rejectWithValue(error.error)
     }
 });
 
@@ -30,7 +30,7 @@ export const loadBySell = createAsyncThunk("LOAD_BY_SELL", async ( _, { rejectWi
         const response = await axiosInstance.get(loadBySellApi);
         return response.data.data;
     } catch (error) {
-        rejectWithValue(error)
+        return rejectWithValue(error.error)
     }
 });
 
@@ -41,7 +41,7 @@ export const getNewArrivals = createAsyncThunk("FETCH_PRODUCTS", async ( _, { re
         const response = await axiosInstance.get(getNewArrivalsApi);
         return response.data.data;
     } catch (error) {
-        rejectWithValue(error)
+        return rejectWithValue(error.error)
     }
 });
 
@@ -52,6 +52,6 @@ export const listRelated = createAsyncThunk("loadProduct/listRelated", async( { 
         const response = await axiosInstance.get(listRelatedApi);
         return response.data;
     } catch (error) {
-        rejectWithValue(error)
+        return rejectWithValue(error.error)
     }
 })

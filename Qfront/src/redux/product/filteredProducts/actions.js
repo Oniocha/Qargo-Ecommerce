@@ -19,7 +19,7 @@ export const getFilteredProducts = createAsyncThunk("filteredProducts/getFiltere
           } )
       return response.data;
     } catch (error) {
-      return rejectWithValue(error)
+      return rejectWithValue(error.error)
     }
 });
 
@@ -41,7 +41,7 @@ export const updateFilteredProducts = createAsyncThunk('filteredProducts/updateF
           } )
       return response.data;
     } catch (error) {
-      return rejectWithValue(error)
+      return rejectWithValue(error.error)
     }
 });
 
@@ -57,6 +57,6 @@ export const listProducts = createAsyncThunk("loadProducts/listProducts", async(
     return response.data;
 
   } catch (error) {
-    return rejectWithValue(error)
+    return rejectWithValue(error.error)
   }
 })
