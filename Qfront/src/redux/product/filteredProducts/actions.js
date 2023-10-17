@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { baseUrl, productsEndPointApi } from "../../api";
+import { axiosInstance, productsEndPointApi } from "../../api";
 
 const fetchFilteredProductsApi = `${productsEndPointApi}/by/search`;
 
@@ -8,7 +8,7 @@ export const getFilteredProducts = createAsyncThunk("filteredProducts/getFiltere
   async( { skip, limit, filters }, { rejectWithValue }) => {
     try {
       const data = { skip, limit, filters }
-      const response = await baseUrl.post(
+      const response = await axiosInstance.post(
           fetchFilteredProductsApi,
           { data },
           {
@@ -30,7 +30,7 @@ export const updateFilteredProducts = createAsyncThunk('filteredProducts/updateF
       // This action receives data with new parameters
       // Also returns size
       const data = { skip, limit, filters}
-      const response = await baseUrl.post(
+      const response = await axiosInstance.post(
           fetchFilteredProductsApi,
           { data },
           {
@@ -53,7 +53,7 @@ export const listProducts = createAsyncThunk("loadProducts/listProducts", async(
         department: params.deparment
     }
     const listingEndPoint = `${productsEndPointApi}/search?${query}`;
-    const response = await baseUrl.get(listingEndPoint);
+    const response = await axiosInstance.get(listingEndPoint);
     return response.data;
 
   } catch (error) {

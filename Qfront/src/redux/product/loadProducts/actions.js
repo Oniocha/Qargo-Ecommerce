@@ -1,12 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { baseUrl, getAllCategoriesApi, productsEndPointApi
+import { axiosInstance, getAllCategoriesApi, productsEndPointApi
 } from "../../api";
 
 // Create action to load by price
 export const getProductsByPrice = createAsyncThunk("LOAD_BY_PRICE", async( _, { rejectWithValue }) => {
     try {
        const getProductsByPriceApi = `${productsEndPointApi}?sortBy=price&order=asc&limit=10`;
-       const response = await baseUrl.get(getProductsByPriceApi);
+       const response = await axiosInstance.get(getProductsByPriceApi);
        return response.data.data;
     } catch (error) {
         rejectWithValue(error)
@@ -16,7 +16,7 @@ export const getProductsByPrice = createAsyncThunk("LOAD_BY_PRICE", async( _, { 
 // Create action to load by by categories
 export const getAllCategories = createAsyncThunk("LOAD_BY_CATEGORIES", async( _, { rejectWithValue }) => {
     try {
-       const response = await baseUrl.get(getAllCategoriesApi);
+       const response = await axiosInstance.get(getAllCategoriesApi);
        return response.data;
     } catch (error) {
         rejectWithValue(error)
@@ -27,7 +27,7 @@ export const getAllCategories = createAsyncThunk("LOAD_BY_CATEGORIES", async( _,
 export const loadBySell = createAsyncThunk("LOAD_BY_SELL", async ( _, { rejectWithValue }) => {
     try {
         const loadBySellApi = `${productsEndPointApi}?sortBy=sold&order=desc&limit=10`;
-        const response = await baseUrl.get(loadBySellApi);
+        const response = await axiosInstance.get(loadBySellApi);
         return response.data.data;
     } catch (error) {
         rejectWithValue(error)
@@ -38,7 +38,7 @@ export const loadBySell = createAsyncThunk("LOAD_BY_SELL", async ( _, { rejectWi
 export const getNewArrivals = createAsyncThunk("FETCH_PRODUCTS", async ( _, { rejectWithValue }) => {
     try {
         const getNewArrivalsApi = `${productsEndPointApi}?sortBy=sold&order=desc&limit=10`;
-        const response = await baseUrl.get(getNewArrivalsApi);
+        const response = await axiosInstance.get(getNewArrivalsApi);
         return response.data.data;
     } catch (error) {
         rejectWithValue(error)
@@ -49,7 +49,7 @@ export const getNewArrivals = createAsyncThunk("FETCH_PRODUCTS", async ( _, { re
 export const listRelated = createAsyncThunk("loadProduct/listRelated", async( { prodId }, { rejectWithValue } ) => {
     try {
         const listRelatedApi = `${productsEndPointApi}/related/${prodId}`
-        const response = await baseUrl.get(listRelatedApi);
+        const response = await axiosInstance.get(listRelatedApi);
         return response.data;
     } catch (error) {
         rejectWithValue(error)

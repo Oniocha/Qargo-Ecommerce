@@ -1,4 +1,4 @@
-import { baseUrl, ordersEndPoint } from "../api";
+import { axiosInstance, ordersEndPoint } from "../api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 // Create action to allow orders from a registered user
@@ -6,7 +6,7 @@ export const createAuthOrder = createAsyncThunk("orders/createAuthOrder", async(
     { rejectWithValue }) => {
     try {
         const createAuthOrderEndPoint = `${ordersEndPoint}/create/${userId}`;
-        const response = await baseUrl.post(createAuthOrderEndPoint, { order: orderData }, {
+        const response = await axiosInstance.post(createAuthOrderEndPoint, { order: orderData }, {
             headers: {
                 accept: "application/json",
                 "Content-type": "application/json",
@@ -24,7 +24,7 @@ export const createGuestOrder = createAsyncThunk("orders/createGuestOrder", asyn
     { rejectWithValue }) => {
     try {
         const createGuestOrderEndPoint = `${ordersEndPoint}/guest/create`;
-        const response = await baseUrl.post(createGuestOrderEndPoint, { order: orderData }, {
+        const response = await axiosInstance.post(createGuestOrderEndPoint, { order: orderData }, {
             headers: {
                 accept: "application/json",
                 "Content-type": "application/json",

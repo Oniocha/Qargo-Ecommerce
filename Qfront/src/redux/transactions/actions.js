@@ -1,12 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { baseUrl, transactionsEndPointApi } from "../api";
+import { axiosInstance, transactionsEndPointApi } from "../api";
 
 // create action to calculate tranasction fees
 export const getTransactionFees = createAsyncThunk("transactions/getTransactionFees",
   async( { cost }, { rejectWithValue }) => {
     try {
         const getTransactionFeesApi = `${transactionsEndPointApi}/transaction/fees`;
-        const response = await baseUrl.post(getTransactionFeesApi, { amount: cost }, {
+        const response = await axiosInstance.post(getTransactionFeesApi, { amount: cost }, {
             headers: {
                 accept: "application/json",
                 "Content-type": "application/json" 
@@ -14,7 +14,7 @@ export const getTransactionFees = createAsyncThunk("transactions/getTransactionF
         });
         return response.data.data
     } catch (error) {
-        rejectWithValue(error)
+        return rejectWithValue(error)
     }
 });
 
@@ -44,7 +44,7 @@ export const initiateTransaction = createAsyncThunk("transactions/initiateTransa
         redirect_url: redirect,
       };
       const initiateTransactionApi = `${transactionsEndPointApi}/momopayment`
-      const response = baseUrl.post(initiateTransactionApi, { payment }, {
+      const response = axiosInstance.post(initiateTransactionApi, { payment }, {
         headers: {
             accept : "application/json",
             "Content-type": "application/json"
