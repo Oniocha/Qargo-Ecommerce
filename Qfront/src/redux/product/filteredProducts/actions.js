@@ -19,7 +19,7 @@ export const getFilteredProducts = createAsyncThunk("filteredProducts/getFiltere
           } )
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.error)
+      return rejectWithValue(error)
     }
 });
 
@@ -41,22 +41,19 @@ export const updateFilteredProducts = createAsyncThunk('filteredProducts/updateF
           } )
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.error)
+      return rejectWithValue(error)
     }
 });
 
 // create action to list products
-export const listProducts = createAsyncThunk("loadProducts/listProducts", async( { params }, { rejectWithValue } ) => {
+export const listProducts = createAsyncThunk("loadProducts/listProducts", async(params, { rejectWithValue } ) => {
   try {
-    const query = {
-        search: params.search,
-        department: params.deparment
-    }
+    const query = params?.search || params?.department ? params : {}
     const listingEndPoint = `${productsEndPointApi}/search?${query}`;
     const response = await axiosInstance.get(listingEndPoint);
     return response.data;
 
   } catch (error) {
-    return rejectWithValue(error.error)
+    return rejectWithValue(error)
   }
 })

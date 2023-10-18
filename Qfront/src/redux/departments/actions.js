@@ -7,6 +7,6 @@ export const getAllDepartments = createAsyncThunk("departments/getAllDepartments
         const response = await axiosInstance.get(getDepartmentsApi);
         return response.data;
     } catch (error) {
-        return rejectWithValue(error.error);
+        return rejectWithValue(error);
     }
 });

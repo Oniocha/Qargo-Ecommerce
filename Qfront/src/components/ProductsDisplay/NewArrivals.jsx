@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -21,7 +21,6 @@ const SamplePrevArrow = (props) => {
 const NewArrivals = () => {
   const { fetchedNewArrivals, fetchedDataBySell, fetchedProductsByPrice } = useSelector(state => state.loadProducts);
   const dispatch = useDispatch()
-  const [error, setError] = useState(false);
   const productsByArrival = fetchedNewArrivals || [];
   const productsBySell = fetchedDataBySell || [];
   const productsByPrice = fetchedProductsByPrice || [];

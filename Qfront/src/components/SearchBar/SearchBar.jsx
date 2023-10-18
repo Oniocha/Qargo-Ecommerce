@@ -29,8 +29,8 @@ const SearchBar = () => {
   const searchProduct = () => {
     if (search) {
       dispatch(listProducts({
-        search: search || undefined,
-        department: department || undefined
+        ...(search ? { search } : {}),
+        ...(department ? { department } : {}),
       }))
     }
   };

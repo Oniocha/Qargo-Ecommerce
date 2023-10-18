@@ -15,7 +15,7 @@ export const createAuthOrder = createAsyncThunk("orders/createAuthOrder", async(
         });
         return response.data;
     } catch (error) {
-        return rejectWithValue(error.error)
+        return rejectWithValue(error)
     }
 });
 
@@ -32,6 +32,6 @@ export const createGuestOrder = createAsyncThunk("orders/createGuestOrder", asyn
         });
         return response.data;
     } catch (error) {
-        return rejectWithValue(error.error)
+        return rejectWithValue(error)
     }
 });
