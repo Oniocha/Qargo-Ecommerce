@@ -18,14 +18,19 @@ const loadProductSlice = createSlice({
             state.success = true;
             state.productQureied = action.payload;
             state.loading = false;
+            state.errorQueringProduct = null;
         });
         builder.addCase(readProduct.pending, (state) => {
             state.loading = true;
+            state.productQureied = [];
+            state.success = false;
+            state.errorQueringProduct = null;
         });
         builder.addCase(readProduct.rejected, (state, action) => {
             state.loading = false;
             state.errorQueringProduct = action.payload;
             state.success = false;
+            state.productQureied = [];
         });
     }
 })
