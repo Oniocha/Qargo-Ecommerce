@@ -102,8 +102,7 @@ const CheckOutPage = () => {
 
   useEffect(() => {
     handleMobileSelector();
-    dispatch(getTransactionFees({cost: 14}))
-
+    dispatch(getTransactionFees(getSum))
     // eslint-disable-next-line
   }, [phone_number]);
 

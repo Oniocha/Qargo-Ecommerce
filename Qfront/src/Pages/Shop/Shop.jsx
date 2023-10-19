@@ -25,7 +25,7 @@ const Shop = () => {
   
   // Function to send search filters to backend
   const loadFilteredResults = (newFilters) => {
-    dispatch(getFilteredProducts(skip, limit, newFilters))
+    dispatch(getFilteredProducts({skip: skip, limit: limit, filters: newFilters}))
   };
 
   // 'Load more' button function
@@ -33,7 +33,7 @@ const Shop = () => {
     const toSkip = skip + limit;
     const filter = myFilters.filters
     // This function might need more testing
-    dispatch(updateFilteredProducts(toSkip, limit, filter))
+    dispatch(updateFilteredProducts({skip: toSkip, limit: limit, filters: filter}))
   };
 
   const loadMoreButton = () => {
@@ -50,7 +50,6 @@ const Shop = () => {
   // UseEffect to load when component mounts. Fetches all categories and fetches all products
   useEffect(() => {
     dispatch(getAllCategories())
-    loadFilteredResults(limit, skip, myFilters.filters);
     loadMore()
     // eslint-disable-next-line
   }, [dispatch]);
