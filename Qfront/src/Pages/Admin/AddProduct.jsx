@@ -13,7 +13,7 @@ import NoPhoto from "../../images/no-photo-available.png";
 const AddProduct = () => {
   const dispatch = useDispatch();
   const { errorCreatingProduct, successProductData } = useSelector(state => state.vendor);
-  const [values, setValues] = useState({
+  const [formData, setFormData] = useState({
     name: "",
     description: "",
     price: "",
@@ -30,8 +30,8 @@ const AddProduct = () => {
     error: "",
     createdProduct: "",
   });
-  const [formData, setFormData] = useState(""),
-    [categories, setCategories] = useState([]),
+  // const [formData, setFormData] = useState(new FormData()),
+  const [categories, setCategories] = useState([]),
     [tags, setTags] = useState([]),
     [departments, setDepartments] = useState([]);
 
@@ -44,7 +44,7 @@ const AddProduct = () => {
     loading,
     error,
     createdProduct,
-  } = values;
+  } = formData;
 
   //destructuring localstorage
   const { user, token } = isAuthenticated();
@@ -80,55 +80,30 @@ const AddProduct = () => {
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    setFormData(new FormData());
-
-    // eslint-disable-next-line
-  }, []);
-
   const handleChange = (name) => (e) => {
-    let value = name === "photo" ? e.target.files[0] : e.target.value;
-    if (formData !== undefined) {
-      formData.set(name, value);
-    } else {
-      console.error("formData is not set");
+    let newValue = name === "photo" ? e.target.files[0] : e.target.value;
+
+    if (Array.isArray(formData[name])) {
+      // Get the index and append the new value with its index
+      const index = formData[name].length;
+      newValue = [index, newValue];
     }
-    setValues({ ...values, error: "", createdProduct: "", [name]: value });
+  
+    setFormData({
+      ...formData,
+      [name]: newValue,
+    });
   };
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setValues({ ...values, error: "", loading: true });
-    createProduct(user._id, token, formData).then((data) => {
-      if (data?.error) {
-        setValues({ ...values, error: data?.error, loading: false });
-      } else {
-        setValues({
-          name: "",
-          description: "",
-          price: "",
-          tag: "",
-          category: [],
-          quantity: "",
-          size: [],
-          photo: "",
-          department: "",
-          condition: "",
-          shipping: "",
-          shippingTime: "",
-          loading: false,
-          error: "",
-          createdProduct: data.name,
-        });
-      }
-    });
-    const access = token;
     const product = formData;
-    dispatch(createProduct(user.id, access, product))
+    dispatch(createProduct({ user_id: user.id, access: token, product: product }))
     if (errorCreatingProduct) {
-      setValues({ ...values, error: errorCreatingProduct, loading: false });
-    } else {
-      setValues({
+      setFormData({ ...formData, error: errorCreatingProduct, loading: false });
+    } else if (successProductData) {
+      setFormData({
         name: "",
         description: "",
         price: "",
@@ -143,7 +118,7 @@ const AddProduct = () => {
         shippingTime: "",
         loading: false,
         error: "",
-        createdProduct: successProductData.name,
+        createdProduct: "",
       });
     }
   };

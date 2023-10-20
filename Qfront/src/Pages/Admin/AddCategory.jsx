@@ -30,7 +30,7 @@ const AddCategory = () => {
     setSuccess(false);
     //Process data from api call
     const access = token;
-    dispatch(createCategory(user._id, access, { name }))
+    dispatch(createCategory({ user_id: user.id, access: access, category: name }))
     if (errorCreatingCategory) {
       setError(true);
     } else {
@@ -41,7 +41,7 @@ const AddCategory = () => {
   };
 
   useEffect(() => {
-    handleSubmit()
+    // handleSubmit()
   })
 
   const newCategory = () => {
