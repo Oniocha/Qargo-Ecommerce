@@ -98,8 +98,29 @@ const AddProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setValues({ ...values, error: "", loading: false });
+    setValues({ ...values, error: "", loading: true });
     dispatch(createProduct({ user_id: user.id, access: token, product: formData }))
+    if (errorCreatingProduct) {
+      setValues({ ...values, error: "There was an error creating product!", loading: false });
+    } else if (successProductData) {
+      setValues({ ...values,
+        name: "",
+        description: "",
+        price: "",
+        tag: "",
+        category: [],
+        quantity: "",
+        size: [],
+        photo: "",
+        department: "",
+        condition: "",
+        shipping: "",
+        shippingTime: "",
+        loading: false,
+        error: "",
+        createdProduct: "",
+      });
+    }
   };
 
   const newProduct = () => {
