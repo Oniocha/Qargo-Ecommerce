@@ -13,7 +13,7 @@ import NoPhoto from "../../images/no-photo-available.png";
 const AddProduct = () => {
   const dispatch = useDispatch();
   const { errorCreatingProduct, successProductData } = useSelector(state => state.vendor);
-  const [formData, setFormData] = useState({
+  const [values, setValues] = useState({
     name: "",
     description: "",
     price: "",
@@ -30,8 +30,8 @@ const AddProduct = () => {
     error: "",
     createdProduct: "",
   });
-  // const [formData, setFormData] = useState(new FormData()),
-  const [categories, setCategories] = useState([]),
+  const [formData, setFormData] = useState(""),
+    [categories, setCategories] = useState([]),
     [tags, setTags] = useState([]),
     [departments, setDepartments] = useState([]);
 
@@ -44,7 +44,7 @@ const AddProduct = () => {
     loading,
     error,
     createdProduct,
-  } = formData;
+  } = values;
 
   //destructuring localstorage
   const { user, token } = isAuthenticated();
@@ -80,47 +80,26 @@ const AddProduct = () => {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    setFormData(new FormData());
+
+    // eslint-disable-next-line
+  }, []);
+
   const handleChange = (name) => (e) => {
-    let newValue = name === "photo" ? e.target.files[0] : e.target.value;
-
-    if (Array.isArray(formData[name])) {
-      // Get the index and append the new value with its index
-      const index = formData[name].length;
-      newValue = [index, newValue];
+    let value = name === "photo" ? e.target.files[0] : e.target.value;
+    if (formData !== undefined) {
+      formData.set(name, value);
+    } else {
+      console.error("formData is not set");
     }
-  
-    setFormData({
-      ...formData,
-      [name]: newValue,
-    });
+    setValues({ ...values, error: "", createdProduct: "", [name]: value });
   };
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const product = formData;
-    dispatch(createProduct({ user_id: user.id, access: token, product: product }))
-    if (errorCreatingProduct) {
-      setFormData({ ...formData, error: errorCreatingProduct, loading: false });
-    } else if (successProductData) {
-      setFormData({
-        name: "",
-        description: "",
-        price: "",
-        tag: "",
-        category: [],
-        quantity: "",
-        size: [],
-        photo: "",
-        department: "",
-        condition: "",
-        shipping: "",
-        shippingTime: "",
-        loading: false,
-        error: "",
-        createdProduct: "",
-      });
-    }
+    setValues({ ...values, error: "", loading: false });
+    dispatch(createProduct({ user_id: user.id, access: token, product: formData }))
   };
 
   const newProduct = () => {
