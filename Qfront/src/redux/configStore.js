@@ -19,7 +19,7 @@ const store = configureStore({
         vendor: vendorReducer,
     },
     middleware: (getDefaultMiddlewares) => {
-        return process.env.NODE_ENV === 'development' ? getDefaultMiddlewares().concat(logger) : getDefaultMiddlewares({ serializableCheck: false });
+        return process.env.NODE_ENV === 'development' ? getDefaultMiddlewares().concat(logger) : getDefaultMiddlewares();
     },
 });
 
