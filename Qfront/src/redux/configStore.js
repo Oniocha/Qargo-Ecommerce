@@ -6,6 +6,7 @@ import transactionsReducer  from './transactions/Transactions';
 import orderReducer from './orders/Orders';
 import vendorReducer from './vendor/Vendor';
 import { configureStore } from '@reduxjs/toolkit';
+import logger from 'redux-logger';
 
 const store = configureStore({
     reducer: {
@@ -16,7 +17,10 @@ const store = configureStore({
         transaction: transactionsReducer,
         order: orderReducer,
         vendor: vendorReducer,
-    }
+    },
+    middleware: (getDefaultMiddlewares) => {
+        return process.env.NODE_ENV === 'development' ? getDefaultMiddlewares().concat(logger) : getDefaultMiddlewares({ serializableCheck: false });
+    },
 });
 
 export default store;

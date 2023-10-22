@@ -50,6 +50,7 @@
     ]
   },
   "devDependencies": {
-    "@reduxjs/toolkit": "^1.9.5"
+    "@reduxjs/toolkit": "^1.9.5",
+    "redux-logger": "^3.0.6"
   }
 }
