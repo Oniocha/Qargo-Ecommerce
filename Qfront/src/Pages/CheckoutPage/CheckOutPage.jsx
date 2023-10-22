@@ -182,18 +182,19 @@ const CheckOutPage = () => {
   // eslint-disable-next-line
   // }, [showMomo]);
 
-  // Getting all shipping methods and durations for later use
-  const shippingController = () => {
-    let shippingArr = [],
-      shippingDuration = [];
-    for (var i = 0; i < products.length; i++) {
-      shippingArr.push(products[i].shipping);
-      shippingDuration.push(products[i].shippingTime);
-      if (shippingArr.includes("pickUp")) {
-        console.log("One of more of your items are only available for pick up");
-      }
-    }
-  };
+  // TODO Getting all shipping methods and durations for later use
+  // const shippingController = () => {
+  //   let shippingArr = [],
+  //     shippingDuration = [];
+  //   for (var i = 0; i < products.length; i++) {
+  //     shippingArr.push(products[i].shipping);
+  //     shippingDuration.push(products[i].shippingTime);
+  //     if (shippingArr.includes("pickUp")) {
+  //       // TODo handle this part
+  //       console.log("One of more of your items are only available for pick up");
+  //     }
+  //   }
+  // };
 
   // Initiate payment
   const handleSubmit = (e) => {

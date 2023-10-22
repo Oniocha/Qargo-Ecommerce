@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useCallback, useEffect, useState } from "react";
 
 const ShowImage = ({ item, url, className }) => {
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const fecthImage = () => {
+  const fecthImage = useCallback(() => {
     setLoading(true);
     fetch(`${process.env.REACT_APP_API_URL}/${url}/photo/${item._id}`, {
       method: "GET",
@@ -14,12 +13,12 @@ const ShowImage = ({ item, url, className }) => {
         "Access-Control-Allow-Origin": "*",
       },
     })
-      .then((data) => {
+      .then(() => {
         setImage(`${process.env.REACT_APP_API_URL}/${url}/photo/${item._id}`);
         setLoading(false);
       })
       .catch((err) => console.log(err));
-  };
+  }, [item, url]);
 
   useEffect(() => {
     let isCancelled = false;
@@ -32,8 +31,7 @@ const ShowImage = ({ item, url, className }) => {
       isCancelled = true;
     };
 
-    // eslint-disable-next-line
-  }, []);
+  }, [fecthImage]);
 
   const showLoading = () => {
     return (

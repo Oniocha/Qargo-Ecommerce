@@ -46,15 +46,12 @@ export const updateFilteredProducts = createAsyncThunk('filteredProducts/updateF
 });
 
 // create action to list products
-export const listProducts = createAsyncThunk("loadProducts/listProducts", async(params, { rejectWithValue } ) => {
+export const listProducts = createAsyncThunk("loadProducts/listProducts", async(params = {}, { rejectWithValue } ) => {
   try {
-    const query = params?.search || params?.department ? params : ''
 
-    const listingEndPoint = `${productsEndPointApi}/search${query}`;
+    const response = await axiosInstance.get(`${productsEndPointApi}/search`, { params });
 
-    const response = await axiosInstance.get(listingEndPoint);
-    
-    return response.data;
+    return response.data.data;
 
   } catch (error) {
     return rejectWithValue(error)

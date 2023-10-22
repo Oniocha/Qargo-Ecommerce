@@ -11,12 +11,11 @@ import { readProduct } from "../../redux/product/loadProduct/actions";
 import "./product-styles.scss";
 
 const ProductPage = ({ match }) => {
-  const { productQureied, errorQueringProduct } = useSelector(state => state.loadProduct)
+  const { productQureied } = useSelector(state => state.loadProduct)
   const { relatedProducts } = useSelector(state => state.loadProducts)
   const dispatch = useDispatch();
   const product = productQureied || {}
   const related = relatedProducts || [];
-  const [error, setError] = useState(false);
   const [redirect, setRedirect] = useState(false);
 
   let productId = match.params.productId;

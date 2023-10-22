@@ -58,7 +58,7 @@ export const getNewArrivals = createAsyncThunk("FETCH_PRODUCTS", async (params =
 });
 
 // Related Products action
-export const listRelated = createAsyncThunk("loadProduct/listRelated", async ({ prodId }, { rejectWithValue }) => {
+export const listRelated = createAsyncThunk("loadProduct/listRelated", async (prodId, { rejectWithValue }) => {
     try {
         const listRelatedApi = `${productsEndPointApi}/related/${prodId}`
         const response = await axiosInstance.get(listRelatedApi);

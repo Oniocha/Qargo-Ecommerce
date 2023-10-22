@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { getFilteredProducts, updateFilteredProducts, listProducts
 } from "./actions";
 
@@ -7,7 +7,7 @@ const initialState = {
     loading: false,
     fetchedFilteredProducts: [],
     fetchedSize : "",
-    quriedProducts : [],
+    queriedProducts : [],
     updatedFilteredProductsError : null,
     errorQueryingProduct : null,
     filteredProductsError : null
@@ -59,7 +59,7 @@ const filteredProductsSlice = createSlice({
         });
         builder.addCase(listProducts.fulfilled, (state, action) => {
             state.success = true;
-            state.quriedProducts = action.payload;
+            state.queriedProducts = action.payload;
             state.loading = false;
             state.errorQueryingProduct = null;
         });
@@ -67,15 +67,20 @@ const filteredProductsSlice = createSlice({
             state.loading = true;
             state.errorQueryingProduct = null;
             state.success = false;
-            state.quriedProducts = [];
+            state.queriedProducts = [];
         });
         builder.addCase(listProducts.rejected, (state, action) => {
             state.success = false;
             state.errorQueryingProduct = action.payload;
-            state.quriedProducts = [];
+            state.queriedProducts = [];
             state.loading = false;
         });
     }
 })
+
+export const getSlice = (state) => state['loadFilteredProducts'];
+
+// get queried products
+export const getQueriedProducts = createSelector(getSlice, (slice) => slice?.queriedProducts || [])
 
 export default filteredProductsSlice.reducer;
