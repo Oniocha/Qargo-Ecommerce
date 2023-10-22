@@ -4,8 +4,11 @@ import {
 } from "../../api";
 
 // Create action to load by price
-export const getProductsByPrice = createAsyncThunk("LOAD_BY_PRICE", async ({ sortBy = 'price', order = 'asc', limit = 10 }, { rejectWithValue }) => {
+export const getProductsByPrice = createAsyncThunk("LOAD_BY_PRICE", async (params = {}, { rejectWithValue }) => {
     try {
+        const sortBy = params.sortBy || 'price'
+        const order = params.order || 'asc'
+        const limit = params.limit || 10
         const getProductsByPriceApi = `${productsEndPointApi}?sortBy=${sortBy}&order=${order}&limit=${limit}`;
         const response = await axiosInstance.get(getProductsByPriceApi);
         return response.data.data;
@@ -25,8 +28,11 @@ export const getAllCategories = createAsyncThunk("LOAD_BY_CATEGORIES", async (_,
 });
 
 // create fetch action for fetch by price
-export const loadBySell = createAsyncThunk("LOAD_BY_SELL", async ({ sortBy = 'price', order = 'asc', limit = 10 }, { rejectWithValue }) => {
+export const loadBySell = createAsyncThunk("LOAD_BY_SELL", async (params = {}, { rejectWithValue }) => {
     try {
+        const sortBy = params.sortBy || 'price'
+        const order = params.order || 'asc'
+        const limit = params.limit || 10
         const loadBySellApi = `${productsEndPointApi}?sortBy=${sortBy}&order=${order}&limit=${limit}`;
         const response = await axiosInstance.get(loadBySellApi);
         return response.data.data;
@@ -36,8 +42,13 @@ export const loadBySell = createAsyncThunk("LOAD_BY_SELL", async ({ sortBy = 'pr
 });
 
 // create fetch action for new Arrivals
-export const getNewArrivals = createAsyncThunk("FETCH_PRODUCTS", async ({ sortBy = 'price', order = 'asc', limit = 10 }, { rejectWithValue }) => {
+export const getNewArrivals = createAsyncThunk("FETCH_PRODUCTS", async (params = {}, { rejectWithValue }) => {
+    
+    
     try {
+        const sortBy = params.sortBy || 'price'
+        const order = params.order || 'asc'
+        const limit = params.limit || 10
         const getNewArrivalsApi = `${productsEndPointApi}?sortBy=${sortBy}&order=${order}&limit=${limit}`;
         const response = await axiosInstance.get(getNewArrivalsApi);
         return response.data.data;

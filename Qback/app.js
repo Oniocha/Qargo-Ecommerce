@@ -36,6 +36,8 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+app.set('trust proxy', 'loopback')
+
 // Limiting requests from the same IP
 const limiter = rateLimit({
   max: 1000,
