@@ -42,7 +42,7 @@ const vendorSlice = createSlice({
             state.success = true;
             state.loading = false;
             state.successProductData = action.payload;
-            state.errorCreatingCategory = null;
+            state.errorCreatingProduct = null;
         });
         builder.addCase(createProduct.rejected, (state, action) => {
             state.success = false;

@@ -8,7 +8,7 @@ import { VendorLinks } from "../../components/Dashboard/Dashboard";
 import "../Accounts/accounts-styles.scss";
 
 const AddCategory = () => {
-  const { errorCreatingCategory } = useSelector(state => state.vendor);
+  const { errorCreatingCategory } = useSelector(state => state.vendor );
   const dispatch = useDispatch();
   const [name, setName] = useState(""),
     [error, setError] = useState(false),
@@ -30,14 +30,16 @@ const AddCategory = () => {
     setSuccess(false);
     //Process data from api call
     const access = token;
-    dispatch(createCategory({ user_id: user.id, access: access, category: name }))
-    if (errorCreatingCategory) {
-      setError(true);
-    } else {
-      setName("");
-      setError(false);
-      setSuccess(true);
-    }
+    dispatch(createCategory({ userId: user._id, access, name })).finally(() => {
+      if (errorCreatingCategory) {
+        setError(true);
+        setSuccess(false)
+      } else {
+        setName("");
+        setError(false);
+        setSuccess(true);
+      }
+    })
   };
 
   useEffect(() => {

@@ -99,7 +99,7 @@ const AddProduct = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setValues({ ...values, error: "", loading: true });
-    dispatch(createProduct({ user_id: user.id, access: token, product: formData }))
+    dispatch(createProduct({ userId: user._id, access: token, product: formData }))
     if (errorCreatingProduct) {
       setValues({ ...values, error: "There was an error creating product!", loading: false });
     } else if (successProductData) {
