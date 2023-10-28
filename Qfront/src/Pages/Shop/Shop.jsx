@@ -2,67 +2,38 @@ import React, { useState, useEffect } from "react";
 import Checkbox from "../../components/Checkbox";
 import Radio from "../../components/Radio";
 import { prices } from "../../helpers/fixedPrices";
-import { getFilteredProducts } from "../../API_CALLS/userApis";
 import SearchResult from "./SearchResult";
-
+import {useDispatch, useSelector} from 'react-redux';
 import "./styles.scss";
+import { getAllCategories } from "../../redux/product/loadProducts/actions";
+import { getFilteredProducts, updateFilteredProducts } from "../../redux/product/filteredProducts/actions";
 
 const Shop = () => {
+  const { fetchedCategories } = useSelector(state => state.loadProducts);
+  const { fetchedFilteredProducts, fetchedSize, departmentsApiError} = useSelector(state => state.loadFilteredProducts);
+  const dispatch = useDispatch();
+  const categories = fetchedCategories || [];
+  const filteredResults = fetchedFilteredProducts?.data || [];
+  const size = fetchedSize || 0
+  const error = departmentsApiError || false;
   // All the states needed for this component
-  const [categories, setCategories] = useState([]);
-  const [error, setError] = useState(false);
   const [limit, setLimit] = useState(6);
   const [skip, setSkip] = useState(0);
-  const [size, setSize] = useState(0);
   const [myFilters, setMyFilters] = useState({
     filters: { category: [], price: [] },
   });
-  const [filteredResults, setFilteredResults] = useState([]);
-
-  // API url for fetching all categories
-  let one = process.env.REACT_APP_API_URL + "/categories";
-
-  // Function to load up all categories
-  const init = () => {
-    fetch(one, {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.error) {
-          setError(data?.error);
-        } else {
-          setCategories(data);
-        }
-      })
-      .catch((err) => console.log(err));
-  };
-
+  
   // Function to send search filters to backend
   const loadFilteredResults = (newFilters) => {
-    getFilteredProducts(skip, limit, newFilters).then((data) => {
-      if (data?.error) {
-        setError(data?.error);
-      } else {
-        setFilteredResults(data.data);
-        setSize(data.size);
-        setSkip(0);
-      }
-    });
+    dispatch(getFilteredProducts({skip: skip, limit: limit, filters: newFilters}))
   };
 
   // 'Load more' button function
   const loadMore = () => {
     const toSkip = skip + limit;
-    getFilteredProducts(toSkip, limit, myFilters.filters).then((data) => {
-      if (data?.error) {
-        setError(data?.error);
-      } else {
-        setFilteredResults([...filteredResults, ...data.data]);
-        setSize(data.size);
-        setSkip(toSkip);
-      }
-    });
+    const filter = myFilters.filters
+    // This function might need more testing
+    dispatch(updateFilteredProducts({skip: toSkip, limit: limit, filters: filter}))
   };
 
   const loadMoreButton = () => {
@@ -78,11 +49,10 @@ const Shop = () => {
 
   // UseEffect to load when component mounts. Fetches all categories and fetches all products
   useEffect(() => {
-    init();
-    loadFilteredResults(limit, skip, myFilters.filters);
-
+    dispatch(getAllCategories())
+    loadMore()
     // eslint-disable-next-line
-  }, []);
+  }, [dispatch]);
 
   // Method for collecting values to use as filters from each checkbox user checks
   const handleFilters = (filters, filterBy) => {

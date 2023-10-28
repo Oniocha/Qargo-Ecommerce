@@ -1,9 +1,10 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import Slider from "react-slick";
-import axios from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./styles.scss";
+import {useDispatch, useSelector} from 'react-redux';
+import { getProductsByPrice, loadBySell, getNewArrivals } from "../../redux/product/loadProducts/actions";
 
 const ProductCard = lazy(() => import("../ProductCard/ProductCard"));
 
@@ -18,43 +19,17 @@ const SamplePrevArrow = (props) => {
 };
 
 const NewArrivals = () => {
-  const [productsBySell, setProductsBySell] = useState([]),
-    [productsByArrival, setProductsByArrival] = useState([]),
-    [productsByPrice, setProductsByPrice] = useState([]),
-    [error, setError] = useState(false);
-
-  const loadBySell = () => {
-    axios
-      .get(
-        `${process.env.REACT_APP_API_URL}/products?sortBy=sold&order=desc&limit=10`
-      )
-      .then((res) => setProductsBySell(res.data.data))
-      .catch((err) => console.log(err));
-  };
-
-  const fetchByArrival = () => {
-    axios
-      .get(
-        `${process.env.REACT_APP_API_URL}/products?sortBy=createdAt&order=desc&limit=10`
-      )
-      .then((res) => setProductsByArrival(res.data.data))
-      .catch((err) => console.log(err));
-  };
-
-  const fetchByPrice = () => {
-    axios
-      .get(
-        `${process.env.REACT_APP_API_URL}/products?sortBy=price&order=asc&limit=10`
-      )
-      .then((res) => setProductsByPrice(res.data.data))
-      .catch((err) => console.log(err));
-  };
+  const { fetchedNewArrivals, fetchedDataBySell, fetchedProductsByPrice } = useSelector(state => state.loadProducts);
+  const dispatch = useDispatch()
+  const productsByArrival = fetchedNewArrivals || [];
+  const productsBySell = fetchedDataBySell || [];
+  const productsByPrice = fetchedProductsByPrice || [];
 
   useEffect(() => {
-    fetchByArrival();
-    fetchByPrice();
-    loadBySell();
-  }, []);
+    dispatch(getProductsByPrice())
+    dispatch(getNewArrivals())
+    dispatch(loadBySell())
+  }, [dispatch]);
 
   var settings = {
     dots: false,

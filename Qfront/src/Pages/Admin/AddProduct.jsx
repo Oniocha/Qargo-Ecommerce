@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../../API_CALLS/Auth/authMethods";
-import { createProduct } from "../../API_CALLS/vendorApis";
+import { createProduct } from "../../redux/vendor/action";
+import { useSelector, useDispatch } from "react-redux";
 import { VendorLinks } from "../../components/Dashboard/Dashboard";
 
 import "../Accounts/accounts-styles.scss";
@@ -10,6 +11,8 @@ import "../Accounts/accounts-styles.scss";
 import NoPhoto from "../../images/no-photo-available.png";
 
 const AddProduct = () => {
+  const dispatch = useDispatch();
+  const { errorCreatingProduct, successProductData } = useSelector(state => state.vendor);
   const [values, setValues] = useState({
     name: "",
     description: "",
@@ -96,29 +99,28 @@ const AddProduct = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setValues({ ...values, error: "", loading: true });
-    createProduct(user._id, token, formData).then((data) => {
-      if (data?.error) {
-        setValues({ ...values, error: data?.error, loading: false });
-      } else {
-        setValues({
-          name: "",
-          description: "",
-          price: "",
-          tag: "",
-          category: [],
-          quantity: "",
-          size: [],
-          photo: "",
-          department: "",
-          condition: "",
-          shipping: "",
-          shippingTime: "",
-          loading: false,
-          error: "",
-          createdProduct: data.name,
-        });
-      }
-    });
+    dispatch(createProduct({ userId: user._id, access: token, product: formData }))
+    if (errorCreatingProduct) {
+      setValues({ ...values, error: "There was an error creating product!", loading: false });
+    } else if (successProductData) {
+      setValues({ ...values,
+        name: "",
+        description: "",
+        price: "",
+        tag: "",
+        category: [],
+        quantity: "",
+        size: [],
+        photo: "",
+        department: "",
+        condition: "",
+        shipping: "",
+        shippingTime: "",
+        loading: false,
+        error: "",
+        createdProduct: "",
+      });
+    }
   };
 
   const newProduct = () => {

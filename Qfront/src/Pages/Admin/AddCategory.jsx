@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../../API_CALLS/Auth/authMethods";
-import { createCategory } from "../../API_CALLS/vendorApis";
+import { createCategory } from "../../redux/vendor/action";
+import { useDispatch, useSelector } from "react-redux";
 import { VendorLinks } from "../../components/Dashboard/Dashboard";
 
 import "../Accounts/accounts-styles.scss";
 
 const AddCategory = () => {
+  const { errorCreatingCategory } = useSelector(state => state.vendor );
+  const dispatch = useDispatch();
   const [name, setName] = useState(""),
     [error, setError] = useState(false),
     [success, setSuccess] = useState(false);
@@ -26,16 +29,22 @@ const AddCategory = () => {
     setError("");
     setSuccess(false);
     //Process data from api call
-    createCategory(user._id, token, { name }).then((data) => {
-      if (data?.error) {
+    const access = token;
+    dispatch(createCategory({ userId: user._id, access, name })).finally(() => {
+      if (errorCreatingCategory) {
         setError(true);
+        setSuccess(false)
       } else {
         setName("");
         setError(false);
         setSuccess(true);
       }
-    });
+    })
   };
+
+  useEffect(() => {
+    // handleSubmit()
+  })
 
   const newCategory = () => {
     return (

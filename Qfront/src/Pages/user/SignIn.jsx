@@ -40,11 +40,9 @@ const SignIn = ({ location }) => {
     e.preventDefault();
     setForm({ ...form, error: false, loading: true });
     signin({ email, password }).then((data) => {
-      console.log(data);
       if (data?.error) {
         setForm({ ...form, error: data?.error, loading: false });
       } else {
-        console.log("here");
         authenticate(data, () =>
           setForm({ ...form, error: "", redirectToReferrer: true })
         );

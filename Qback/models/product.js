@@ -145,13 +145,4 @@ productSchema.pre("save", function (next) {
 
 productSchema.index({ location: "2dsphere" });
 
-// Pre save middleware for embedding documents
-// productSchema.pre("save", async function (next) {
-//   const categoriesPromises = this.category.map(
-//     async (id) => await Category.findById(id)
-//   );
-//   this.category = await Promise.all(categoriesPromises);
-//   next();
-// });
-
 module.exports = mongoose.model("Product", productSchema);

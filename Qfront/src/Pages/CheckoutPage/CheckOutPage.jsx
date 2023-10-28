@@ -1,14 +1,9 @@
-import React, { useEffect, Fragment, useState } from "react";
+import React, { useEffect, Fragment, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { isAuthenticated } from "../../API_CALLS/Auth/authMethods";
 import { cartTotal, getCart } from "../../helpers/cartHelpers";
-import {
-  getTransactionFees,
-  initateTransaction,
-  createAuthOrder,
-  createGuestOrder,
-} from "../../API_CALLS/userApis";
 import Momo from "../../images/Mobile-Money.png";
+import { getTransactionFees, initiateTransaction } from "../../redux/transactions/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 import MiddleBar from "../../components/Header/MiddleBar";
 
@@ -16,6 +11,9 @@ import "../../components/Header/header-styles.scss";
 import "./styles.scss";
 
 const CheckOutPage = () => {
+  const { transactionFee, redirect, paymentUrl } = useSelector(state => state.transaction)
+  const dispatch = useDispatch();
+  const fees = transactionFee || "";
   const [products, setProducts] = useState([]);
   const [count, setCount] = useState(0);
   const [values, setValues] = useState({
@@ -28,12 +26,9 @@ const CheckOutPage = () => {
     network: "",
     redirect_url: "http://localhost:3000/order-complete",
     amount: "",
-    fees: "",
     error: false,
   });
-  const [redirect, setRedirect] = useState(false),
-    [paymentUrl, setPaymentUrl] = useState(null),
-    [loading, setLoading] = useState(false);
+const [loading, setLoading] = useState(false);
 
   const [address, setAddress] = useState({
     country: "",
@@ -48,13 +43,11 @@ const CheckOutPage = () => {
     fullname,
     email,
     amount,
-    fees,
     phone_number,
     redirect_url,
     network,
     type,
     tx_ref,
-    error,
   } = values;
 
   // States for Mobile payment
@@ -103,11 +96,24 @@ const CheckOutPage = () => {
     }
   };
 
+    // Get subtotal for items in cart
+  const productSum = useMemo(() => {
+    return products.reduce((currentValue, nextValue) => {
+      return currentValue + nextValue.count * nextValue.price;
+    }, 0);
+  }, [products]);
+
   useEffect(() => {
     handleMobileSelector();
-
     // eslint-disable-next-line
   }, [phone_number]);
+
+  useEffect(() => {
+    const cost = productSum;
+    if (typeof cost === 'number' && cost > 0) {
+      dispatch(getTransactionFees({ cost }));
+    }
+  }, [dispatch, productSum])
 
   // This is the RAVE MOMO form
   const Rave = () => {
@@ -145,12 +151,6 @@ const CheckOutPage = () => {
     setAddress({ ...address, [name]: value });
   };
 
-  // Get subtotal for items in cart
-  const getSum = () => {
-    return products.reduce((currentValue, nextValue) => {
-      return currentValue + nextValue.count * nextValue.price;
-    }, 0);
-  };
 
   // Calculate Tax
   const vat = (sum) => {
@@ -161,7 +161,7 @@ const CheckOutPage = () => {
   useEffect(() => {
     setCount(cartTotal());
     setProducts(getCart());
-    setValues({ ...values, amount: orderTotal(vat(getSum()), getSum()) });
+    setValues({ ...values, amount: orderTotal(vat(productSum), productSum) });
     // eslint-disable-next-line
   }, [count, amount]);
 
@@ -173,81 +173,37 @@ const CheckOutPage = () => {
   // Get transaction fees
   const setFees = (cost) => {
     setValues({ ...values, error: "" });
-    getTransactionFees(cost)
-      .then((data) => {
-        if (data?.error) {
-          setValues({ ...values, error: data?.error });
-        } else {
-          setValues({ ...values, fees: data.data.fee, error: false });
-        }
-      })
-      .catch((err) => console.log(err));
+    dispatch(getTransactionFees({cost}));
   };
 
   // Set transaction fees
   // useEffect(() => {
-  //   let tax = vat(getSum());
-  //   let fullOrder = orderTotal(tax, getSum());
+  //   let tax = vat(productSum);
+  //   let fullOrder = orderTotal(tax, productSum);
   //   setFees(fullOrder);
 
   // eslint-disable-next-line
   // }, [showMomo]);
 
-  // Getting all shipping methods and durations for later use
-  const shippingController = () => {
-    let shippingArr = [],
-      shippingDuration = [];
-    for (var i = 0; i < products.length; i++) {
-      shippingArr.push(products[i].shipping);
-      shippingDuration.push(products[i].shippingTime);
-      if (shippingArr.includes("pickUp")) {
-        console.log("One of more of your items are only available for pick up");
-      }
-    }
-  };
+  // TODO Getting all shipping methods and durations for later use
+  // const shippingController = () => {
+  //   let shippingArr = [],
+  //     shippingDuration = [];
+  //   for (var i = 0; i < products.length; i++) {
+  //     shippingArr.push(products[i].shipping);
+  //     shippingDuration.push(products[i].shippingTime);
+  //     if (shippingArr.includes("pickUp")) {
+  //       // TODo handle this part
+  //       console.log("One of more of your items are only available for pick up");
+  //     }
+  //   }
+  // };
 
   // Initiate payment
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    initateTransaction(
-      tx_ref,
-      email,
-      amount,
-      type,
-      phone_number,
-      network,
-      redirect_url,
-      fullname
-    )
-      .then((data) => {
-        if (data?.error) {
-          console.log("error", data?.error);
-          setLoading(false);
-        } else {
-          setPaymentUrl(data.meta.authorization.redirect);
-
-          // Sending the order to the backend
-          const createOrderData = {
-            products,
-            transaction_id: tx_ref,
-            amount,
-            name: fullname,
-            number: phone_number,
-            email,
-            address,
-          };
-          if (isAuthenticated()) {
-            //destructuring localstorage
-            const { user, token } = isAuthenticated();
-            createAuthOrder(user._id, token, createOrderData);
-          } else createGuestOrder(createOrderData);
-
-          setRedirect(true);
-          setLoading(false);
-        }
-      })
-      .catch((err) => console.log(err));
+    dispatch(initiateTransaction({ tx_ref, email, amount, type, phone_number, network, redirect_url, fullname }));
   };
 
   // Mobile Payment field
@@ -258,13 +214,13 @@ const CheckOutPage = () => {
           <div className="card-header">
             <h5>Please provide your Mobile Money number below for payment</h5>
           </div>
-          {/* <div className="row pt-3 pl-3 pr-3">
+          <div className="row pt-3 pl-3 pr-3">
             <div className="col-4">
               <p>
                 Transaction fee: {fees} <small>(Powered by Flutterwave)</small>
               </p>
             </div>
-          </div> */}
+          </div>
           <div className="m-3">
             <form>
               <input
@@ -491,7 +447,7 @@ const CheckOutPage = () => {
                   </p>
                 </div>
                 <div className="col-6">
-                  <p className="checkout-summary text-right">GHS {getSum()}</p>
+                  <p className="checkout-summary text-right">GHS {productSum}</p>
                 </div>
               </div>
               <div className="row">
@@ -510,7 +466,7 @@ const CheckOutPage = () => {
                   <p className="checkout-summary text-left">VAT (3%)</p>
                 </div>
                 <div className="col-6">
-                  <p className="checkout-summary text-right">{vat(getSum())}</p>
+                  <p className="checkout-summary text-right">{vat(productSum)}</p>
                 </div>
               </div>
               <hr />
@@ -520,7 +476,7 @@ const CheckOutPage = () => {
                 </div>
                 <div className="col-6">
                   <h4 className="text-right">
-                    GHS {orderTotal(vat(getSum()), getSum())}
+                    GHS {orderTotal(vat(productSum), productSum)}
                   </h4>
                 </div>
               </div>
