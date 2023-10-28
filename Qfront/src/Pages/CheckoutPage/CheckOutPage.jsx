@@ -1,6 +1,5 @@
-import React, { useEffect, Fragment, useState } from "react";
+import React, { useEffect, Fragment, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { isAuthenticated } from "../../API_CALLS/Auth/authMethods";
 import { cartTotal, getCart } from "../../helpers/cartHelpers";
 import Momo from "../../images/Mobile-Money.png";
 import { getTransactionFees, initiateTransaction } from "../../redux/transactions/actions";
@@ -12,7 +11,7 @@ import "../../components/Header/header-styles.scss";
 import "./styles.scss";
 
 const CheckOutPage = () => {
-  const { transactionFee } = useSelector(state => state.transaction)
+  const { transactionFee, redirect, paymentUrl } = useSelector(state => state.transaction)
   const dispatch = useDispatch();
   const fees = transactionFee || "";
   const [products, setProducts] = useState([]);
@@ -29,9 +28,7 @@ const CheckOutPage = () => {
     amount: "",
     error: false,
   });
-  const [redirect, setRedirect] = useState(false),
-    [paymentUrl, setPaymentUrl] = useState(null),
-    [loading, setLoading] = useState(false);
+const [loading, setLoading] = useState(false);
 
   const [address, setAddress] = useState({
     country: "",
@@ -51,7 +48,6 @@ const CheckOutPage = () => {
     network,
     type,
     tx_ref,
-    error,
   } = values;
 
   // States for Mobile payment
@@ -100,11 +96,24 @@ const CheckOutPage = () => {
     }
   };
 
+    // Get subtotal for items in cart
+  const productSum = useMemo(() => {
+    return products.reduce((currentValue, nextValue) => {
+      return currentValue + nextValue.count * nextValue.price;
+    }, 0);
+  }, [products]);
+
   useEffect(() => {
     handleMobileSelector();
-    dispatch(getTransactionFees(getSum))
     // eslint-disable-next-line
   }, [phone_number]);
+
+  useEffect(() => {
+    const cost = productSum;
+    if (typeof cost === 'number' && cost > 0) {
+      dispatch(getTransactionFees({ cost }));
+    }
+  }, [dispatch, productSum])
 
   // This is the RAVE MOMO form
   const Rave = () => {
@@ -142,12 +151,6 @@ const CheckOutPage = () => {
     setAddress({ ...address, [name]: value });
   };
 
-  // Get subtotal for items in cart
-  const getSum = () => {
-    return products.reduce((currentValue, nextValue) => {
-      return currentValue + nextValue.count * nextValue.price;
-    }, 0);
-  };
 
   // Calculate Tax
   const vat = (sum) => {
@@ -158,7 +161,7 @@ const CheckOutPage = () => {
   useEffect(() => {
     setCount(cartTotal());
     setProducts(getCart());
-    setValues({ ...values, amount: orderTotal(vat(getSum()), getSum()) });
+    setValues({ ...values, amount: orderTotal(vat(productSum), productSum) });
     // eslint-disable-next-line
   }, [count, amount]);
 
@@ -170,13 +173,13 @@ const CheckOutPage = () => {
   // Get transaction fees
   const setFees = (cost) => {
     setValues({ ...values, error: "" });
-    dispatch(getTransactionFees(cost));
+    dispatch(getTransactionFees({cost}));
   };
 
   // Set transaction fees
   // useEffect(() => {
-  //   let tax = vat(getSum());
-  //   let fullOrder = orderTotal(tax, getSum());
+  //   let tax = vat(productSum);
+  //   let fullOrder = orderTotal(tax, productSum);
   //   setFees(fullOrder);
 
   // eslint-disable-next-line
@@ -200,7 +203,7 @@ const CheckOutPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    dispatch(initiateTransaction(tx_ref,email, amount, type, phone_number, network, redirect_url, fullname))
+    dispatch(initiateTransaction({ tx_ref, email, amount, type, phone_number, network, redirect_url, fullname }));
   };
 
   // Mobile Payment field
@@ -444,7 +447,7 @@ const CheckOutPage = () => {
                   </p>
                 </div>
                 <div className="col-6">
-                  <p className="checkout-summary text-right">GHS {getSum()}</p>
+                  <p className="checkout-summary text-right">GHS {productSum}</p>
                 </div>
               </div>
               <div className="row">
@@ -463,7 +466,7 @@ const CheckOutPage = () => {
                   <p className="checkout-summary text-left">VAT (3%)</p>
                 </div>
                 <div className="col-6">
-                  <p className="checkout-summary text-right">{vat(getSum())}</p>
+                  <p className="checkout-summary text-right">{vat(productSum)}</p>
                 </div>
               </div>
               <hr />
@@ -473,7 +476,7 @@ const CheckOutPage = () => {
                 </div>
                 <div className="col-6">
                   <h4 className="text-right">
-                    GHS {orderTotal(vat(getSum()), getSum())}
+                    GHS {orderTotal(vat(productSum), productSum)}
                   </h4>
                 </div>
               </div>

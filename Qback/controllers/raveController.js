@@ -8,15 +8,13 @@ const flw = new Flutterwave(API_KEY, secret);
 
 // Get transaction fee on checkout page load, and add to the order total in the payment method checkout
 exports.get_fee = async (req, res) => {
-  console.log(req.body.amount);
   try {
     const payload = {
       amount: req.body.amount,
       currency: "GHS",
     };
     const response = await flw.Transaction.fee(payload);
-    res.json(response);
-    console.log(response);
+    res.status(200).json(response);
   } catch (error) {
     console.log(error);
   }
@@ -24,12 +22,11 @@ exports.get_fee = async (req, res) => {
 
 // Process Mobile Money Payment
 exports.Gh_mobilemoney = async (req, res) => {
-  console.log(req.body);
   try {
     const payload = req.body;
 
     const response = await flw.MobileMoney.ghana(payload);
-    res.json(response);
+    res.status(200).json(response);
   } catch (error) {
     console.log(error);
   }
